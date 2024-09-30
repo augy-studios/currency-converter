@@ -1,0 +1,152 @@
+/* Import Google font - Comfortaa */
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@200;300;400;500;600;700&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  font-family: "Comfortaa", sans-serif;
+
+  /* Chrome and Opera */
+  user-select: none;
+
+  /* Safari */
+  -webkit-user-select: none;
+
+  /* Konqueror HTML */
+  -khtml-user-select: none;
+
+  /* Firefox */
+  -moz-user-select: none;
+
+  /* Internet Explorer/Edge */
+  -ms-user-select: none;
+
+  transition: 0.3s;
+}
+
+::selection {
+  color: #fff;
+  background: #6f6;
+}
+
+:link {
+    color: #6f6;
+}
+
+:visited {
+    color: #66f;
+}
+
+body {
+  background-color: #9f9;
+}
+
+.wrapper {
+  width: 90%;
+  max-width: 25em;
+  background-color: #000;
+  color: #6f6;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+  padding: 2em;
+  border-radius: 0.8em;
+}
+
+.app-details {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.app-icon {
+  width: 9.37em;
+}
+
+.app-title {
+  color: #6f6;
+  text-align: center;
+  font-size: 1.6em;
+  text-transform: uppercase;
+  margin-bottom: 1em;
+}
+
+label {
+  color: #6f6;
+  display: block;
+  font-weight: 600;
+}
+
+input {
+  background-color: #333;
+}
+
+input#amount {
+  color: #cfc;
+  font-weight: 400;
+  font-size: 1.2em;
+  display: block;
+  width: 100%;
+  border-bottom: 2px solid #02002c;
+  margin-bottom: 2em;
+  padding: 0.5em;
+}
+
+input#amount:focus {
+  color: #6f6;
+  border-color: #9f9;
+}
+
+.dropdowns {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+}
+
+select {
+  cursor: pointer;
+  width: 100%;
+  padding: 0.6em;
+  font-size: 1em;
+  border-radius: 0.2em;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("/money-convert/arrow-down.svg");
+  background-repeat: no-repeat;
+  background-position: right 15px top 50%, center;
+  background-size: 20px 20px;
+  background-color: #9f9;
+  color: #000;
+}
+
+select option {
+  background-color: #000;
+  color: #6f6;
+}
+
+button {
+  cursor: pointer;
+  font-size: 1em;
+  width: 100%;
+  background-color: #9f9;
+  padding: 1em 0;
+  margin-top: 1em;
+  border-radius: 0.3em;
+  color: #000;
+  font-weight: bold;
+}
+
+#result {
+  font-size: 1.2em;
+  text-align: center;
+  margin-top: 1em;
+  color: #02002c;
+  background-color: #cfc;
+  padding: 0.8em 0;
+}

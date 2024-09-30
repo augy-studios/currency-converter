@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FMCYFTFPEL"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-FMCYFTFPEL');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9715826188316382"
+        crossorigin="anonymous"></script>
+
+    <link rel="manifest" href="../manifest.json" />
+
+    <meta charset="utf-8">
+    <title>Currency Converter | Augy Studios</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Currency Converter" />
+    <meta property="og:site_name" content="Augy Studios" />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
+    <link rel="stylesheet" href="/money-convert/style.css">
+
+    <!-- Embed Image -->
+    <link rel="apple-touch-icon" href="/img/augyexlab.png">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image:src" content="/img/augyexlab.png">
+    <meta property="og:image" content="/img/augyexlab.png"/>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script defer="" src="https://use.fontawesome.com/releases/v6.5.1/js/all.js"></script>
+
+    <script>
+        function playNggyu() {
+            var audio = document.getElementById("audio");
+            audio.play();
+        }
+    </script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="app-details">
+            <img src="/money-convert/app-icon-dark.svg" class="app-icon" />
+            <br>
+            <h1 class="app-title">Currency Converter</h1>
+        </div>
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" value="1" onchange="updateUrl()" />
+        <div class="dropdowns">
+            <select id="from-currency-select" onchange="updateUrl()"></select>
+            <select id="to-currency-select" onchange="updateUrl()"></select>
+        </div>
+        <button id="swap-button">Swap</button>
+        <button id="convert-button">Convert</button>
+        <p id="result"></p>
+    </div>
+
+    <script src="/money-convert/currency-codes.js"></script>
+    <script src="/money-convert/api-key.js"></script>
+    <script src="/money-convert/script.js"></script>
+</body>
+
+</html>

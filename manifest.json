@@ -1,0 +1,15 @@
+{
+    "name": "Currency Converter by Augy Studios",
+    "short_name": "Currency Converter",
+    "icons": [{
+        "src": "favicon.ico",
+        "type": "image/png",
+        "sizes": "256x256"
+    }],
+    "start_url": ".",
+    "theme_color": "#9f9",
+    "background_color": "#9f9",
+    "display": "standalone",
+    "display_override": ["fullscreen", "minimal-ui"],
+    "description": "Save this to access the Currency Converter website in your home screen!"
+}

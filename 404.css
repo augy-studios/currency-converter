@@ -1,5 +1,5 @@
-/* Import Google font - Comfortaa */
-@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@200;300;400;500;600;700&display=swap");
+/* Import Google font - Jua */
+@import url("https://fonts.googleapis.com/css2?family=Jua:wght@200;300;400;500;600;700&display=swap");
 
 * {
   /* Chrome and Opera */
@@ -41,7 +41,7 @@ body {
   text-align: center;
   align-items: center;
   color: white;
-  font-family: Comfortaa;
+  font-family: Jua;
   margin: 20px auto;
 }
 

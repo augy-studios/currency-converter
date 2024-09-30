@@ -19,13 +19,16 @@ currencies.forEach((currency) => {
   toDropDown.add(option);
 });
 
+// Dynamic Hostname
+let urlHostname = (new URL(document.location)).hostname
+
 // Dynamic URL
 let urlParams = (new URL(document.location)).searchParams
 fromDropDown.value = (urlParams.get("from") == null) ? "SGD" : urlParams.get("from").toUpperCase()
 toDropDown.value = (urlParams.get("to") == null) ? "MYR" : urlParams.get("to").toUpperCase()
 amountInput.value = (urlParams.get("value") == null) ? 1 : urlParams.get("value")
 function updateUrl() {
-  history.pushState({}, "", "https://test.augy.xyz/money-convert?from=" + fromDropDown.value + "&to=" + toDropDown.value + "&value=" + amountInput.value)
+  history.pushState({}, "", "https://" + urlHostname + "/?from=" + fromDropDown.value + "&to=" + toDropDown.value + "&value=" + amountInput.value)
 }
 window.addEventListener("load", updateUrl)
 

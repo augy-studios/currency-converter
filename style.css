@@ -1,5 +1,5 @@
-/* Import Google font - Comfortaa */
-@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@200;300;400;500;600;700&display=swap");
+/* Import Google font - BM Jua */
+@import url("https://fonts.googleapis.com/css2?family=Jua:wght@200;300;400;500;600;700&display=swap");
 
 * {
   padding: 0;
@@ -7,7 +7,7 @@
   box-sizing: border-box;
   border: none;
   outline: none;
-  font-family: "Comfortaa", sans-serif;
+  font-family: "Jua", sans-serif;
 
   /* Chrome and Opera */
   user-select: none;
@@ -117,7 +117,7 @@ select {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  background-image: url("/money-convert/arrow-down.svg");
+  background-image: url("/arrow-down.svg");
   background-repeat: no-repeat;
   background-position: right 15px top 50%, center;
   background-size: 20px 20px;

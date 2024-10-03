@@ -29,11 +29,11 @@
 
 ::selection {
   color: #fff;
-  background: #6f6;
+  background: #9f9;
 }
 
 :link {
-    color: #6f6;
+    color: #9f9;
 }
 
 :visited {
@@ -41,14 +41,14 @@
 }
 
 body {
-  background-color: #9f9;
+  background-color: #cfc;
 }
 
 .wrapper {
   width: 90%;
   max-width: 25em;
   background-color: #000;
-  color: #6f6;
+  color: #9f9;
   position: absolute;
   transform: translate(-50%, -50%);
   left: 50%;
@@ -68,7 +68,7 @@ body {
 }
 
 .app-title {
-  color: #6f6;
+  color: #9f9;
   text-align: center;
   font-size: 1.6em;
   text-transform: uppercase;
@@ -76,7 +76,7 @@ body {
 }
 
 label {
-  color: #6f6;
+  color: #9f9;
   display: block;
   font-weight: 600;
 }
@@ -97,8 +97,8 @@ input#amount {
 }
 
 input#amount:focus {
-  color: #6f6;
-  border-color: #9f9;
+  color: #9f9;
+  border-color: #cfc;
 }
 
 .dropdowns {
@@ -121,20 +121,20 @@ select {
   background-repeat: no-repeat;
   background-position: right 15px top 50%, center;
   background-size: 20px 20px;
-  background-color: #9f9;
+  background-color: #cfc;
   color: #000;
 }
 
 select option {
   background-color: #000;
-  color: #6f6;
+  color: #9f9;
 }
 
 button {
   cursor: pointer;
   font-size: 1em;
   width: 100%;
-  background-color: #9f9;
+  background-color: #cfc;
   padding: 1em 0;
   margin-top: 1em;
   border-radius: 0.3em;

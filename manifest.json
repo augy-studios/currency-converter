@@ -1,15 +1,20 @@
 {
     "name": "Currency Converter by Augy Studios",
     "short_name": "Currency Converter",
+    "description": "A simple currency converter, converting currencies has never been easier!",
     "icons": [{
-        "src": "favicon.ico",
+        "src": "app-icon.png",
         "type": "image/png",
         "sizes": "256x256"
+    }],
+    "screenshots": [{
+        "src": "/images/screenshot_1.png",
+        "type": "image/png",
+        "sizes": "1080x1920"
     }],
     "start_url": ".",
     "theme_color": "#9f9",
     "background_color": "#9f9",
     "display": "standalone",
-    "display_override": ["fullscreen", "minimal-ui"],
-    "description": "Save this to access the Currency Converter website in your home screen!"
+    "display_override": ["fullscreen", "minimal-ui"]
 }

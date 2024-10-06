@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.augystudios.moneyconvert",
+        "sha256_cert_fingerprints": ["90:0F:BC:34:9D:C1:A2:2F:ED:6C:75:C6:4E:81:CC:29:22:C5:FA:0C:57:5C:68:33:6D:D7:2B:23:03:78:2C:31"]
+      }
+    }]

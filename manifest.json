@@ -12,20 +12,16 @@
         "type": "image/png",
         "sizes": "1080x2340"
     }],
-    "shortcuts": [{
-            "name": "SGD to USD",
-            "url": "/?from=SGD&to=USD&value=1",
-            "description": "Quick Convert from 1 SGD to USD"
-        },
+    "shortcuts": [
         {
             "name": "USD to SGD",
             "url": "/?from=USD&to=SGD&value=1",
             "description": "Quick Convert from 1 USD to SGD"
         },
         {
-            "name": "USD to CAD",
-            "url": "/?from=USD&to=CAD&value=1",
-            "description": "Quick Convert from 1 USD to CAD"
+            "name": "USD to GBP",
+            "url": "/?from=USD&to=GBP&value=1",
+            "description": "Quick Convert from 1 USD to GBP"
         },
         {
             "name": "USD to EUR",
@@ -33,15 +29,21 @@
             "description": "Quick Convert from 1 USD to EUR"
         },
         {
+            "name": "SGD to USD",
+            "url": "/?from=SGD&to=USD&value=1",
+            "description": "Quick Convert from 1 SGD to USD"
+        },
+        {
+            "name": "USD to CAD",
+            "url": "/?from=USD&to=CAD&value=1",
+            "description": "Quick Convert from 1 USD to CAD"
+        },
+        {
             "name": "USD to JPY",
             "url": "/?from=USD&to=JPY&value=1",
             "description": "Quick Convert from 1 USD to JPY"
-        },
-        {
-            "name": "USD to GBP",
-            "url": "/?from=USD&to=GBP&value=1",
-            "description": "Quick Convert from 1 USD to GBP"
         }
+        
     ],
     "start_url": ".",
     "theme_color": "#9f9",

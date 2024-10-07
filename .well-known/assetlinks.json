@@ -3,6 +3,6 @@
       "target": {
         "namespace": "android_app",
         "package_name": "com.augystudios.moneyconvert",
-        "sha256_cert_fingerprints": ["49:5C:1C:F0:56:B9:80:B0:D7:9A:3A:B6:80:E3:35:69:8C:A4:1E:00:F2:7B:06:25:0B:69:55:23:B9:EA:AC:42"]
+        "sha256_cert_fingerprints": ["8D:B8:F7:5F:35:E4:36:B1:A5:7D:1F:AD:D4:9C:E8:B9:36:CB:2A:3B:24:21:E3:5C:3E:F0:84:EA:BA:4B:31:A2"]
       }
     }]

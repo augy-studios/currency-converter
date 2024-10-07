@@ -12,6 +12,17 @@
         "type": "image/png",
         "sizes": "1080x2340"
     }],
+    "shortcuts": [{
+            "name": "USD to SGD",
+            "url": "/?from=USD&to=SGD&value=1",
+            "description": "Quick Convert from 1 USD to SGD"
+        },
+        {
+            "name": "SGD to USD",
+            "url": "/?from=SGD&to=USD&value=1",
+            "description": "Quick Convert from 1 SGD to USD"
+        }
+    ],
     "start_url": ".",
     "theme_color": "#9f9",
     "background_color": "#9f9",

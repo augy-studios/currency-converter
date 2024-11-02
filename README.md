@@ -37,7 +37,7 @@ Install APK: https://cloud.kancil.xyz/s/5yCeBwAs9NcFD97
 ## Special Thanks
 [Paxriel](https://paxriel.art/) for general coding help
 
-[OpenWeatherMap](https://openweathermap.org/) for the API
+[Exchange Rate-API](https://www.exchangerate-api.com/) for the API
 
 ---
 

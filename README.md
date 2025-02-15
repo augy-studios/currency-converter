@@ -41,6 +41,12 @@ Install APK: https://cloud.kancil.xyz/s/5yCeBwAs9NcFD97
 
 ---
 
+Buy me a coffee!
+https://donate.stripe.com/28o2akeAr3hv0DK6oo
+
+
+---
+
 [Terms](https://augystudios.com/terms) • [EULA](https://augystudios.com/eula) • [Cookies Policy](https://augystudios.com/cookies) • [Privacy Policy](https://augystudios.com/privacy) • [Report an Issue](https://forms.gle/4wKTdjgiC6MGX1aN8)
 
 Made with 💚 in [Singapore](https://www.google.com/maps/place/Singapore) by Augy Studios 2024

@@ -20,61 +20,113 @@
     <link rel="manifest" href="/manifest.json" />
 
     <meta charset="utf-8">
-    <title>Currency Converter | Augy Studios</title>
+    <title>Currency Converter | UwU Apps</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A simple weather app; view today's weather at a glance!">
 
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Currency Converter" />
-    <meta property="og:site_name" content="Augy Studios" />
+    <meta property="og:title" content="Currency Converter | UwU Apps" />
+    <meta property="og:site_name" content="UwU Apps" />
+    <meta property="og:description" content="A simple weather app; view today's weather at a glance!" />
 
-    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jua">
     <link rel="stylesheet" href="/style.css">
 
     <!-- Embed Image -->
-    <link rel="apple-touch-icon" href="/app-icon.png">
+    <link rel="apple-touch-icon" href="/converticon1.png">
     <link rel="icon" href="/favicon.ico">
     <link rel="shortcut icon" href="/favicon.ico">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image:src" content="/money-convert-og2.png">
-    <meta property="og:image" content="/money-convert-og2.png"/>
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image:src" content="/converticon1.png">
+    <meta property="og:image" content="/converticon1.png" />
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script defer="" src="https://use.fontawesome.com/releases/v6.5.1/js/all.js"></script>
-
-    <script>
-        function playNggyu() {
-            var audio = document.getElementById("audio");
-            audio.play();
-        }
-    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script defer="" src="https://use.fontawesome.com/releases/v6.5.2/js/all.js"></script>
 </head>
 
 <body>
-    <div class="wrapper">
-        <div class="app-details">
-            <img src="/app-icon-dark.svg" class="app-icon" />
-            <br>
-            <h1 class="app-title">Currency Converter</h1>
-        </div>
-        <label for="amount">Amount:</label>
-        <input type="number" id="amount" value="1" onchange="updateUrl()" />
-        <div class="dropdowns">
-            <select id="from-currency-select" onchange="updateUrl()"></select>
-            <select id="to-currency-select" onchange="updateUrl()"></select>
-        </div>
-        <button id="swap-button">Swap</button>
-        <button id="convert-button">Convert</button>
-        <p id="result"></p>
-    </div>
+    <main class="container">
+        <section class="card">
+            <header class="card__header">
+                <div class="brand">
+                    <div class="brand__logo" aria-hidden="true">$</div>
+                    <h1 class="brand__title">Currency Converter</h1>
+                </div>
+                <div class="meta">
+                    <span id="last-updated" class="meta__updated" aria-live="polite"></span>
+                    <button id="refresh" class="btn btn--ghost" title="Refresh rates"
+                        aria-label="Refresh rates">↻</button>
+                </div>
+            </header>
 
-    <script src="/currency-codes.js"></script>
-    <script src="/api-key.js"></script>
+            <div class="grid">
+                <div class="field">
+                    <label for="amount" class="label">Amount</label>
+                    <input id="amount" class="input" type="number" inputmode="decimal" min="0" step="0.01"
+                        value="1" />
+                </div>
+
+                <div class="field">
+                    <label for="from" class="label">From</label>
+                    <div class="combo">
+                        <input id="from" class="input combo__input" list="currency-list"
+                            placeholder="Search code or name…" />
+                        <button id="clear-from" class="combo__clear" title="Clear">✕</button>
+                    </div>
+                </div>
+
+                <div class="swap-wrap">
+                    <button id="swap" class="btn btn--swap" title="Swap currencies"
+                        aria-label="Swap currencies">⇆</button>
+                </div>
+
+                <div class="field">
+                    <label for="to" class="label">To</label>
+                    <div class="combo">
+                        <input id="to" class="input combo__input" list="currency-list"
+                            placeholder="Search code or name…" />
+                        <button id="clear-to" class="combo__clear" title="Clear">✕</button>
+                    </div>
+                </div>
+            </div>
+
+            <datalist id="currency-list">
+                <!-- options injected by JS --></datalist>
+
+            <div class="result" aria-live="polite">
+                <div class="result__line">
+                    <span id="from-amount">1.00</span>
+                    <span id="from-code">SGD</span>
+                    <span class="result__equals">=</span>
+                    <strong id="to-amount">—</strong>
+                    <strong id="to-code">MYR</strong>
+                </div>
+                <div class="result__sub">
+                    <span id="rate-line">—</span>
+                </div>
+            </div>
+
+            <footer class="card__footer">
+                <button id="convert" class="btn btn--primary">Convert</button>
+                <button id="invert" class="btn btn--ghost">Invert rate</button>
+                <button id="share" class="btn btn--ghost">Share</button>
+            </footer>
+        </section>
+
+        <section class="card card--info">
+            <h2 class="label">About</h2>
+            <p>Live rates via <a href="https://www.jsdelivr.com/package/npm/@fawazahmed0/currency-api" target="_blank" rel="noopener">currency-api (jsDelivr)</a>.
+                Search supports currency codes and names (e.g., “USD”, “Euro”). <br>
+                Made with ❤️ by Augy.</p>
+        </section>
+    </main>
+
+    <template id="toast">
+        <div class="toast" role="status"></div>
+    </template>
+
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script src="/script.js"></script>
-    <script>
-        if (typeof navigator.serviceWorker !== 'undefined') {
-            navigator.serviceWorker.register('sw.js')
-        }
-    </script>
 </body>
 
 </html>

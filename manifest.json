@@ -1,49 +1,22 @@
 {
-    "name": "Currency Converter by Augy Studios",
+    "name": "Currency Converter by UwU Apps",
     "short_name": "Currency Converter",
     "description": "A simple currency converter, converting currencies has never been easier!",
     "icons": [{
-        "src": "app-icon.png",
+        "src": "converticon1.png",
         "type": "image/png",
         "sizes": "512x512"
     }],
     "screenshots": [{
-        "src": "/images/screenshot_1.png",
-        "type": "image/png",
-        "sizes": "1080x2340"
-    }],
-    "shortcuts": [
-        {
-            "name": "USD to SGD",
-            "url": "/?from=USD&to=SGD&value=1",
-            "description": "Quick Convert from 1 USD to SGD"
+            "src": "/images/screenshot_1.png",
+            "type": "image/png",
+            "sizes": "1080x2340"
         },
         {
-            "name": "USD to GBP",
-            "url": "/?from=USD&to=GBP&value=1",
-            "description": "Quick Convert from 1 USD to GBP"
-        },
-        {
-            "name": "USD to EUR",
-            "url": "/?from=USD&to=EUR&value=1",
-            "description": "Quick Convert from 1 USD to EUR"
-        },
-        {
-            "name": "SGD to USD",
-            "url": "/?from=SGD&to=USD&value=1",
-            "description": "Quick Convert from 1 SGD to USD"
-        },
-        {
-            "name": "USD to CAD",
-            "url": "/?from=USD&to=CAD&value=1",
-            "description": "Quick Convert from 1 USD to CAD"
-        },
-        {
-            "name": "USD to JPY",
-            "url": "/?from=USD&to=JPY&value=1",
-            "description": "Quick Convert from 1 USD to JPY"
+            "src": "/images/screenshot_2.png",
+            "type": "image/png",
+            "sizes": "1920x988"
         }
-        
     ],
     "start_url": ".",
     "theme_color": "#9f9",

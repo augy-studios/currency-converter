@@ -1,8 +1,15 @@
-[{
-      "relation": ["delegate_permission/common.handle_all_urls"],
-      "target": {
-        "namespace": "android_app",
-        "package_name": "money.uwuconvert",
-        "sha256_cert_fingerprints": ["8D:B8:F7:5F:35:E4:36:B1:A5:7D:1F:AD:D4:9C:E8:B9:36:CB:2A:3B:24:21:E3:5C:3E:F0:84:EA:BA:4B:31:A2"]
-      }
-    }]
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.augystudios.moneyconvert",
+      "sha256_cert_fingerprints": [
+        "8D:B8:F7:5F:35:E4:36:B1:A5:7D:1F:AD:D4:9C:E8:B9:36:CB:2A:3B:24:21:E3:5C:3E:F0:84:EA:BA:4B:31:A2"
+      ]
+    }
+  }
+]

@@ -186,7 +186,7 @@ body::before {
   height: 70vw;
   top: -22vw;
   right: -18vw;
-  background: radial-gradient(circle, var(--orb1), transparent 68%);
+  background: var(--orb1);
   filter: blur(6px);
   transition: background 0.45s ease;
 }
@@ -196,7 +196,7 @@ body::after {
   height: 60vw;
   bottom: -18vw;
   left: -14vw;
-  background: radial-gradient(circle, var(--orb2), transparent 68%);
+  background: var(--orb2);
   filter: blur(10px);
   transition: background 0.45s ease;
 }
@@ -299,7 +299,7 @@ a:visited {
   border-radius: 14px;
   display: grid;
   place-items: center;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  background: var(--accent);
   color: var(--btn-text);
   font-family: 'Jua', sans-serif;
   font-size: 24px;
@@ -501,7 +501,7 @@ a:visited {
 }
 
 .btn--primary {
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  background: var(--accent);
   color: var(--btn-text);
   box-shadow: 0 4px 16px var(--ring-glow);
   border: 1px solid rgba(255, 255, 255, 0.20);
@@ -621,7 +621,7 @@ a:visited {
 }
 
 .result.share-theme {
-  background: linear-gradient(135deg, var(--brand), var(--brand-mid));
+  background: var(--brand);
   border: 1px solid rgba(255, 255, 255, 0.55);
   color: var(--btn-text);
 }
@@ -712,6 +712,45 @@ a:visited {
 }
 
 .theme-btn:active {
+  transform: scale(0.94);
+}
+
+/* ============================================================
+   FLOATING DONATE BUTTON
+   ============================================================ */
+.donate-btn {
+  position: fixed;
+  top: 16px;
+  right: 72px;
+  z-index: 200;
+  width: 48px;
+  height: 48px;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.62);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  color: var(--text);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.10);
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s, color 0.45s;
+  text-decoration: none;
+}
+
+.donate-btn:hover {
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.14);
+  text-decoration: none;
+  color: var(--text);
+}
+
+.donate-btn:visited {
+  color: var(--text);
+}
+
+.donate-btn:active {
   transform: scale(0.94);
 }
 

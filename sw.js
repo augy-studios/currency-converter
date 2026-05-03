@@ -1,4 +1,4 @@
-const CACHE = 'uwuconvert-v2';
+const CACHE = 'uwuconvert-v3';
 
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
 

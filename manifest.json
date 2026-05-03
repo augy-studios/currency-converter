@@ -1,27 +1,34 @@
 {
-    "name": "Currency Converter by UwU Apps",
-    "short_name": "Currency Converter",
-    "description": "A simple currency converter, converting currencies has never been easier!",
-    "icons": [{
-        "src": "converticon1.png",
-        "type": "image/png",
-        "sizes": "512x512"
-    }],
-    "screenshots": [{
-            "src": "/images/screenshot_1.png",
-            "type": "image/png",
-            "sizes": "1080x2340"
-        },
-        {
-            "src": "/images/screenshot_2.png",
-            "type": "image/png",
-            "sizes": "1920x988"
-        }
-    ],
-    "start_url": ".",
-    "theme_color": "#9f9",
-    "background_color": "#9f9",
-    "display": "standalone",
-    "display_override": ["fullscreen", "minimal-ui", "window-controls-overlay"],
-    "orientation": "portrait"
+  "name": "Currency Converter by UwU Apps",
+  "short_name": "Currency Converter",
+  "description": "A simple currency converter, converting currencies has never been easier!",
+  "icons": [
+    {
+      "src": "/converticon1.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/images/screenshot_1.png",
+      "type": "image/png",
+      "sizes": "1080x2340",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/images/screenshot_2.png",
+      "type": "image/png",
+      "sizes": "1920x988",
+      "form_factor": "wide"
+    }
+  ],
+  "start_url": "/",
+  "scope": "/",
+  "theme_color": "#ccffcc",
+  "background_color": "#ccffcc",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "portrait"
 }

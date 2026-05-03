@@ -1,132 +1,190 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="classic">
 
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FMCYFTFPEL"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FMCYFTFPEL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-FMCYFTFPEL');
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9715826188316382"
+    crossorigin="anonymous"></script>
 
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
+  <link rel="manifest" href="/manifest.json" />
+  <meta charset="utf-8">
+  <title>Currency Converter | UwU Apps</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A simple currency converter, converting currencies has never been easier!">
+  <meta name="theme-color" content="#ccffcc" id="meta-theme-color">
 
-        gtag('config', 'G-FMCYFTFPEL');
-    </script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9715826188316382"
-        crossorigin="anonymous"></script>
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Currency Converter | UwU Apps" />
+  <meta property="og:site_name" content="UwU Apps" />
+  <meta property="og:description" content="A simple currency converter, converting currencies has never been easier!" />
+  <meta property="og:image" content="/converticon1.png" />
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:image:src" content="/converticon1.png">
 
-    <link rel="manifest" href="/manifest.json" />
+  <link rel="apple-touch-icon" href="/converticon1.png">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="shortcut icon" href="/favicon.ico">
 
-    <meta charset="utf-8">
-    <title>Currency Converter | UwU Apps</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="A simple currency converter, converting currencies has never been easier!">
-
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Currency Converter | UwU Apps" />
-    <meta property="og:site_name" content="UwU Apps" />
-    <meta property="og:description" content="A simple currency converter, converting currencies has never been easier!" />
-
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jua">
-    <link rel="stylesheet" href="/style.css">
-
-    <!-- Embed Image -->
-    <link rel="apple-touch-icon" href="/converticon1.png">
-    <link rel="icon" href="/favicon.ico">
-    <link rel="shortcut icon" href="/favicon.ico">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:image:src" content="/converticon1.png">
-    <meta property="og:image" content="/converticon1.png" />
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <script defer="" src="https://use.fontawesome.com/releases/v6.5.2/js/all.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="/style.css">
 </head>
 
 <body>
-    <main class="container">
-        <section class="card">
-            <header class="card__header">
-                <div class="brand">
-                    <div class="brand__logo" aria-hidden="true">$</div>
-                    <h1 class="brand__title">Currency Converter</h1>
-                </div>
-                <div class="meta">
-                    <span id="last-updated" class="meta__updated" aria-live="polite"></span>
-                    <button id="refresh" class="btn btn--ghost" title="Refresh rates"
-                        aria-label="Refresh rates">↻</button>
-                </div>
-            </header>
 
-            <div class="grid">
-                <div class="field">
-                    <label for="amount" class="label">Amount</label>
-                    <input id="amount" class="input" type="number" inputmode="decimal" min="0" step="0.01"
-                        value="1" />
-                </div>
+  <!-- Floating theme picker button -->
+  <button id="theme-btn" class="theme-btn" title="Choose theme" aria-label="Choose theme">
+    <i class="fa-solid fa-palette"></i>
+  </button>
 
-                <div class="field">
-                    <label for="from" class="label">From</label>
-                    <div class="combo">
-                        <input id="from" class="input combo__input" list="currency-list"
-                            placeholder="Search code or name…" />
-                        <button id="clear-from" class="combo__clear" title="Clear">✕</button>
-                    </div>
-                </div>
+  <main class="container">
 
-                <div class="swap-wrap">
-                    <button id="swap" class="btn btn--swap" title="Swap currencies"
-                        aria-label="Swap currencies">⇆</button>
-                </div>
+    <!-- Main converter card -->
+    <section class="card">
+      <header class="card__header">
+        <div class="brand">
+          <div class="brand__logo" aria-hidden="true">$</div>
+          <h1 class="brand__title">Currency Converter</h1>
+        </div>
+        <div class="meta">
+          <span id="last-updated" class="meta__updated" aria-live="polite"></span>
+          <button id="refresh" class="btn btn--ghost btn--icon" title="Refresh rates" aria-label="Refresh rates">
+            <i class="fa-solid fa-rotate"></i>
+          </button>
+        </div>
+      </header>
 
-                <div class="field">
-                    <label for="to" class="label">To</label>
-                    <div class="combo">
-                        <input id="to" class="input combo__input" list="currency-list"
-                            placeholder="Search code or name…" />
-                        <button id="clear-to" class="combo__clear" title="Clear">✕</button>
-                    </div>
-                </div>
-            </div>
+      <div class="grid">
+        <div class="field">
+          <label for="amount" class="label">Amount</label>
+          <input id="amount" class="input" type="number" inputmode="decimal" min="0" step="0.01" value="1" />
+        </div>
 
-            <datalist id="currency-list">
-                <!-- options injected by JS --></datalist>
+        <div class="field">
+          <label for="from" class="label">From</label>
+          <div class="combo">
+            <input id="from" class="input combo__input" list="currency-list"
+              placeholder="Search code or name…" />
+            <button id="clear-from" class="combo__clear" title="Clear" aria-label="Clear from currency">✕</button>
+          </div>
+        </div>
 
-            <div class="result" aria-live="polite">
-                <div class="result__line">
-                    <span id="from-amount">1.00</span>
-                    <span id="from-code">SGD</span>
-                    <span class="result__equals">=</span>
-                    <strong id="to-amount">—</strong>
-                    <strong id="to-code">MYR</strong>
-                </div>
-                <div class="result__sub">
-                    <span id="rate-line">—</span>
-                </div>
-            </div>
+        <div class="swap-wrap">
+          <button id="swap" class="btn btn--swap" title="Swap currencies" aria-label="Swap currencies">
+            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+          </button>
+        </div>
 
-            <footer class="card__footer">
-                <button id="convert" class="btn btn--primary">Convert</button>
-                <button id="invert" class="btn btn--ghost">Invert rate</button>
-                <button id="share" class="btn btn--ghost">Share</button>
-            </footer>
-        </section>
+        <div class="field">
+          <label for="to" class="label">To</label>
+          <div class="combo">
+            <input id="to" class="input combo__input" list="currency-list"
+              placeholder="Search code or name…" />
+            <button id="clear-to" class="combo__clear" title="Clear" aria-label="Clear to currency">✕</button>
+          </div>
+        </div>
+      </div>
 
-        <section class="card card--info">
-            <h2 class="label">About</h2>
-            <p>Live rates via <a href="https://www.jsdelivr.com/package/npm/@fawazahmed0/currency-api" target="_blank" rel="noopener">currency-api (jsDelivr)</a>.
-                Search supports currency codes and names (e.g., “USD”, “Euro”). <br>
-                Made with ❤️ by Augy.</p>
-        </section>
-    </main>
+      <datalist id="currency-list"></datalist>
 
-    <template id="toast">
-        <div class="toast" role="status"></div>
-    </template>
+      <div class="result" aria-live="polite">
+        <div class="result__line">
+          <span id="from-amount">1.00</span>
+          <span id="from-code">SGD</span>
+          <span class="result__equals">=</span>
+          <strong id="to-amount">—</strong>
+          <strong id="to-code">MYR</strong>
+        </div>
+        <div class="result__sub">
+          <span id="rate-line">—</span>
+        </div>
+      </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-    <script src="/script.js"></script>
+      <footer class="card__footer">
+        <button id="convert" class="btn btn--primary">Convert</button>
+        <button id="invert" class="btn btn--ghost">Invert rate</button>
+        <button id="share" class="btn btn--ghost">Share</button>
+      </footer>
+    </section>
+
+    <!-- Info card -->
+    <section class="card card--info">
+      <h2 class="card--info__title">About</h2>
+      <p>Live rates via <a href="https://www.jsdelivr.com/package/npm/@fawazahmed0/currency-api" target="_blank"
+          rel="noopener">currency-api (jsDelivr)</a>.
+        Search supports currency codes and names (e.g., "USD", "Euro").<br>
+        Made with ❤️ by Augy.</p>
+    </section>
+
+  </main>
+
+  <!-- Theme Modal -->
+  <div id="theme-modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true"
+    aria-labelledby="theme-modal-title">
+    <div class="modal__backdrop" id="theme-modal-backdrop"></div>
+    <div class="modal__panel">
+      <div class="modal__header">
+        <h2 id="theme-modal-title" class="modal__title">Choose Theme</h2>
+        <button id="theme-modal-close" class="btn btn--ghost btn--icon" aria-label="Close theme picker">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="theme-picker">
+        <button class="theme-option" data-theme="classic">
+          <span class="theme-swatch" style="background: linear-gradient(135deg, #ccffcc, #99ff99);"></span>
+          <span class="theme-label">Classic</span>
+          <i class="fa-solid fa-check theme-check" aria-hidden="true"></i>
+        </button>
+        <button class="theme-option" data-theme="not-green-1">
+          <span class="theme-swatch" style="background: linear-gradient(135deg, #ffcccc, #ff9999);"></span>
+          <span class="theme-label">Not green 1</span>
+          <i class="fa-solid fa-check theme-check" aria-hidden="true"></i>
+        </button>
+        <button class="theme-option" data-theme="not-green-2">
+          <span class="theme-swatch" style="background: linear-gradient(135deg, #ccccff, #9999ff);"></span>
+          <span class="theme-label">Not green 2</span>
+          <i class="fa-solid fa-check theme-check" aria-hidden="true"></i>
+        </button>
+        <button class="theme-option" data-theme="not-green-3">
+          <span class="theme-swatch" style="background: linear-gradient(135deg, #ffffcc, #ffff99);"></span>
+          <span class="theme-label">Not green 3</span>
+          <i class="fa-solid fa-check theme-check" aria-hidden="true"></i>
+        </button>
+        <button class="theme-option" data-theme="not-green-4">
+          <span class="theme-swatch" style="background: linear-gradient(135deg, #ffccff, #ff99ff);"></span>
+          <span class="theme-label">Not green 4</span>
+          <i class="fa-solid fa-check theme-check" aria-hidden="true"></i>
+        </button>
+        <button class="theme-option" data-theme="not-green-5">
+          <span class="theme-swatch" style="background: linear-gradient(135deg, #ccffff, #99ffff);"></span>
+          <span class="theme-label">Not green 5</span>
+          <i class="fa-solid fa-check theme-check" aria-hidden="true"></i>
+        </button>
+        <button class="theme-option" data-theme="really-white">
+          <span class="theme-swatch"
+            style="background: linear-gradient(135deg, #f8fff8, #f0f0f0); border: 1.5px solid #d8e8d8;"></span>
+          <span class="theme-label">Really really light green</span>
+          <i class="fa-solid fa-check theme-check" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <template id="toast">
+    <div class="toast" role="status"></div>
+  </template>
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="/script.js"></script>
 </body>
 
 </html>

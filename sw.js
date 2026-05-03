@@ -1,11 +1,9 @@
-// This is the "Offline copy of pages" service worker
-
-const CACHE = "offline-files";
+const CACHE = 'uwuconvert-v2';
 
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
 
-self.addEventListener("message", (event) => {
-  if (event.data && event.data.type === "SKIP_WAITING") {
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
 });
@@ -13,6 +11,6 @@ self.addEventListener("message", (event) => {
 workbox.routing.registerRoute(
   new RegExp('/*'),
   new workbox.strategies.StaleWhileRevalidate({
-    cacheName: CACHE
+    cacheName: CACHE,
   })
 );

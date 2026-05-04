@@ -1,24 +1,19 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="classic">
 
 <head>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FMCYFTFPEL"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
+        function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
-
         gtag('config', 'G-FMCYFTFPEL');
     </script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9715826188316382"
         crossorigin="anonymous"></script>
 
     <link rel="manifest" href="/manifest.json" />
-
     <meta charset="utf-8">
     <title>Currency Converter | UwU Apps</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,19 +24,17 @@
     <meta property="og:site_name" content="UwU Apps" />
     <meta property="og:description" content="A simple currency converter, converting currencies has never been easier!" />
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jua">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&display=swap">
     <link rel="stylesheet" href="/style.css">
 
-    <!-- Embed Image -->
     <link rel="apple-touch-icon" href="/converticon1.png">
     <link rel="icon" href="/favicon.ico">
     <link rel="shortcut icon" href="/favicon.ico">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:image:src" content="/converticon1.png">
     <meta property="og:image" content="/converticon1.png" />
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <script defer="" src="https://use.fontawesome.com/releases/v6.5.2/js/all.js"></script>
 </head>
 
 <body>
@@ -49,21 +42,58 @@
         <section class="card">
             <header class="card__header">
                 <div class="brand">
-                    <div class="brand__logo" aria-hidden="true">$</div>
+                    <div class="brand__logo" aria-hidden="true">
+                        <!-- Dollar sign SVG -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="1" x2="12" y2="23" />
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                        </svg>
+                    </div>
                     <h1 class="brand__title">Currency Converter</h1>
                 </div>
                 <div class="meta">
                     <span id="last-updated" class="meta__updated" aria-live="polite"></span>
-                    <button id="refresh" class="btn btn--ghost" title="Refresh rates"
-                        aria-label="Refresh rates">↻</button>
+                    <button id="refresh" class="btn btn--icon" title="Refresh rates" aria-label="Refresh rates">
+                        <!-- Refresh SVG -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="23 4 23 10 17 10" />
+                            <polyline points="1 20 1 14 7 14" />
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+                        </svg>
+                    </button>
+                    <a href="https://donate.stripe.com/28o2akeAr3hv0DK6oo" target="_blank" rel="noopener"
+                        class="btn btn--icon btn--coffee" title="Buy Augy a Coffee" aria-label="Buy Augy a Coffee">
+                        <!-- Coffee SVG -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
+                            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+                            <line x1="6" y1="1" x2="6" y2="4" />
+                            <line x1="10" y1="1" x2="10" y2="4" />
+                            <line x1="14" y1="1" x2="14" y2="4" />
+                        </svg>
+                    </a>
+                    <button id="theme-toggle" class="btn btn--icon" title="Choose theme" aria-label="Choose theme">
+                        <!-- Palette SVG -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="13.5" cy="6.5" r=".5" fill="currentColor" />
+                            <circle cx="17.5" cy="10.5" r=".5" fill="currentColor" />
+                            <circle cx="8.5" cy="7.5" r=".5" fill="currentColor" />
+                            <circle cx="6.5" cy="12.5" r=".5" fill="currentColor" />
+                            <path
+                                d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z" />
+                        </svg>
+                    </button>
                 </div>
             </header>
 
             <div class="grid">
-                <div class="field">
+                <div class="field field--amount">
                     <label for="amount" class="label">Amount</label>
-                    <input id="amount" class="input" type="number" inputmode="decimal" min="0" step="0.01"
-                        value="1" />
+                    <input id="amount" class="input" type="number" inputmode="decimal" min="0" step="0.01" value="1" />
                 </div>
 
                 <div class="field">
@@ -71,13 +101,28 @@
                     <div class="combo">
                         <input id="from" class="input combo__input" list="currency-list"
                             placeholder="Search code or name…" />
-                        <button id="clear-from" class="combo__clear" title="Clear">✕</button>
+                        <button id="clear-from" class="combo__clear" title="Clear" aria-label="Clear from currency">
+                            <!-- X SVG -->
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                                <line x1="18" y1="6" x2="6" y2="18" />
+                                <line x1="6" y1="6" x2="18" y2="18" />
+                            </svg>
+                        </button>
                     </div>
                 </div>
 
                 <div class="swap-wrap">
-                    <button id="swap" class="btn btn--swap" title="Swap currencies"
-                        aria-label="Swap currencies">⇆</button>
+                    <button id="swap" class="btn btn--swap" title="Swap currencies" aria-label="Swap currencies">
+                        <!-- Swap arrows SVG -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="17 1 21 5 17 9" />
+                            <path d="M3 11V9a4 4 0 0 1 4-4h14" />
+                            <polyline points="7 23 3 19 7 15" />
+                            <path d="M21 13v2a4 4 0 0 1-4 4H3" />
+                        </svg>
+                    </button>
                 </div>
 
                 <div class="field">
@@ -85,13 +130,19 @@
                     <div class="combo">
                         <input id="to" class="input combo__input" list="currency-list"
                             placeholder="Search code or name…" />
-                        <button id="clear-to" class="combo__clear" title="Clear">✕</button>
+                        <button id="clear-to" class="combo__clear" title="Clear" aria-label="Clear to currency">
+                            <!-- X SVG -->
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                                <line x1="18" y1="6" x2="6" y2="18" />
+                                <line x1="6" y1="6" x2="18" y2="18" />
+                            </svg>
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <datalist id="currency-list">
-                <!-- options injected by JS --></datalist>
+            <datalist id="currency-list"></datalist>
 
             <div class="result" aria-live="polite">
                 <div class="result__line">
@@ -115,11 +166,41 @@
 
         <section class="card card--info">
             <h2 class="label">About</h2>
-            <p>Live rates via <a href="https://www.jsdelivr.com/package/npm/@fawazahmed0/currency-api" target="_blank" rel="noopener">currency-api (jsDelivr)</a>.
-                Search supports currency codes and names (e.g., “USD”, “Euro”). <br>
-                Made with ❤️ by Augy.</p>
+            <p>Live rates via <a href="https://www.jsdelivr.com/package/npm/@fawazahmed0/currency-api" target="_blank"
+                    rel="noopener">currency-api (jsDelivr)</a>.
+                Search supports currency codes and names (e.g., "USD", "Euro").<br>
+                Made with
+                <!-- Heart SVG -->
+                <svg class="icon-heart" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                    aria-label="love">
+                    <path
+                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                </svg>
+                by Augy.
+            </p>
         </section>
     </main>
+
+    <!-- Theme Picker Modal -->
+    <div id="theme-modal" class="modal-overlay hidden" role="dialog" aria-modal="true"
+        aria-labelledby="theme-modal-title">
+        <div class="modal">
+            <div class="modal__header">
+                <h2 id="theme-modal-title" class="modal__title">Choose Theme</h2>
+                <button id="close-theme-modal" class="btn btn--icon" aria-label="Close theme picker">
+                    <!-- X SVG -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </button>
+            </div>
+            <div class="theme-grid" id="theme-grid">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
 
     <template id="toast">
         <div class="toast" role="status"></div>

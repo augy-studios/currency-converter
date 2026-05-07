@@ -3,25 +3,42 @@
     "short_name": "Currency Converter",
     "description": "A simple currency converter, converting currencies has never been easier!",
     "icons": [{
-        "src": "converticon1.png",
-        "type": "image/png",
-        "sizes": "512x512"
-    }],
+            "src": "CC-192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        },
+        {
+            "src": "CC-512.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ],
     "screenshots": [{
             "src": "/images/screenshot_1.png",
             "type": "image/png",
-            "sizes": "1080x2340"
+            "sizes": "1080x2340",
+            "form_factor": "narrow"
         },
         {
             "src": "/images/screenshot_2.png",
             "type": "image/png",
-            "sizes": "1920x988"
+            "sizes": "1920x988",
+            "form_factor": "wide"
         }
     ],
-    "start_url": ".",
-    "theme_color": "#ccffcc",
-    "background_color": "#ccffcc",
+    "start_url": "/",
+    "theme_color": "#cfc",
+    "background_color": "#cfc",
     "display": "standalone",
     "display_override": ["fullscreen", "minimal-ui", "window-controls-overlay"],
-    "orientation": "portrait"
+    "orientation": "portrait",
+    "id": "currency-converter",
+    "dir": "ltr",
+    "scope": "/",
+    "lang": "en",
+    "categories": [
+        "entertainment",
+        "lifestyle",
+        "utilities"
+    ]
 }

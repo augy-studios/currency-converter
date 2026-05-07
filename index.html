@@ -28,13 +28,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&display=swap">
     <link rel="stylesheet" href="/style.css">
+    <meta name="theme-color" content="#ccffcc" />
 
-    <link rel="apple-touch-icon" href="/converticon1.png">
+    <link rel="apple-touch-icon" href="/CC-main.png">
     <link rel="icon" href="/favicon.ico">
     <link rel="shortcut icon" href="/favicon.ico">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:image:src" content="/converticon1.png">
-    <meta property="og:image" content="/converticon1.png" />
+    <meta name="twitter:image:src" content="/CC-main.png">
+    <meta property="og:image" content="/CC-main.png" />
 </head>
 
 <body>
@@ -208,6 +209,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script src="/script.js"></script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
+    </script>
 </body>
 
 </html>

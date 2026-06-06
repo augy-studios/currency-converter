@@ -1,8 +1,17 @@
 [{
-      "relation": ["delegate_permission/common.handle_all_urls"],
-      "target": {
-        "namespace": "android_app",
-        "package_name": "org.uwuapps.currency",
-        "sha256_cert_fingerprints": ["F9:13:6B:18:B0:F8:2B:F1:CD:56:90:3B:07:4F:79:64:B0:1E:4B:66:9D:B0:F4:18:37:DD:6F:28:A8:A3:07:F2"]
-      }
-    }]
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "org.uwuapps.currency",
+      "sha256_cert_fingerprints": ["F9:13:6B:18:B0:F8:2B:F1:CD:56:90:3B:07:4F:79:64:B0:1E:4B:66:9D:B0:F4:18:37:DD:6F:28:A8:A3:07:F2"]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "org.uwuapps.currency",
+      "sha256_cert_fingerprints": ["DD:AD:BA:7D:17:46:01:FB:F5:A6:FB:1C:AC:9D:0C:89:70:9D:5A:A6:75:9E:6F:55:B1:1C:A0:75:5B:73:6D:64"]
+    }
+  }
+]

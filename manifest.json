@@ -32,7 +32,13 @@
     "display": "standalone",
     "display_override": ["fullscreen", "minimal-ui", "window-controls-overlay"],
     "orientation": "portrait",
-    "id": "currency-converter",
+    "id": "org.uwuapps.currency",
+    "related_applications": [{
+        "platform": "play",
+        "url": "https://play.google.com/store/apps/details?id=org.uwuapps.currency",
+        "id": "org.uwuapps.currency"
+    }],
+    "prefer_related_applications": true,
     "dir": "ltr",
     "scope": "/",
     "lang": "en",

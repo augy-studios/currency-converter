@@ -87,7 +87,7 @@ function attachThemeModal() {
 
 /* ─── Currency Converter ─── */
 
-const API_BASE = 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1';
+const API_BASE = '/api';
 
 const els = {
   amount:      document.getElementById('amount'),
@@ -170,7 +170,7 @@ function codeFromInput(value) {
 }
 
 async function loadCurrencies() {
-  const raw = await fetchJSON(`${API_BASE}/currencies.json`);
+  const raw = await fetchJSON(`${API_BASE}/currencies`);
   currencies = Object.fromEntries(
     Object.entries(raw).map(([k, v]) => [k.toUpperCase(), v])
   );
@@ -202,7 +202,7 @@ async function convert() {
   els.convert.textContent  = 'Converting…';
   try {
     const base = fromCode.toLowerCase();
-    const data = await fetchJSON(`${API_BASE}/currencies/${base}.json`);
+    const data = await fetchJSON(`${API_BASE}/rates?base=${base}`);
     const rates = data[base];
     const date  = data.date;
     const target = toCode.toLowerCase();

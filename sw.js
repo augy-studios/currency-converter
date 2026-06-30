@@ -1,4 +1,4 @@
-const CACHE = "currency-converter-offline-v1";
+const CACHE = "currency-converter-v1";
 
 const ASSETS = [
   "/",

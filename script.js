@@ -127,7 +127,7 @@ function showToast(msg) {
 }
 
 async function fetchJSON(url) {
-  const res = await signedFetch(url, { cache: 'no-store' });
+  const res = await fetch(url, { cache: 'no-store' });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return res.json();
 }
@@ -457,7 +457,6 @@ function registerSW() {
   attachEvents();
   registerSW();
   try {
-    await initGuestKey('currency-converter'); // no-ops if a key already exists
     await loadCurrencies();
     loadState();
     await convert();

@@ -1,11 +1,10 @@
-const CACHE = "currency-converter-v3";
+const CACHE = "currency-v1";
 
 const ASSETS = [
   "/",
   "/index.html",
   "/style.css",
   "/script.js",
-  "/lib/uwu-request-signing.js",
   "/CC-main.png",
   "/favicon.ico",
   "/manifest.json"

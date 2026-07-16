@@ -20,6 +20,7 @@ async def inline_handler(event):
             'Type an amount and currency code',
             description='Example: 12 USD',
             text='Type an amount and a currency code to convert, for example: 12 USD',
+            parse_mode='md',
         )
         return await event.answer([result])
 
@@ -32,6 +33,7 @@ async def inline_handler(event):
             f'Unknown currency: {match.group(2).upper()}',
             description='Check the currency code and try again',
             text=f'Unknown currency code: {match.group(2).upper()}',
+            parse_mode='md',
         )
         return await event.answer([result])
 
@@ -41,6 +43,7 @@ async def inline_handler(event):
             'No preferred currencies set',
             description='Message the bot directly and use /setpreferred first',
             text='You have not picked any preferred currencies yet. Message this bot directly and use /setpreferred first.',
+            parse_mode='md',
         )
         return await event.answer([result])
 

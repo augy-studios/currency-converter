@@ -7,7 +7,10 @@ async def rate_handler(event):
     preferred = db.get_preferences(event.sender_id)
 
     if not preferred:
-        return await event.respond('You have not picked any preferred currencies yet. Use /setpreferred first.')
+        return await event.respond(
+            'You have not picked any preferred currencies yet. Use /setpreferred first.',
+            parse_mode='md',
+        )
 
     pending_rate.mark(event.sender_id)
     listing = ', '.join(code(c.upper()) for c in preferred)

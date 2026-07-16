@@ -42,7 +42,7 @@ def build_conversion_message(conversion):
         return f'{header}\n\nNone of your preferred currencies have rate data for this base right now.'
 
     lines = [f"**{r['code'].upper()}:** {code(r['formatted'])}" for r in results]
-    return f"{header}\n\n" + '\n'.join(lines) + f"\n\n_Rates as of {code(date)}_"
+    return f"{header}\n\n" + '\n'.join(lines) + f"\n\n__Rates as of {code(date)}__"
 
 
 # Sends a fresh conversion result as a new chat message, backed by an
@@ -51,7 +51,8 @@ async def send_conversion(event, user_id, amount, base_code):
     conversion = await compute_conversion(user_id, amount, base_code)
     if not conversion:
         return await event.respond(
-            'You have not picked any preferred currencies yet. Use /setpreferred first.'
+            'You have not picked any preferred currencies yet. Use /setpreferred first.',
+            parse_mode='md',
         )
 
     interaction_id = db.create_interaction('convert', user_id, {'amount': amount, 'base': base_code.lower()})

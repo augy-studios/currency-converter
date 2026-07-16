@@ -5,6 +5,8 @@ powers the [UwU Currency Converter](https://currency.uwuapps.org/) web app
 (`https://currency.uwuapps.org/api/currencies` and
 `https://currency.uwuapps.org/api/rates`).
 
+Built with [Telethon](https://docs.telethon.dev/) (Python).
+
 ## What it does
 
 - Pick a list of "preferred" currencies once, then convert into all of them
@@ -32,7 +34,7 @@ powers the [UwU Currency Converter](https://currency.uwuapps.org/) web app
 Once you have at least one preferred currency set via `/setpreferred`, just
 send a message in the format:
 
-```
+```text
 12 USD
 ```
 
@@ -44,7 +46,7 @@ the list to re-check the rate.
 
 In any chat, type:
 
-```
+```text
 @<bot_username> 12 USD
 ```
 
@@ -55,14 +57,17 @@ chat).
 ## Running it
 
 ```bash
-npm install
-cp .env.example .env   # then fill in BOT_TOKEN
-npm start
+python3 -m venv .venv
+source .venv/bin/activate    # on Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+cp .env.example .env         # then fill in API_ID, API_HASH, BOT_TOKEN
+python bot.py
 ```
 
-See [setup.md](./setup.md) for registering the bot with BotFather (token,
-commands, inline mode, description) and running it persistently in `tmux`
-on a Debian VPS.
+See [setup.md](./setup.md) for getting `API_ID`/`API_HASH` from
+my.telegram.org, registering the bot with BotFather (token, commands,
+inline mode, description), and running it persistently in `tmux` on a
+Debian VPS.
 
 ## Data and caching
 
@@ -75,24 +80,37 @@ on a Debian VPS.
 - Exchange rates are cached for 60 seconds per base currency to avoid
   hammering the API when several people convert around the same time.
   Tapping **Refresh** always bypasses this cache and fetches live.
+- `bot_session.session` (created on first run, also gitignored) holds
+  Telethon's login session for the bot account — treat it like a secret,
+  same as the bot token.
 
 ## Project layout
 
-```
-bot.js                   entry point
+```text
+bot.py                       entry point
+requirements.txt
 src/
-  db.js                  SQLite schema and query helpers
-  api.js                 raw HTTP calls to the currency API
-  currency.js            currency list + rate caching on top of api.js
-  convert.js             shared conversion logic and message formatting
-  format.js              MarkdownV2 escaping and number formatting helpers
-  keyboards.js           inline keyboard builders
-  pendingRate.js         in-memory "awaiting base currency" state for /rate
+  db.py                      SQLite schema and query helpers
+  api.py                     raw async HTTP calls to the currency API
+  currency.py                currency list + rate caching on top of api.py
+  convert.py                 shared conversion logic and message formatting
+  format.py                  Markdown escaping and number formatting helpers
+  keyboards.py               inline keyboard builders
+  pending_rate.py            in-memory "awaiting base currency" state for /rate
   handlers/
-    start.js
-    setpreferred.js
-    rate.js
-    message.js           parses "<amount> <code>" and bare-code replies
-    callbacks.js          routes button taps (setpreferred + refresh)
-    inline.js             inline query handler
+    start.py
+    setpreferred.py
+    rate.py
+    message.py               parses "<amount> <code>" and bare-code replies
+    callbacks.py              routes button taps (refresh)
+    inline.py                 inline query handler
 ```
+
+## Why Telethon
+
+Telethon is a full MTProto client library rather than a thin Bot API
+wrapper, so it needs `API_ID`/`API_HASH` (an application identity from
+Telegram, separate from the bot token) in addition to the usual
+`BOT_TOKEN`. In exchange it gives native support for everything this bot
+needs: inline queries, callback queries, and the `copy_text` clipboard
+button used for the per-currency Copy buttons.

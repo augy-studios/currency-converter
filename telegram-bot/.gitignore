@@ -1,5 +1,11 @@
-node_modules/
 data/
 .env
 *.log
-npm-debug.log*
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.session
+*.session-journal

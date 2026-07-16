@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from telethon import TelegramClient, events
 
 from src import api, db
-from src.handlers import callbacks, inline, message, rate, setpreferred, start
+from src.handlers import callbacks, inline, message, rate, removepreferred, setpreferred, start
 
 load_dotenv()
 
@@ -16,7 +16,7 @@ BOT_TOKEN = os.environ.get('BOT_TOKEN')
 if not API_ID or not API_HASH or not BOT_TOKEN:
     raise SystemExit(
         'Missing API_ID, API_HASH, or BOT_TOKEN. Copy .env.example to .env and fill it in '
-        '(see setup.md for how to get API_ID/API_HASH from my.telegram.org).'
+        '(see SETUP.md for how to get API_ID/API_HASH from my.telegram.org).'
     )
 
 client = TelegramClient('bot_session', int(API_ID), API_HASH)
@@ -24,6 +24,9 @@ client = TelegramClient('bot_session', int(API_ID), API_HASH)
 client.add_event_handler(start.start_handler, events.NewMessage(pattern=r'(?i)^/start(?:@\w+)?$'))
 client.add_event_handler(
     setpreferred.command, events.NewMessage(pattern=r'(?i)^/setpreferred(?:@\w+)?$')
+)
+client.add_event_handler(
+    removepreferred.command, events.NewMessage(pattern=r'(?i)^/removepreferred(?:@\w+)?$')
 )
 client.add_event_handler(rate.rate_handler, events.NewMessage(pattern=r'(?i)^/rate(?:@\w+)?$'))
 
@@ -33,6 +36,7 @@ client.add_event_handler(
 )
 
 client.add_event_handler(callbacks.setpref_callback, events.CallbackQuery(pattern=rb'^sp:'))
+client.add_event_handler(callbacks.removepref_callback, events.CallbackQuery(pattern=rb'^rp:'))
 client.add_event_handler(callbacks.convert_refresh_callback, events.CallbackQuery(pattern=rb'^cv:'))
 
 client.add_event_handler(inline.inline_handler, events.InlineQuery())

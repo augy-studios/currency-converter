@@ -11,6 +11,16 @@ def main_menu_keyboard():
     ]
 
 
+def _nav_row(prefix, interaction_id, clamped_page, total_pages):
+    nav_row = []
+    if clamped_page > 0:
+        nav_row.append(Button.inline('◀ Prev', f'{prefix}:{interaction_id}:page:{clamped_page - 1}'.encode()))
+    nav_row.append(Button.inline(f'{clamped_page + 1}/{total_pages}', f'{prefix}:{interaction_id}:noop'.encode()))
+    if clamped_page < total_pages - 1:
+        nav_row.append(Button.inline('Next ▶', f'{prefix}:{interaction_id}:page:{clamped_page + 1}'.encode()))
+    return nav_row
+
+
 def set_preferred_keyboard(interaction_id, page, currencies, selected):
     total_pages = max(1, -(-len(currencies) // PAGE_SIZE))  # ceil division
     clamped_page = min(max(page, 0), total_pages - 1)
@@ -24,15 +34,24 @@ def set_preferred_keyboard(interaction_id, page, currencies, selected):
         data = f"sp:{interaction_id}:toggle:{c['code']}".encode()
         rows.append([Button.inline(label, data)])
 
-    nav_row = []
-    if clamped_page > 0:
-        nav_row.append(Button.inline('◀ Prev', f'sp:{interaction_id}:page:{clamped_page - 1}'.encode()))
-    nav_row.append(Button.inline(f'{clamped_page + 1}/{total_pages}', f'sp:{interaction_id}:noop'.encode()))
-    if clamped_page < total_pages - 1:
-        nav_row.append(Button.inline('Next ▶', f'sp:{interaction_id}:page:{clamped_page + 1}'.encode()))
-    rows.append(nav_row)
-
+    rows.append(_nav_row('sp', interaction_id, clamped_page, total_pages))
     rows.append([Button.inline('🗑 Clear All', f'sp:{interaction_id}:clear:{clamped_page}'.encode())])
+    return rows
+
+
+def remove_preferred_keyboard(interaction_id, page, currencies):
+    total_pages = max(1, -(-len(currencies) // PAGE_SIZE))  # ceil division
+    clamped_page = min(max(page, 0), total_pages - 1)
+    start = clamped_page * PAGE_SIZE
+    page_items = currencies[start:start + PAGE_SIZE]
+
+    rows = []
+    for c in page_items:
+        label = f"❌ {c['code'].upper()} - {c['name']}"[:64]
+        data = f"rp:{interaction_id}:remove:{c['code']}".encode()
+        rows.append([Button.inline(label, data)])
+
+    rows.append(_nav_row('rp', interaction_id, clamped_page, total_pages))
     return rows
 
 

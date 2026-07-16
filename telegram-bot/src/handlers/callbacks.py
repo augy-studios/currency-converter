@@ -12,6 +12,13 @@ async def setpref_callback(event):
     await setpref_cb(event, parts)
 
 
+async def removepref_callback(event):
+    from .removepreferred import callback as removepref_cb
+
+    parts = event.data.decode().split(':')
+    await removepref_cb(event, parts)
+
+
 async def convert_refresh_callback(event):
     parts = event.data.decode().split(':')
     interaction_id = int(parts[1])

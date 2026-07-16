@@ -27,6 +27,7 @@ Built with [Telethon](https://docs.telethon.dev/) (Python).
 | --- | --- |
 | `/start` | Shows what the bot does, with links to the web app and a donation page. |
 | `/setpreferred` | Opens a paginated list of currencies. Tap one to add/remove it from your preferred list — you can pick as many as you like. Includes a "Clear All" button. |
+| `/removepreferred` | Opens a paginated list of only your currently preferred currencies. Tap one to remove it. |
 | `/rate` | Lists your preferred currencies, then waits for you to send a base currency (e.g. `USD`) to compare them against. |
 
 ### Converting a value
@@ -64,7 +65,7 @@ cp .env.example .env         # then fill in API_ID, API_HASH, BOT_TOKEN
 python bot.py
 ```
 
-See [setup.md](./setup.md) for getting `API_ID`/`API_HASH` from
+See [SETUP.md](./SETUP.md) for getting `API_ID`/`API_HASH` from
 my.telegram.org, registering the bot with BotFather (token, commands,
 inline mode, description), and running it persistently in `tmux` on a
 Debian VPS.
@@ -94,15 +95,16 @@ src/
   api.py                     raw async HTTP calls to the currency API
   currency.py                currency list + rate caching on top of api.py
   convert.py                 shared conversion logic and message formatting
-  format.py                  Markdown escaping and number formatting helpers
+  format.py                  Markdown code-span and number formatting helpers
   keyboards.py               inline keyboard builders
   pending_rate.py            in-memory "awaiting base currency" state for /rate
   handlers/
     start.py
     setpreferred.py
+    removepreferred.py
     rate.py
     message.py               parses "<amount> <code>" and bare-code replies
-    callbacks.py              routes button taps (refresh)
+    callbacks.py              routes button taps (refresh, remove)
     inline.py                 inline query handler
 ```
 

@@ -96,6 +96,11 @@ def clear_preferences(user_id):
     _conn.commit()
 
 
+def remove_preference(user_id, code):
+    _conn.execute('DELETE FROM preferences WHERE user_id = ? AND code = ?', (user_id, code))
+    _conn.commit()
+
+
 def get_all_currencies():
     rows = _conn.execute('SELECT code, name FROM currencies_cache ORDER BY code ASC').fetchall()
     return [{'code': r['code'], 'name': r['name']} for r in rows]

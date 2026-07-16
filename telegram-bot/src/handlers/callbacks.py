@@ -2,6 +2,7 @@ from telethon.tl import types
 
 from .. import db
 from ..convert import build_conversion_message, compute_conversion
+from ..edit_utils import safe_edit
 from ..keyboards import convert_keyboard
 
 
@@ -41,4 +42,4 @@ async def convert_refresh_callback(event):
     keyboard = convert_keyboard(interaction_id, conversion['results'], not is_inline)
 
     await event.answer('Refreshed')
-    await event.edit(text, buttons=keyboard, parse_mode='md', link_preview=False)
+    await safe_edit(event, text, buttons=keyboard, parse_mode='md', link_preview=False)

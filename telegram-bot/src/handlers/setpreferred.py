@@ -1,4 +1,5 @@
 from .. import currency, db
+from ..edit_utils import safe_edit
 from ..keyboards import set_preferred_keyboard
 
 INTRO = (
@@ -48,4 +49,4 @@ async def callback(event, parts):
     currencies = await currency.list_currencies()
     preferred = set(db.get_preferences(event.sender_id))
     keyboard = set_preferred_keyboard(interaction_id, page, currencies, preferred)
-    await event.edit(INTRO, buttons=keyboard, parse_mode='md')
+    await safe_edit(event, INTRO, buttons=keyboard, parse_mode='md')

@@ -105,6 +105,11 @@ a:visited {
 
 /* ─── Card — Glassmorphism ─── */
 .card {
+  /* Grid items default to min-width: auto, which floors shrinkage at the
+     content's min-content size (e.g. a canvas's intrinsic width) — this
+     override lets cards shrink below that on narrow viewports instead of
+     overflowing the container. */
+  min-width: 0;
   background: var(--card-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -733,7 +738,12 @@ a:visited {
 
 .graph-canvas-wrap {
   position: relative;
+  width: 100%;
   height: 260px;
+}
+
+.graph-canvas-wrap canvas {
+  width: 100% !important;
 }
 
 .graph-status {

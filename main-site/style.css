@@ -97,7 +97,6 @@ a:visited {
 @media (min-width: 880px) {
   .container {
     grid-template-columns: 2fr 1fr;
-    margin-bottom: 64px;
   }
 }
 
@@ -122,6 +121,12 @@ a:visited {
   align-self: start;
   font-size: 14px;
   line-height: 1.7;
+}
+
+@media (min-width: 880px) {
+  .card--info {
+    margin-bottom: 64px;
+  }
 }
 
 .card--info p {

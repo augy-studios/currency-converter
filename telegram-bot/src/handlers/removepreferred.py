@@ -44,6 +44,13 @@ async def callback(event, parts):
     if action == 'noop':
         return await event.answer()
 
+    if action == 'done':
+        await event.answer('Saved')
+        return await safe_edit(
+            event, 'Done removing preferred currencies.', buttons=types.ReplyInlineMarkup(rows=[]),
+            parse_mode='md',
+        )
+
     toast = None
     if action == 'page':
         page = int(arg)

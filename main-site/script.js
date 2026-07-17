@@ -144,9 +144,12 @@ function optionLabel(code, name) {
 
 function setUpdatedText(dateStr) {
   if (!dateStr) { els.lastUpdated.textContent = ''; return; }
-  const d = new Date(dateStr);
+  // dateStr is a plain "YYYY-MM-DD" calendar date, not an instant — format it
+  // in UTC so it always matches the API's date exactly, regardless of the
+  // viewer's local timezone (formatting in local time can shift it by a day).
+  const d = new Date(`${dateStr}T00:00:00Z`);
   const fmt = new Intl.DateTimeFormat(navigator.language || 'en-SG', {
-    year: 'numeric', month: 'short', day: '2-digit',
+    year: 'numeric', month: 'short', day: '2-digit', timeZone: 'UTC',
   }).format(d);
   els.lastUpdated.textContent = `Rates as of ${fmt}`;
 }

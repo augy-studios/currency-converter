@@ -24,11 +24,12 @@ def _nav_row(prefix, interaction_id, clamped_page, total_pages):
     return nav_row
 
 
-def set_preferred_keyboard(interaction_id, page, currencies, selected):
-    total_pages = max(1, -(-len(currencies) // PAGE_SIZE))  # ceil division
+def set_preferred_keyboard(interaction_id, page, currencies, selected, show_preferred=False):
+    shown = [c for c in currencies if c['code'] in selected] if show_preferred else currencies
+    total_pages = max(1, -(-len(shown) // PAGE_SIZE))  # ceil division
     clamped_page = min(max(page, 0), total_pages - 1)
     start = clamped_page * PAGE_SIZE
-    page_items = currencies[start:start + PAGE_SIZE]
+    page_items = shown[start:start + PAGE_SIZE]
 
     rows = []
     for c in page_items:
@@ -38,7 +39,12 @@ def set_preferred_keyboard(interaction_id, page, currencies, selected):
         rows.append([Button.inline(label, data)])
 
     rows.append(_nav_row('sp', interaction_id, clamped_page, total_pages))
-    rows.append([Button.inline('🗑 Clear All', f'sp:{interaction_id}:clear:{clamped_page}'.encode())])
+    toggle_view = (
+        Button.inline('📋 Show All', f'sp:{interaction_id}:showall'.encode())
+        if show_preferred else
+        Button.inline('⭐ Show Preferred', f'sp:{interaction_id}:showpref'.encode())
+    )
+    rows.append([toggle_view, Button.inline('✅ Done', f'sp:{interaction_id}:done'.encode())])
     return rows
 
 
@@ -55,6 +61,7 @@ def remove_preferred_keyboard(interaction_id, page, currencies):
         rows.append([Button.inline(label, data)])
 
     rows.append(_nav_row('rp', interaction_id, clamped_page, total_pages))
+    rows.append([Button.inline('✅ Done', f'rp:{interaction_id}:done'.encode())])
     return rows
 
 

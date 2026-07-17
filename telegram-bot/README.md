@@ -33,8 +33,8 @@ Built with [Telethon](https://docs.telethon.dev/) (Python).
 | Command | What it does |
 | --- | --- |
 | `/start` | Shows what the bot does, with links to the web app and a donation page. |
-| `/setpreferred` | Opens a paginated list of currencies. Tap one to add/remove it from your preferred list — you can pick as many as you like. Includes a "Clear All" button. |
-| `/removepreferred` | Opens a paginated list of only your currently preferred currencies. Tap one to remove it. |
+| `/setpreferred` | Opens a paginated list of currencies. Tap one to add/remove it from your preferred list — you can pick as many as you like. Tap **⭐ Show Preferred** to switch the same list to just your picks (tapping one there removes it, an alternate way to unpick without leaving the menu), and **✅ Done** to lock in your picks and clear the buttons. |
+| `/removepreferred` | Opens a paginated list of only your currently preferred currencies. Tap one to remove it, or **✅ Done** when finished. |
 | `/rate` | Lists your preferred currencies, then waits for you to send a base currency (e.g. `USD`) to compare them against. |
 
 ### Converting a value

@@ -34,7 +34,7 @@
   margin: 0;
   border: none;
   outline: none;
-  font-family: 'Jua', sans-serif;
+  font-family: 'Jua';
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -256,7 +256,7 @@ a:visited {
   border-radius: var(--radius-sm);
   padding: 12px 14px;
   font-size: 16px;
-  font-family: 'Jua', sans-serif;
+  font-family: 'Jua';
   transition: border-color var(--transition), box-shadow var(--transition),
     background var(--transition);
 }
@@ -319,7 +319,7 @@ a:visited {
   cursor: pointer;
   border-radius: var(--radius-sm);
   padding: 10px 20px;
-  font-family: 'Jua', sans-serif;
+  font-family: 'Jua';
   font-size: 15px;
   font-weight: 400;
   transition: transform 0.08s ease, background var(--transition), box-shadow var(--transition);
@@ -544,7 +544,7 @@ a:visited {
   font-size: 14px;
   white-space: nowrap;
   animation: toast-fade 2.6s ease forwards;
-  font-family: 'Jua', sans-serif;
+  font-family: 'Jua';
 }
 
 @keyframes toast-fade {
@@ -637,7 +637,7 @@ a:visited {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-family: 'Jua', sans-serif;
+  font-family: 'Jua';
   font-size: 13px;
   font-weight: 400;
   color: var(--text);
@@ -687,7 +687,7 @@ a:visited {
 .range-picker__btn {
   appearance: none;
   cursor: pointer;
-  font-family: 'Jua', sans-serif;
+  font-family: 'Jua';
   font-size: 13px;
   padding: 6px 12px;
   border-radius: var(--radius-xs);

@@ -168,5 +168,5 @@ python bot.py
 - `bot_session.session` holds Telethon's login session for the bot
   account. It's also gitignored — treat it like a secret. If you ever
   need to force a fresh login, stop the bot and delete this file.
-- The bot only needs outbound HTTPS access to `currency.uwuapps.org` and
+- The bot only needs outbound HTTPS access to `api.currency.uwuapps.org` and
   Telegram's API servers; no inbound ports need to be opened.

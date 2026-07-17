@@ -75,9 +75,12 @@ In any chat, type:
 @<bot_username> 12 USD
 ```
 
-and pick the result. Inline results only get a **Refresh** button (no
-per-row Copy buttons, since inline messages are sent into someone else's
-chat).
+and pick the result. Inline results get **Refresh** and **📈 Graph**
+buttons, but no per-row Copy buttons (since inline messages are sent into
+someone else's chat). Since the bot has no access to that chat, tapping
+**Graph** on an inline result sends the chart to your DM with the bot
+instead of the chat you're in — you'll need to have messaged the bot
+directly at least once first.
 
 ## Running it
 

@@ -65,7 +65,8 @@ def remove_preferred_keyboard(interaction_id, page, currencies):
     return rows
 
 
-# include_copy_buttons: False for inline-mode results, True for normal chat messages
+# include_copy_buttons: False for inline-mode results, True for normal chat messages.
+# The Graph button is included either way.
 def convert_keyboard(interaction_id, results, include_copy_buttons):
     rows = [[Button.inline('🔄 Refresh', f'cv:{interaction_id}:refresh'.encode())]]
     if include_copy_buttons:
@@ -73,7 +74,7 @@ def convert_keyboard(interaction_id, results, include_copy_buttons):
             rows.append([
                 types.KeyboardButtonCopy(text=f"📋 Copy {r['code'].upper()}", copy_text=r['formatted'])
             ])
-        rows.append([Button.inline('📈 Graph', f'cv:{interaction_id}:graph'.encode())])
+    rows.append([Button.inline('📈 Graph', f'cv:{interaction_id}:graph'.encode())])
     return rows
 
 

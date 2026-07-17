@@ -1,3 +1,5 @@
+from telethon.tl import types
+
 from .. import currency, db, pending_graph_add
 from ..edit_utils import safe_edit, safe_edit_message
 from ..graph import render_graph
@@ -40,9 +42,27 @@ async def open_graph(event, conv_interaction_id):
     payload = {'base': base, 'quotes': quotes, 'range': '1m'}
     interaction_id = db.create_interaction('graph', conv['user_id'], payload)
 
-    await event.answer()
     buf = await _render(payload)
-    message = await event.respond(file=buf, buttons=graph_keyboard(interaction_id, '1m'))
+
+    # Inline results are posted into chats the bot has no access to (it isn't
+    # a member), so a new photo message can't be sent there — DM it to the
+    # user instead. This requires the user to have messaged the bot before.
+    is_inline = isinstance(
+        event.query.msg_id, (types.InputBotInlineMessageID, types.InputBotInlineMessageID64)
+    )
+    if is_inline:
+        try:
+            message = await event.client.send_file(
+                conv['user_id'], file=buf, buttons=graph_keyboard(interaction_id, '1m')
+            )
+        except Exception:
+            return await event.answer(
+                'Message the bot directly first (e.g. /start), then try the graph again.', alert=True
+            )
+        await event.answer('Graph sent in your DM with the bot')
+    else:
+        await event.answer()
+        message = await event.respond(file=buf, buttons=graph_keyboard(interaction_id, '1m'))
 
     payload['chat_id'] = message.chat_id
     payload['message_id'] = message.id

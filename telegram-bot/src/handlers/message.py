@@ -3,6 +3,7 @@ import re
 from .. import currency, db, pending_rate
 from ..convert import send_conversion
 from ..format import code
+from .graph import try_consume_pending_add
 
 AMOUNT_CODE_RE = re.compile(r'^(-?\d+(?:\.\d+)?)\s+([A-Za-z]{2,10})$')
 BARE_CODE_RE = re.compile(r'^([A-Za-z]{2,10})$')
@@ -11,6 +12,9 @@ BARE_CODE_RE = re.compile(r'^([A-Za-z]{2,10})$')
 async def message_handler(event):
     text = (event.raw_text or '').strip()
     db.ensure_user(event.sender_id)
+
+    if await try_consume_pending_add(event):
+        return
 
     amount_match = AMOUNT_CODE_RE.match(text)
     if amount_match:

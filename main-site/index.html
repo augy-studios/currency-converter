@@ -165,10 +165,36 @@
             </footer>
         </section>
 
+        <section class="card card--graph">
+            <header class="card__header">
+                <h2 class="brand__title" style="font-size: 18px;">Historical Rates</h2>
+                <div class="range-picker" id="range-picker">
+                    <button class="range-picker__btn" data-range="5d">5D</button>
+                    <button class="range-picker__btn" data-range="1w">1W</button>
+                    <button class="range-picker__btn active" data-range="1m">1M</button>
+                    <button class="range-picker__btn" data-range="1y">1Y</button>
+                    <button class="range-picker__btn" data-range="5y">5Y</button>
+                    <button class="range-picker__btn" data-range="max">Max</button>
+                </div>
+            </header>
+
+            <div class="currency-chips" id="currency-chips"></div>
+
+            <div class="combo add-currency">
+                <input id="add-currency" class="input combo__input" list="currency-list"
+                    placeholder="Add a currency to compare…" />
+            </div>
+
+            <div class="graph-canvas-wrap">
+                <canvas id="rate-chart" height="260"></canvas>
+            </div>
+            <p id="graph-status" class="graph-status"></p>
+        </section>
+
         <section class="card card--info">
             <h2 class="label">About</h2>
-            <p>Live rates via <a href="https://www.jsdelivr.com/package/npm/@fawazahmed0/currency-api" target="_blank"
-                    rel="noopener">currency-api (jsDelivr)</a>.
+            <p>Live rates via <a href="https://frankfurter.dev" target="_blank"
+                    rel="noopener">Frankfurter</a>, self-hosted.
                 Search supports currency codes and names (e.g., "USD", "Euro").<br>
                 Made with
                 <!-- Heart SVG -->
@@ -208,6 +234,7 @@
     </template>
 
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="/script.js"></script>
 
     <script>

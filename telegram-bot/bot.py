@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from telethon import TelegramClient, events
 
 from src import api, db
-from src.handlers import callbacks, inline, message, rate, removepreferred, setpreferred, start
+from src.handlers import callbacks, graph, inline, message, rate, removepreferred, setpreferred, start
 
 load_dotenv()
 
@@ -38,6 +38,7 @@ client.add_event_handler(
 client.add_event_handler(callbacks.setpref_callback, events.CallbackQuery(pattern=rb'^sp:'))
 client.add_event_handler(callbacks.removepref_callback, events.CallbackQuery(pattern=rb'^rp:'))
 client.add_event_handler(callbacks.convert_refresh_callback, events.CallbackQuery(pattern=rb'^cv:'))
+client.add_event_handler(graph.graph_callback, events.CallbackQuery(pattern=rb'^gr:'))
 
 client.add_event_handler(inline.inline_handler, events.InlineQuery())
 

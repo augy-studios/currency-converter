@@ -58,6 +58,17 @@ _conn.executescript(
 )
 _conn.commit()
 
+# Migration: currencies_cache predates the symbol/start_date/end_date columns
+# (added when the bot switched to the Frankfurter v2 API, which reports
+# per-currency data availability). ALTER TABLE has no "IF NOT EXISTS" guard
+# in SQLite, so probe-and-ignore instead.
+for _col in ('symbol', 'start_date', 'end_date'):
+    try:
+        _conn.execute(f'ALTER TABLE currencies_cache ADD COLUMN {_col} TEXT')
+    except sqlite3.OperationalError:
+        pass
+_conn.commit()
+
 
 def ensure_user(user_id):
     _conn.execute(
@@ -102,8 +113,34 @@ def remove_preference(user_id, code):
 
 
 def get_all_currencies():
-    rows = _conn.execute('SELECT code, name FROM currencies_cache ORDER BY code ASC').fetchall()
-    return [{'code': r['code'], 'name': r['name']} for r in rows]
+    rows = _conn.execute(
+        'SELECT code, name, symbol, start_date, end_date FROM currencies_cache ORDER BY code ASC'
+    ).fetchall()
+    return [
+        {
+            'code': r['code'],
+            'name': r['name'],
+            'symbol': r['symbol'],
+            'start_date': r['start_date'],
+            'end_date': r['end_date'],
+        }
+        for r in rows
+    ]
+
+
+def get_currency(code):
+    row = _conn.execute(
+        'SELECT code, name, symbol, start_date, end_date FROM currencies_cache WHERE code = ?', (code,)
+    ).fetchone()
+    if not row:
+        return None
+    return {
+        'code': row['code'],
+        'name': row['name'],
+        'symbol': row['symbol'],
+        'start_date': row['start_date'],
+        'end_date': row['end_date'],
+    }
 
 
 def currency_exists(code):
@@ -113,7 +150,10 @@ def currency_exists(code):
 
 def replace_currencies(entries):
     _conn.execute('DELETE FROM currencies_cache')
-    _conn.executemany('INSERT INTO currencies_cache (code, name) VALUES (?, ?)', entries)
+    _conn.executemany(
+        'INSERT INTO currencies_cache (code, name, symbol, start_date, end_date) VALUES (?, ?, ?, ?, ?)',
+        entries,
+    )
     _conn.commit()
 
 

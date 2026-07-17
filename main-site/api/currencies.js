@@ -1,20 +1,13 @@
-const SOURCES = [
-  'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies.json',
-  'https://latest.currency-api.pages.dev/v1/currencies.json',
-];
+const UPSTREAM = 'https://api.currency.uwuapps.org/v2/currencies';
 
 export default async function handler(req, res) {
-  for (const url of SOURCES) {
-    try {
-      const upstream = await fetch(url, { cache: 'no-store' });
-      if (!upstream.ok) continue;
-      const data = await upstream.json();
-      res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
-      res.status(200).json(data);
-      return;
-    } catch (err) {
-      continue;
-    }
+  try {
+    const upstream = await fetch(UPSTREAM, { cache: 'no-store' });
+    if (!upstream.ok) throw new Error(`status ${upstream.status}`);
+    const data = await upstream.json();
+    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
+    res.status(200).json(data);
+  } catch (err) {
+    res.status(502).json({ error: 'Failed to fetch currencies' });
   }
-  res.status(502).json({ error: 'Failed to fetch currencies' });
 }

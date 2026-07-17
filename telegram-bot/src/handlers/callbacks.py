@@ -23,6 +23,13 @@ async def removepref_callback(event):
 async def convert_refresh_callback(event):
     parts = event.data.decode().split(':')
     interaction_id = int(parts[1])
+    action = parts[2] if len(parts) > 2 else 'refresh'
+
+    if action == 'graph':
+        from .graph import open_graph
+
+        return await open_graph(event, interaction_id)
+
     interaction = db.get_interaction(interaction_id)
 
     if not interaction or interaction['kind'] != 'convert':

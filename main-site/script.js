@@ -109,9 +109,15 @@ const els = {
   toastTpl:    document.getElementById('toast'),
   share:       document.getElementById('share'),
   resultCard:  document.querySelector('.result'),
+  rangePicker: document.getElementById('range-picker'),
+  chips:       document.getElementById('currency-chips'),
+  addCurrency: document.getElementById('add-currency'),
+  chart:       document.getElementById('rate-chart'),
+  graphStatus: document.getElementById('graph-status'),
 };
 
 let currencies = {};
+let currencyMeta = {};
 let lastRate = null;
 
 const nf = new Intl.NumberFormat(navigator.language || 'en-SG', {
@@ -171,9 +177,12 @@ function codeFromInput(value) {
 
 async function loadCurrencies() {
   const raw = await fetchJSON(`${API_BASE}/currencies`);
-  currencies = Object.fromEntries(
-    Object.entries(raw).map(([k, v]) => [k.toUpperCase(), v])
-  );
+  currencies = {};
+  currencyMeta = {};
+  raw.forEach((c) => {
+    currencies[c.iso_code] = c.name;
+    currencyMeta[c.iso_code] = { startDate: c.start_date, symbol: c.symbol };
+  });
   populateDatalist();
   if (!els.from.value) els.from.value = optionLabel('SGD', currencies['SGD'] || 'Singapore Dollar');
   if (!els.to.value)   els.to.value   = optionLabel('MYR', currencies['MYR'] || 'Malaysian Ringgit');
@@ -195,32 +204,30 @@ async function convert() {
     els.toCode.textContent     = toCode;
     els.rateLine.textContent   = `1 ${fromCode} = 1 ${toCode}`;
     setUpdatedText(new Date().toISOString().slice(0, 10));
+    onCurrencyPairChanged();
     return;
   }
 
   els.convert.disabled     = true;
   els.convert.textContent  = 'Converting…';
   try {
-    const base = fromCode.toLowerCase();
-    const data = await fetchJSON(`${API_BASE}/rates?base=${base}`);
-    const rates = data[base];
-    const date  = data.date;
-    const target = toCode.toLowerCase();
-    const unit   = rates[target];
+    const data = await fetchJSON(`${API_BASE}/rates?base=${fromCode}`);
+    const row  = data.find((r) => r.quote === toCode);
 
-    if (typeof unit !== 'number') {
+    if (!row) {
       showToast(`Rate not available for ${fromCode} → ${toCode}`);
       return;
     }
 
-    lastRate = unit;
-    const out = amount * unit;
-    setUpdatedText(date);
+    lastRate = row.rate;
+    const out = amount * lastRate;
+    setUpdatedText(row.date);
     els.fromAmount.textContent = nf.format(amount);
     els.fromCode.textContent   = fromCode;
     els.toAmount.textContent   = nf.format(out);
     els.toCode.textContent     = toCode;
     els.rateLine.textContent   = `1 ${fromCode} = ${nf.format(lastRate)} ${toCode}`;
+    onCurrencyPairChanged();
   } catch (err) {
     console.error(err);
     showToast('Failed to fetch rates. Try refresh.');
@@ -385,6 +392,185 @@ function createShareMenu() {
   });
 }
 
+/* ─── Historical Graph ─── */
+
+// Fixed-order categorical palette (light-mode steps; the site has no dark
+// surface — cards are always a translucent-white glass panel — so a single
+// set is enough). Order is the CVD-safety mechanism: never cycle/reassign.
+const CHART_COLORS = ['#2a78d6', '#008300', '#e87ba4', '#eda100', '#1baf7a', '#eb6834', '#4a3aa7', '#e34948'];
+const MAX_GRAPH_QUOTES = 6;
+const FALLBACK_START_DATE = '1999-01-04';
+
+const graphState = { base: '', quotes: [], range: '1m' };
+let rateChart = null;
+
+function colorFor(index) {
+  return CHART_COLORS[index % CHART_COLORS.length];
+}
+
+function computeFromDate(range) {
+  const today = new Date();
+  const d = new Date(today);
+  switch (range) {
+    case '5d': d.setDate(d.getDate() - 5); break;
+    case '1w': d.setDate(d.getDate() - 7); break;
+    case '1m': d.setMonth(d.getMonth() - 1); break;
+    case '1y': d.setFullYear(d.getFullYear() - 1); break;
+    case '5y': d.setFullYear(d.getFullYear() - 5); break;
+    case 'max': {
+      const starts = [graphState.base, ...graphState.quotes]
+        .map((c) => currencyMeta[c] && currencyMeta[c].startDate)
+        .filter(Boolean);
+      return starts.length ? starts.reduce((a, b) => (a > b ? a : b)) : FALLBACK_START_DATE;
+    }
+    default: d.setMonth(d.getMonth() - 1);
+  }
+  return d.toISOString().slice(0, 10);
+}
+
+function groupFor(range) {
+  if (range === '1y') return 'week';
+  if (range === '5y' || range === 'max') return 'month';
+  return '';
+}
+
+function renderChips() {
+  els.chips.innerHTML = '';
+  graphState.quotes.forEach((code, i) => {
+    const chip = document.createElement('span');
+    chip.className = 'chip';
+    chip.innerHTML = `
+      <span class="chip__swatch" style="background:${colorFor(i)};"></span>
+      <span>${code}</span>
+    `;
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'chip__remove';
+    removeBtn.setAttribute('aria-label', `Remove ${code} from graph`);
+    removeBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+    removeBtn.addEventListener('click', () => removeGraphQuote(code));
+    chip.appendChild(removeBtn);
+    els.chips.appendChild(chip);
+  });
+}
+
+function removeGraphQuote(code) {
+  if (graphState.quotes.length <= 1) { showToast('Keep at least one currency'); return; }
+  graphState.quotes = graphState.quotes.filter((c) => c !== code);
+  renderChips();
+  loadGraph();
+}
+
+function addGraphQuote(code) {
+  if (!code || code === graphState.base || graphState.quotes.includes(code)) return;
+  if (graphState.quotes.length >= MAX_GRAPH_QUOTES) { showToast(`Up to ${MAX_GRAPH_QUOTES} currencies at once`); return; }
+  graphState.quotes.push(code);
+  renderChips();
+  loadGraph();
+}
+
+// Called whenever the From/To pickers settle on a new pair — resets the
+// graph to track that pair; manual add/remove customizes it from there
+// until the next currency change.
+function onCurrencyPairChanged() {
+  const fromCode = codeFromInput(els.from.value);
+  const toCode   = codeFromInput(els.to.value);
+  if (!fromCode || !toCode || fromCode === graphState.base && graphState.quotes[0] === toCode) return;
+  graphState.base = fromCode;
+  graphState.quotes = [toCode];
+  renderChips();
+  loadGraph();
+}
+
+async function loadGraph() {
+  if (!graphState.base || !graphState.quotes.length || typeof Chart === 'undefined') return;
+  els.graphStatus.textContent = 'Loading…';
+  try {
+    const from = computeFromDate(graphState.range);
+    const group = groupFor(graphState.range);
+    const url = `${API_BASE}/history?base=${graphState.base}&quotes=${graphState.quotes.join(',')}&from=${from}${group ? `&group=${group}` : ''}`;
+    const rows = await fetchJSON(url);
+
+    const series = {};
+    const dateSet = new Set();
+    rows.forEach((row) => {
+      series[row.quote] ??= {};
+      series[row.quote][row.date] = row.rate;
+      dateSet.add(row.date);
+    });
+    const labels = [...dateSet].sort();
+    const indexed = graphState.quotes.filter((q) => series[q]).length > 1;
+
+    // With 2+ quotes selected, absolute rates can sit on wildly different
+    // scales (e.g. JPY ~150 vs MYR ~4) — a shared linear axis would flatten
+    // the smaller series to invisibility. Index each series to 100 at its
+    // first visible point so multiple currencies stay comparable on one axis.
+    const datasets = graphState.quotes
+      .filter((q) => series[q])
+      .map((q, i) => {
+        const raw = labels.map((d) => series[q][d] ?? null);
+        const base = raw.find((v) => v != null);
+        const data = indexed && base ? raw.map((v) => (v == null ? null : (v / base) * 100)) : raw;
+        return {
+          label: `${graphState.base}/${q}`,
+          data,
+          borderColor: colorFor(i),
+          backgroundColor: colorFor(i),
+          spanGaps: true,
+          tension: 0.2,
+          pointRadius: 0,
+          borderWidth: 2,
+        };
+      });
+
+    if (rateChart) rateChart.destroy();
+    rateChart = new Chart(els.chart, {
+      type: 'line',
+      data: { labels, datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        scales: {
+          y: {
+            beginAtZero: false,
+            grid: { color: 'rgba(0,0,0,0.08)' },
+            title: { display: indexed, text: 'Indexed (100 = start of range)' },
+          },
+          x: { grid: { display: false } },
+        },
+        plugins: {
+          legend: { display: datasets.length > 1 },
+          tooltip: {
+            callbacks: indexed
+              ? { label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y == null ? '—' : ctx.parsed.y.toFixed(2)}` }
+              : undefined,
+          },
+        },
+      },
+    });
+    els.graphStatus.textContent = indexed ? 'Comparing 2+ currencies indexes each to 100 at the start of the range.' : '';
+  } catch (err) {
+    console.error(err);
+    els.graphStatus.textContent = 'Could not load historical rates.';
+  }
+}
+
+function attachGraphEvents() {
+  els.rangePicker.addEventListener('click', (e) => {
+    const btn = e.target.closest('.range-picker__btn');
+    if (!btn) return;
+    els.rangePicker.querySelectorAll('.range-picker__btn').forEach((b) => b.classList.toggle('active', b === btn));
+    graphState.range = btn.dataset.range;
+    loadGraph();
+  });
+
+  els.addCurrency.addEventListener('change', () => {
+    const code = codeFromInput(els.addCurrency.value);
+    els.addCurrency.value = '';
+    if (code && currencies[code]) addGraphQuote(code);
+  });
+}
+
 /* ─── State Persistence ─── */
 
 function saveState() {
@@ -439,6 +625,7 @@ function attachEvents() {
   );
 
   createShareMenu();
+  attachGraphEvents();
 }
 
 /* ─── Service Worker ─── */

@@ -3,6 +3,9 @@ from telethon.tl import types
 
 PAGE_SIZE = 8
 
+GRAPH_RANGES = ['5d', '1w', '1m', '1y', '5y', 'max']
+GRAPH_RANGE_LABELS = {'5d': '5D', '1w': '1W', '1m': '1M', '1y': '1Y', '5y': '5Y', 'max': 'Max'}
+
 
 def main_menu_keyboard():
     return [
@@ -63,4 +66,30 @@ def convert_keyboard(interaction_id, results, include_copy_buttons):
             rows.append([
                 types.KeyboardButtonCopy(text=f"📋 Copy {r['code'].upper()}", copy_text=r['formatted'])
             ])
+        rows.append([Button.inline('📈 Graph', f'cv:{interaction_id}:graph'.encode())])
+    return rows
+
+
+def graph_keyboard(interaction_id, range_key):
+    range_row = [
+        Button.inline(
+            ('• ' if r == range_key else '') + GRAPH_RANGE_LABELS[r],
+            f'gr:{interaction_id}:range:{r}'.encode(),
+        )
+        for r in GRAPH_RANGES
+    ]
+    rows = [range_row[:3], range_row[3:]]
+    rows.append([
+        Button.inline('➕ Add currency', f'gr:{interaction_id}:add'.encode()),
+        Button.inline('➖ Remove currency', f'gr:{interaction_id}:remove'.encode()),
+    ])
+    return rows
+
+
+def graph_remove_keyboard(interaction_id, quotes):
+    rows = [
+        [Button.inline(f'❌ {q.upper()}', f'gr:{interaction_id}:doremove:{q}'.encode())]
+        for q in quotes
+    ]
+    rows.append([Button.inline('⬅ Back', f'gr:{interaction_id}:back'.encode())])
     return rows

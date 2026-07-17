@@ -1,4 +1,4 @@
-const CACHE = "currency-v5";
+const CACHE = "currency-v6";
 
 const ASSETS = [
   "/",

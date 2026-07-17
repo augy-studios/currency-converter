@@ -98,6 +98,23 @@ a:visited {
   .container {
     grid-template-columns: 2fr 1fr;
   }
+
+  /* Converter and About sit side by side in row 1; the graph spans both
+     columns in row 2 below them. Mobile keeps the plain DOM order
+     (converter, graph, about) via the single-column layout above. */
+  .card--converter {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .card--info {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .card--graph {
+    grid-row: 2;
+  }
 }
 
 /* ─── Card — Glassmorphism ─── */

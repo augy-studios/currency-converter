@@ -31,8 +31,13 @@ async def open_graph(event, conv_interaction_id):
     if not conv or conv['kind'] != 'convert':
         return await event.answer('This result has expired.', alert=True)
 
+    # An inline result can sit in a group chat and be clicked by anyone there,
+    # not just whoever originally ran the inline query — so the graph (and its
+    # DM) belongs to the clicker, not conv['user_id'].
+    clicker_id = event.sender_id
+
     base = conv['payload']['base']
-    preferred = [c for c in db.get_preferences(conv['user_id']) if c != base]
+    preferred = [c for c in db.get_preferences(clicker_id) if c != base]
     if not preferred:
         return await event.answer(
             'Add another preferred currency (besides the base) to compare it on a graph.', alert=True
@@ -40,7 +45,7 @@ async def open_graph(event, conv_interaction_id):
 
     quotes = preferred[:MAX_QUOTES]
     payload = {'base': base, 'quotes': quotes, 'range': '1m'}
-    interaction_id = db.create_interaction('graph', conv['user_id'], payload)
+    interaction_id = db.create_interaction('graph', clicker_id, payload)
 
     buf = await _render(payload)
 
@@ -53,7 +58,7 @@ async def open_graph(event, conv_interaction_id):
     if is_inline:
         try:
             message = await event.client.send_file(
-                conv['user_id'], file=buf, buttons=graph_keyboard(interaction_id, '1m')
+                clicker_id, file=buf, buttons=graph_keyboard(interaction_id, '1m')
             )
         except Exception:
             return await event.answer(

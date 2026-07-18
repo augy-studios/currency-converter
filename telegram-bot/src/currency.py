@@ -1,6 +1,6 @@
 import json
 import time
-from datetime import date, timedelta
+from datetime import datetime, timedelta, timezone
 
 from . import api, db
 
@@ -65,7 +65,11 @@ def _compute_from_date(range_key, base_code, quote_codes):
         return max(starts) if starts else FALLBACK_START_DATE
 
     days = RANGE_DAYS.get(range_key, RANGE_DAYS['1m'])
-    return (date.today() - timedelta(days=days)).isoformat()
+    # The API's dates are UTC calendar dates — anchor "today" to UTC too,
+    # rather than the server's local timezone, so the range doesn't drift
+    # by a day depending on where the bot happens to be hosted.
+    today = datetime.now(timezone.utc).date()
+    return (today - timedelta(days=days)).isoformat()
 
 
 # Returns [{date, base, quote, rate}, ...] flat rows for the requested range.

@@ -1,4 +1,4 @@
-const CACHE = "currency-v11";
+const CACHE = "currency-v12";
 const FONT_CACHE = "currency-fonts-v1";
 
 const ASSETS = [

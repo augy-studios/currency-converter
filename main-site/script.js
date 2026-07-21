@@ -597,6 +597,47 @@ function loadState() {
   }
 }
 
+/* ─── Share Target (recognise shared/highlighted text like "50 USD") ─── */
+
+const SHARE_SYMBOLS = { '$': 'USD', '€': 'EUR', '£': 'GBP', '¥': 'JPY', '₹': 'INR' };
+
+function parseSharedText(text) {
+  if (!text) return null;
+
+  const codeRe = /\b(\d[\d,]*(?:\.\d+)?)\s*([A-Za-z]{3})\b|\b([A-Za-z]{3})\s*(\d[\d,]*(?:\.\d+)?)\b/;
+  const codeMatch = text.match(codeRe);
+  if (codeMatch) {
+    const amount = codeMatch[1] || codeMatch[4];
+    const code = (codeMatch[2] || codeMatch[3] || '').toUpperCase();
+    if (currencies[code]) return { amount: parseFloat(amount.replace(/,/g, '')), code };
+  }
+
+  const symRe = /([$€£¥₹])\s*(\d[\d,]*(?:\.\d+)?)|(\d[\d,]*(?:\.\d+)?)\s*([$€£¥₹])/;
+  const symMatch = text.match(symRe);
+  if (symMatch) {
+    const amount = symMatch[2] || symMatch[3];
+    const code = SHARE_SYMBOLS[symMatch[1] || symMatch[4]];
+    if (code && currencies[code]) return { amount: parseFloat(amount.replace(/,/g, '')), code };
+  }
+
+  return null;
+}
+
+function applySharedText() {
+  const params = new URLSearchParams(location.search);
+  const text = params.get('text') || params.get('title') || params.get('url') || '';
+  history.replaceState(null, '', location.pathname);
+  if (!text) return false;
+
+  const parsed = parseSharedText(text);
+  if (!parsed) return false;
+
+  els.amount.value = parsed.amount;
+  els.from.value = optionLabel(parsed.code, currencies[parsed.code]);
+  saveState();
+  return true;
+}
+
 /* ─── Event Wiring ─── */
 
 function attachEvents() {
@@ -649,6 +690,7 @@ function registerSW() {
   try {
     await loadCurrencies();
     loadState();
+    if (applySharedText()) showToast('Detected shared amount');
     await convert();
   } catch (err) {
     console.error(err);

@@ -24,17 +24,17 @@
                         <line x1="12" y1="16" x2="12" y2="12" />
                         <line x1="12" y1="8" x2="12.01" y2="8" />
                     </svg>
-                    <span>Pegged-currency rows omit the <code>providers</code> field in an expanded response —
+                    <span>Pegged-currency rows omit the <code>providers</code> field in an expanded response -
                         those rates come from the peg, not provider data.</span>
                 </div>
 
                 <h2 id="quirks">Provider quirks</h2>
                 <p>
-                    84 central bank adapters are pulled on a cron loop. Occasional single-provider errors are normal
-                    — the scheduler catches and logs them per-adapter without affecting the others. This is only
-                    worth investigating if the same error repeats every cycle for a currency you rely on, or several
-                    providers fail at once. A handful of providers (BAM, BANXICO, BCCH, BOT, FRED, TCMB) accept an
-                    optional API key upstream and may behave inconsistently without one configured — see the
-                    <a href="https://frankfurter.dev/deploy/" target="_blank" rel="noopener">Frankfurter deploy
-                        guide</a> for details.
+                    84 central bank adapters are pulled on a cron loop. Occasional single-provider errors are
+                    normal, since the scheduler catches and logs them per-adapter without affecting the others.
+                    This is only worth investigating if the same error repeats every cycle for a currency you rely
+                    on, or several providers fail at once. A handful of providers (BAM, BANXICO, BCCH, BOT, FRED,
+                    TCMB) accept an optional API key upstream and may behave inconsistently without one configured;
+                    see the <a href="https://frankfurter.dev/deploy/" target="_blank" rel="noopener">Frankfurter
+                        deploy guide</a> for details.
                 </p>

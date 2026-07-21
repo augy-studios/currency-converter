@@ -5,19 +5,19 @@
                 <p>
                     Roughly daily, around 16:00 CET from the ECB, with other providers updating on their own
                     schedules through the day. Self-hosting doesn't make this instance faster than the public
-                    Frankfurter API — it's the same underlying provider data either way.
+                    Frankfurter API, since it's the same underlying provider data either way.
                 </p>
 
                 <h2 id="rate-limits">Are there rate limits?</h2>
                 <p>
                     No request quota. This is a self-hosted instance rather than a shared public one, so there's no
-                    per-key throttling to plan around. Be a good citizen with it regardless — cache responses on
-                    your end where it makes sense rather than re-fetching the same data in a tight loop.
+                    per-key throttling to plan around. Still, be a good citizen with it: cache responses on your
+                    end where it makes sense rather than re-fetching the same data in a tight loop.
                 </p>
 
                 <h2 id="cors">Can I call this directly from browser JavaScript?</h2>
                 <p>
-                    Yes — the endpoints are meant to be called client-side as well as server-side, and every
+                    Yes. The endpoints are meant to be called client-side as well as server-side, and every
                     example in these docs (including the <a href="/quickstart">Quick Start</a> and the
                     <a href="/charting">Chart.js guide</a>) does exactly that with a plain <code>fetch()</code>,
                     no proxy involved.
@@ -27,8 +27,8 @@
                 <p>
                     The service is configured to restart automatically if it or the host ever goes down, and TLS
                     stays valid via automatic certificate renewal. As with any single-instance deployment, brief
-                    downtime during a redeploy or host maintenance window is possible — there's no multi-region
-                    failover behind this API.
+                    downtime during a redeploy or host maintenance window is possible, since there's no
+                    multi-region failover behind this API.
                 </p>
 
                 <h2 id="data-persistence">Does historical data ever change or disappear?</h2>
@@ -38,16 +38,16 @@
                     from a provider.
                 </p>
 
-                <h2 id="provider-errors">I see an occasional provider error in a response — is that a problem?</h2>
+                <h2 id="provider-errors">I see an occasional provider error in a response. Is that a problem?</h2>
                 <p>
                     Not usually. With 84 central bank adapters running on a schedule, an isolated parsing hiccup
                     from a single provider on a single date is normal and doesn't affect the other providers or
                     currencies. See <a href="/providers">Providers</a> for when it's actually worth flagging.
                 </p>
 
-                <h2 id="support">Something looks wrong — who do I tell?</h2>
+                <h2 id="support">Something looks wrong. Who do I tell?</h2>
                 <p>
                     This API backs the <a href="https://frankfurter.dev" target="_blank" rel="noopener">Frankfurter</a>
                     project's public data, run by Augy. If a rate looks off or an endpoint is behaving unexpectedly,
-                    that's the person to reach.
+                    reach out at <a href="mailto:augy@augystudios.com">augy@augystudios.com</a>.
                 </p>

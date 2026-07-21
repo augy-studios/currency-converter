@@ -73,13 +73,12 @@ function initSearch() {
   }
 
   function open() {
-    modal.classList.remove('hidden');
     input.value = '';
     runQuery();
-    setTimeout(() => input.focus(), 0);
+    openModal(modal, input);
   }
   function close() {
-    modal.classList.add('hidden');
+    closeModal(modal);
   }
 
   openBtns.forEach(btn => btn.addEventListener('click', open));

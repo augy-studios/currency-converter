@@ -40,8 +40,8 @@ const NAV = [
 
 const API_ORIGIN = 'https://api.currency.uwuapps.org';
 
-/* Finer-grained search entries — specific params/concepts that live inside
-   a page rather than being the page itself. Keeps Ctrl+K useful for
+/* Finer-grained search entries, for specific params/concepts that live
+   inside a page rather than being the page itself. Keeps Ctrl+K useful for
    "what does ?group= do" style queries without a full-text index. */
 const SEARCH_EXTRA = [
   { title: 'base parameter', url: '/rates-latest', section: 'Latest Rates', snippet: 'Change the base currency, e.g. ?base=USD' },
@@ -55,7 +55,7 @@ const SEARCH_EXTRA = [
   { title: 'CSV output', url: '/output-formats', section: 'Output Formats', snippet: 'Append .csv or send Accept: text/csv' },
   { title: 'NDJSON output', url: '/output-formats', section: 'Output Formats', snippet: 'Newline-delimited JSON for large time series' },
   { title: 'Chart.js example', url: '/charting', section: 'Charting', snippet: 'Group flat rows into per-currency series' },
-  { title: 'Rate limits', url: '/faq', section: 'FAQ', snippet: 'No request quota — self-hosted, no API key' },
+  { title: 'Rate limits', url: '/faq', section: 'FAQ', snippet: 'No request quota, self-hosted with no API key' },
   { title: 'CORS', url: '/faq', section: 'FAQ', snippet: 'Calling the API directly from browser JavaScript' },
   { title: 'Update frequency', url: '/faq', section: 'FAQ', snippet: 'Rates refresh roughly daily around 16:00 CET' },
   { title: '400 Bad Request', url: '/errors', section: 'Errors', snippet: 'Invalid parameter or malformed request' },

@@ -33,64 +33,71 @@
     <a class="skip-link" href="#content">Skip to content</a>
 
     <header class="topbar">
-        <button id="menu-toggle" class="btn btn--icon menu-toggle" aria-label="Toggle navigation"
-            aria-expanded="false">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="3" y1="6" x2="21" y2="6" />
-                <line x1="3" y1="12" x2="21" y2="12" />
-                <line x1="3" y1="18" x2="21" y2="18" />
-            </svg>
-        </button>
-        <a href="/" class="topbar__brand">
-            <div class="topbar__logo">
+        <div class="topbar__left">
+            <button id="menu-toggle" class="btn btn--icon menu-toggle" aria-label="Toggle navigation"
+                aria-expanded="true">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="12" y1="1" x2="12" y2="23" />
-                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <line x1="3" y1="12" x2="21" y2="12" />
+                    <line x1="3" y1="18" x2="21" y2="18" />
                 </svg>
-            </div>
-            <div class="topbar__title">API Docs<small>api.currency.uwuapps.org</small></div>
-        </a>
-        <button class="btn btn--search btn--search--desktop" data-search-open type="button">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-            <span>Search docs…</span>
-            <kbd>Ctrl K</kbd>
-        </button>
-        <div class="topbar__spacer"></div>
-        <button class="btn btn--icon btn--search--mobile" data-search-open type="button" aria-label="Search docs">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-        </button>
-        <a href="https://donate.stripe.com/28o2akeAr3hv0DK6oo" target="_blank" rel="noopener"
-            class="btn btn--icon btn--coffee" title="Buy Augy a Coffee" aria-label="Buy Augy a Coffee">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
-                <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
-                <line x1="6" y1="1" x2="6" y2="4" />
-                <line x1="10" y1="1" x2="10" y2="4" />
-                <line x1="14" y1="1" x2="14" y2="4" />
-            </svg>
-        </a>
-        <button id="theme-toggle" class="btn btn--icon" title="Choose theme" aria-label="Choose theme">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="13.5" cy="6.5" r=".5" fill="currentColor" />
-                <circle cx="17.5" cy="10.5" r=".5" fill="currentColor" />
-                <circle cx="8.5" cy="7.5" r=".5" fill="currentColor" />
-                <circle cx="6.5" cy="12.5" r=".5" fill="currentColor" />
-                <path
-                    d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z" />
-            </svg>
-        </button>
+            </button>
+            <a href="/" class="topbar__brand">
+                <div class="topbar__logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="1" x2="12" y2="23" />
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                    </svg>
+                </div>
+                <div class="topbar__title">API Docs<small>api.currency.uwuapps.org</small></div>
+            </a>
+        </div>
+        <div class="topbar__center">
+            <button class="btn btn--search btn--search--desktop" data-search-open type="button">
+                <span class="btn--search__left">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
+                    <span>Search docs…</span>
+                </span>
+                <kbd>Ctrl K</kbd>
+            </button>
+        </div>
+        <div class="topbar__right">
+            <button class="btn btn--icon btn--search--mobile" data-search-open type="button" aria-label="Search docs">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+            </button>
+            <a href="https://donate.stripe.com/28o2akeAr3hv0DK6oo" target="_blank" rel="noopener"
+                class="btn btn--icon btn--coffee" title="Buy Augy a Coffee" aria-label="Buy Augy a Coffee">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
+                    <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+                    <line x1="6" y1="1" x2="6" y2="4" />
+                    <line x1="10" y1="1" x2="10" y2="4" />
+                    <line x1="14" y1="1" x2="14" y2="4" />
+                </svg>
+            </a>
+            <button id="theme-toggle" class="btn btn--icon" title="Choose theme" aria-label="Choose theme">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="13.5" cy="6.5" r=".5" fill="currentColor" />
+                    <circle cx="17.5" cy="10.5" r=".5" fill="currentColor" />
+                    <circle cx="8.5" cy="7.5" r=".5" fill="currentColor" />
+                    <circle cx="6.5" cy="12.5" r=".5" fill="currentColor" />
+                    <path
+                        d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z" />
+                </svg>
+            </button>
+        </div>
     </header>
 
     <div class="sidebar-scrim" id="sidebar-scrim"></div>
@@ -103,7 +110,7 @@
         <div class="content-wrap">
             <main class="content" id="content">
                 <h1>Currency Conversion</h1>
-                <p class="lead">There's no dedicated <code>/convert</code> endpoint — fetch the rate and do the math
+                <p class="lead">There's no dedicated <code>/convert</code> endpoint-fetch the rate and do the math
                     client-side.</p>
 
                 <h2 id="recipe">Recipe</h2>
@@ -125,14 +132,14 @@ convert("EUR", "USD", 10).then(result => console.log(`10 EUR = ${result} USD`));
 
                 <h2 id="rounding">Rounding and precision</h2>
                 <p>
-                    Rates are returned as full-precision floats. Round only at display time — if you're chaining
+                    Rates are returned as full-precision floats. Round only at display time-if you're chaining
                     conversions (e.g. USD → EUR → JPY), convert through the raw rate each step rather than rounding
                     intermediate amounts, or small errors compound.
                 </p>
 
                 <h2 id="server-side">Doing it server-side instead</h2>
                 <p>
-                    The same recipe works from any backend language — fetch <code>/v2/rate/{base}/{quote}</code>
+                    The same recipe works from any backend language-fetch <code>/v2/rate/{base}/{quote}</code>
                     with your HTTP client of choice and multiply. There's nothing browser-specific about it; the
                     fetch example above is just the shortest way to show it.
                 </p>

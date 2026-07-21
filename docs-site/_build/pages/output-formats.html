@@ -2,8 +2,8 @@
                 <p class="lead">Every rates endpoint can return JSON, CSV, or NDJSON.</p>
 
                 <h2 id="json">JSON (default)</h2>
-                <p>Plain <code>Accept: application/json</code>, or just omit the header — this is the default for
-                    every example in these docs.</p>
+                <p>Plain <code>Accept: application/json</code>, or just omit the header entirely: this is the
+                    default for every example in these docs.</p>
 
                 <h2 id="csv">CSV</h2>
                 <p>Append <code>.csv</code> to the path, or send <code>Accept: text/csv</code>:</p>
@@ -11,7 +11,7 @@
 
                 <h2 id="ndjson">NDJSON</h2>
                 <p>
-                    Newline-delimited JSON — useful for large time series, since it avoids buffering the whole
+                    Newline-delimited JSON-useful for large time series, since it avoids buffering the whole
                     response before you can start processing it. Send <code>Accept: application/x-ndjson</code>:
                 </p>
                 <pre><code>curl -H "Accept: application/x-ndjson" "https://api.currency.uwuapps.org/v2/rates?from=2026-01-01"</code></pre>
@@ -24,6 +24,6 @@
                         <line x1="12" y1="8" x2="12.01" y2="8" />
                     </svg>
                     <span>NDJSON pairs well with streaming parsers when pulling multi-year, multi-currency time
-                        series — see <a href="/rates-timeseries">Time Series</a> for the params that shape that
+                        series. See <a href="/rates-timeseries">Time Series</a> for the params that shape that
                         request.</span>
                 </div>

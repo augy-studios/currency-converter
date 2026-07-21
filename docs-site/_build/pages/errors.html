@@ -31,8 +31,8 @@
                 </div>
 
                 <h2 id="handling">Handling errors</h2>
-                <p>Check <code>res.ok</code> (or the status code) before parsing the body as a successful response
-                    — the shape is different on failure:</p>
+                <p>Check <code>res.ok</code> (or the status code) before parsing the body as a successful response,
+                    since the shape is different on failure:</p>
                 <pre><code>const res = await fetch(url);
 if (!res.ok) {
   const { message } = await res.json();

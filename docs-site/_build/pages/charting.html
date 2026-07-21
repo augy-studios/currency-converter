@@ -1,6 +1,6 @@
                 <h1>Charting Historical Data</h1>
-                <p class="lead">A time-series call returns a flat array — one row per date/currency pair, not
-                    grouped by date. Group it before you chart it.</p>
+                <p class="lead">A time-series call returns a flat array, with one row per date/currency pair
+                    rather than rows grouped by date. Group it before you chart it.</p>
 
                 <h2 id="flat-rows">The flat row shape</h2>
                 <pre><code>[
@@ -50,11 +50,11 @@ renderFxChart({ base: "EUR", quotes: ["USD", "GBP", "JPY"], from: "2026-01-01" }
 
                 <h2 id="notes">Notes</h2>
                 <ul>
-                    <li><code>spanGaps: true</code> handles weekends/holidays where no new rate is published — the
+                    <li><code>spanGaps: true</code> handles weekends/holidays where no new rate is published, so the
                         line just carries over instead of breaking.</li>
                     <li>For a long range (multi-year, many currencies), use <code>group=month</code> or
-                        <code>group=week</code> on the request — see <a href="/rates-timeseries">Time Series</a> —
-                        to downsample before it reaches the browser.
+                        <code>group=week</code> on the request to downsample before it reaches the browser (see
+                        <a href="/rates-timeseries">Time Series</a>).
                     </li>
                 </ul>
 

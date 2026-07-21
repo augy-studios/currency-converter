@@ -56,6 +56,29 @@ function initTheme() {
   applyTheme(saved);
 }
 
+/* ─── Shared modal open/close animation ───
+   Removes .hidden then waits a frame before adding .open, so the browser
+   registers the opacity:0/translateY starting point instead of jumping
+   straight to the end state. Closing reverses the order, holding .hidden
+   off until the fade-out transition actually finishes. Reused by the
+   theme picker below and by search.js for the Ctrl+K modal. */
+function openModal(modal, focusEl) {
+  modal.classList.remove('hidden');
+  requestAnimationFrame(() => modal.classList.add('open'));
+  if (focusEl) setTimeout(() => focusEl.focus(), 0);
+}
+
+function closeModal(modal, focusEl) {
+  modal.classList.remove('open');
+  const onEnd = e => {
+    if (e.target !== modal) return;
+    modal.classList.add('hidden');
+    modal.removeEventListener('transitionend', onEnd);
+  };
+  modal.addEventListener('transitionend', onEnd);
+  if (focusEl) focusEl.focus();
+}
+
 function attachThemeModal() {
   const modal = document.getElementById('theme-modal');
   const openBtn = document.getElementById('theme-toggle');
@@ -63,12 +86,10 @@ function attachThemeModal() {
   if (!modal || !openBtn || !closeBtn) return;
 
   function open() {
-    modal.classList.remove('hidden');
-    closeBtn.focus();
+    openModal(modal, closeBtn);
   }
   function close() {
-    modal.classList.add('hidden');
-    openBtn.focus();
+    closeModal(modal, openBtn);
   }
 
   openBtn.addEventListener('click', open);

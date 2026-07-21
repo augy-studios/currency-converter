@@ -1,7 +1,7 @@
-/* ─── CSS Custom Properties — Theme System ───
+/* ─── CSS Custom Properties: Theme System ───
    Same palette contract as the main Currency Converter app so both
-   properties feel like one product. Themes are static colours only —
-   no gradients, no orbs/blobs. */
+   properties feel like one product. Themes are static colours only,
+   with no gradients and no orbs/blobs. */
 :root {
   --bg: #ccffcc;
   --accent: #99ff99;
@@ -9,7 +9,7 @@
   --ring: #3aa165;
   --link: #167a45;
 
-  /* Structural — constant across themes */
+  /* Structural, constant across themes */
   --text: #111827;
   --muted: #4b5563;
   --card-bg: rgba(255, 255, 255, 0.62);

@@ -19,6 +19,15 @@ input, textarea, p, li, .search-result__snippet, code, pre {
 }
 
 html, body { height: 100%; }
+html { scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
 
 body {
   color: var(--text);
@@ -50,7 +59,7 @@ svg { display: block; }
 }
 .skip-link:focus { top: 12px; }
 
-/* ─── Topbar — Glassmorphism ─── */
+/* ─── Topbar, glassmorphism ─── */
 .topbar {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -97,6 +106,30 @@ svg { display: block; }
   display: block;
   font-size: 11px;
   color: var(--muted);
+}
+
+.topbar__left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.topbar__center {
+  display: flex;
+  justify-content: center;
+  flex: 2;
+  min-width: 0;
+}
+
+.topbar__right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
 }
 
 .topbar__spacer { flex: 1; }
@@ -148,27 +181,30 @@ svg { display: block; }
 .btn--search {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  max-width: 480px;
+  padding: 11px 16px;
   background: rgba(255, 255, 255, 0.52);
   border: 1px solid rgba(0, 0, 0, 0.09);
   border-radius: var(--radius-sm);
   color: var(--muted);
-  font-size: 13px;
+  font-size: 14px;
 }
 .btn--search:hover { background: rgba(255, 255, 255, 0.78); }
-.btn--search svg { width: 16px; height: 16px; flex-shrink: 0; }
+.btn--search__left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.btn--search__left span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.btn--search svg { width: 17px; height: 17px; flex-shrink: 0; }
 .btn--search kbd {
   font-family: 'Jua';
   font-size: 11px;
   background: rgba(0, 0, 0, 0.08);
   border-radius: 5px;
-  padding: 2px 6px;
-  margin-left: 4px;
+  padding: 3px 7px;
+  flex-shrink: 0;
 }
 .btn--search--mobile { display: none; }
-
-.menu-toggle { display: none; }
 
 /* ─── Shell layout ─── */
 .shell {
@@ -177,7 +213,10 @@ svg { display: block; }
   min-height: 100vh;
 }
 
-/* ─── Sidebar — Glassmorphism ─── */
+/* ─── Sidebar, glassmorphism ───
+   Default (desktop): visible. body.sidebar-toggled collapses it to give
+   the content column more room; see the responsive block below, which
+   flips this same class to mean "shown as a mobile overlay" instead. */
 .sidebar {
   position: fixed;
   top: var(--topbar-h);
@@ -190,7 +229,10 @@ svg { display: block; }
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   border-right: 1px solid var(--card-border);
-  transition: background var(--transition), border-color var(--transition);
+  transition: left var(--transition), background var(--transition), border-color var(--transition);
+}
+body.sidebar-toggled .sidebar {
+  left: calc(-1 * var(--sidebar-w));
 }
 
 .side-group { margin-bottom: 20px; }
@@ -231,14 +273,16 @@ svg { display: block; }
 .badge--get { background: rgba(42, 120, 214, 0.18); color: #1a4a80; }
 .badge--post { background: rgba(27, 175, 122, 0.18); color: #0d6b4a; }
 
-/* ─── Mobile sidebar scrim ─── */
+/* ─── Mobile sidebar scrim (only ever shown on mobile, see responsive block) ─── */
 .sidebar-scrim {
-  display: none;
   position: fixed;
   inset: 0;
   top: var(--topbar-h);
   background: rgba(0, 0, 0, 0.28);
   z-index: 90;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition), visibility 0s linear var(--transition);
 }
 
 /* ─── Content ─── */
@@ -248,6 +292,10 @@ svg { display: block; }
   display: flex;
   justify-content: center;
   min-width: 0;
+  transition: margin-left var(--transition);
+}
+body.sidebar-toggled .content-wrap {
+  margin-left: 0;
 }
 
 .content {
@@ -305,6 +353,47 @@ svg { display: block; }
   gap: 14px;
   margin: 20px 0 28px;
 }
+
+/* Compact quick-facts tiles (label + value), distinct from .link-card
+   below, which holds a full title + description. Using the generic .card
+   here made short one-line facts look lost inside oversized padding once
+   the grid stretched every tile to match its tallest sibling. */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  margin: 20px 0 28px;
+  align-items: stretch;
+}
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  background: var(--card-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  text-align: left;
+}
+.stat-card__label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+}
+.stat-card__value {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.4;
+}
+.stat-card__value code {
+  font-size: 13px;
+  word-break: break-all;
+}
+
 .link-card {
   display: block;
   background: var(--card-bg);
@@ -444,12 +533,19 @@ tr:last-child td { border-bottom: none; }
 .tryit__time { color: var(--muted); }
 .tryit__response { max-height: 340px; overflow: auto; margin: 0; }
 
-/* ─── On this page (TOC) ─── */
+/* ─── On this page (TOC) ───
+   A normal flex sibling of .content-wrap inside .shell (not fixed +
+   hand-computed offsets), so it can never drift into the content column.
+   It just gets whatever space is left after .content-wrap takes its share,
+   and stays put automatically when the sidebar collapses or the content
+   width changes. */
 .toc {
-  position: fixed;
+  flex: 0 0 var(--toc-w);
+  align-self: flex-start;
+  position: sticky;
   top: calc(var(--topbar-h) + 24px);
-  right: max(16px, calc((100vw - var(--sidebar-w) - 760px - var(--toc-w)) / 2));
-  width: var(--toc-w);
+  margin-top: 40px;
+  padding-right: 24px;
   max-height: calc(100vh - var(--topbar-h) - 48px);
   overflow-y: auto;
 }
@@ -492,7 +588,12 @@ tr:last-child td { border-bottom: none; }
 .pager__label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }
 .pager__title { font-size: 14px; }
 
-/* ─── Modal shared (theme + search) ─── */
+/* ─── Modal shared (theme + search) ───
+   .hidden (display:none, global utility) covers the pre-JS/closed state;
+   .open drives the actual fade + rise transition. JS adds .open a frame
+   after removing .hidden (so the browser registers the opacity:0 starting
+   point) and reverses the order on close, waiting for the transition to
+   finish before re-adding .hidden. */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -504,7 +605,10 @@ tr:last-child td { border-bottom: none; }
   justify-content: center;
   z-index: 300;
   padding: 16px;
+  opacity: 0;
+  transition: opacity 0.18s ease;
 }
+.modal-overlay.open { opacity: 1; }
 .modal-overlay.hidden { display: none; }
 .modal {
   background: rgba(255, 255, 255, 0.94);
@@ -516,7 +620,10 @@ tr:last-child td { border-bottom: none; }
   max-width: 440px;
   width: 100%;
   box-shadow: var(--shadow-lg);
+  transform: translateY(10px) scale(0.98);
+  transition: transform 0.18s ease;
 }
+.modal-overlay.open .modal { transform: translateY(0) scale(1); }
 .modal__header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
 .modal__title { font-size: 17px; font-weight: 400; }
 
@@ -600,24 +707,49 @@ tr:last-child td { border-bottom: none; }
 }
 
 @media (max-width: 900px) {
-  .menu-toggle { display: inline-flex; }
-  .btn--search--desktop { display: none; }
-  .btn--search--mobile { display: inline-flex; padding: 8px; }
-  .btn--search--mobile span, .btn--search--mobile kbd { display: none; }
+  .topbar__center { display: none; }
+  .topbar__left, .topbar__right { flex: 1; }
 
+  .btn--search--mobile { display: inline-flex; padding: 8px; }
+
+  /* Below this breakpoint the hamburger's meaning flips: instead of
+     collapsing an always-visible sidebar, it opens it as an overlay over
+     the content, so the "shown" state is the toggled one instead of the
+     default one. */
   .sidebar {
     left: calc(-1 * var(--sidebar-w));
     z-index: 95;
     box-shadow: var(--shadow-lg);
   }
-  .sidebar.open { left: 0; }
-  .sidebar-scrim.open { display: block; }
+  body.sidebar-toggled .sidebar { left: 0; }
+  body.sidebar-toggled .sidebar-scrim {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity var(--transition);
+  }
 
   .content-wrap { margin-left: 0; }
+  body.sidebar-toggled .content-wrap { margin-left: 0; }
   .content { padding: 28px 20px 80px; }
+}
+
+@media (max-width: 680px) {
+  .card-grid, .stat-grid { grid-template-columns: 1fr 1fr; }
+  .tryit__form { flex-direction: column; align-items: stretch; }
+  .tryit__send { width: 100%; }
 }
 
 @media (max-width: 560px) {
   .topbar__title small { display: none; }
   .pager { grid-template-columns: 1fr; }
+  .content h1 { font-size: 24px; }
+}
+
+@media (max-width: 420px) {
+  .topbar { padding: 0 10px; gap: 8px; }
+  .topbar__title { display: none; }
+  .card-grid, .stat-grid { grid-template-columns: 1fr; }
+  .content { padding: 22px 14px 70px; }
+  .modal { padding: 16px; }
+  .search-box { padding: 12px 14px; }
 }

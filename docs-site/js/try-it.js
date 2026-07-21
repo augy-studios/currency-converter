@@ -1,6 +1,6 @@
 /* ─── "Try it" interactive API console ───
    Renders a live request builder for a <div class="try-it"> declared with
-   data attributes, and calls the API directly from the browser — this
+   data attributes, and calls the API directly from the browser, since this
    instance's Frankfurter deployment sends permissive CORS headers, so no
    serverless proxy is needed for read-only GET calls. */
 

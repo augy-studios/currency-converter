@@ -2,29 +2,28 @@
                 <p class="lead">
                     Self-hosted instance of <a href="https://frankfurter.dev" target="_blank"
                         rel="noopener">Frankfurter</a>, running on a Debian VPS via Docker, proxied through Nginx
-                    with TLS. Daily exchange rates from 84 central banks, 201 currencies, back to 1948 — no API key,
-                    no request quota.
+                    with TLS. Daily exchange rates from 84 central banks, 201 currencies, back to 1948, with no
+                    API key and no request quota.
                 </p>
 
                 <pre><code>curl https://api.currency.uwuapps.org/v2/rates</code></pre>
 
-                <div class="card-grid">
-                    <div class="card" style="margin-bottom:0;">
-                        <div class="link-card__title">Base URL</div>
-                        <code>https://api.currency.uwuapps.org</code>
+                <div class="stat-grid">
+                    <div class="stat-card">
+                        <div class="stat-card__label">Base URL</div>
+                        <div class="stat-card__value"><code>https://api.currency.uwuapps.org</code></div>
                     </div>
-                    <div class="card" style="margin-bottom:0;">
-                        <div class="link-card__title">Authentication</div>
-                        <p class="lead" style="margin:0;font-size:14px;">None — no API key required</p>
+                    <div class="stat-card">
+                        <div class="stat-card__label">Authentication</div>
+                        <div class="stat-card__value">None required</div>
                     </div>
-                    <div class="card" style="margin-bottom:0;">
-                        <div class="link-card__title">Coverage</div>
-                        <p class="lead" style="margin:0;font-size:14px;">201 currencies, 84 central banks, back to
-                            1948</p>
+                    <div class="stat-card">
+                        <div class="stat-card__label">Coverage</div>
+                        <div class="stat-card__value">201 currencies, 84 central banks, back to 1948</div>
                     </div>
-                    <div class="card" style="margin-bottom:0;">
-                        <div class="link-card__title">Rate limits</div>
-                        <p class="lead" style="margin:0;font-size:14px;">None — self-hosted, no request quota</p>
+                    <div class="stat-card">
+                        <div class="stat-card__label">Rate limits</div>
+                        <div class="stat-card__value">None, self-hosted with no request quota</div>
                     </div>
                 </div>
 
@@ -86,7 +85,7 @@
                     This instance runs the open-source <a href="https://github.com/lineofflight/frankfurter"
                         target="_blank" rel="noopener">Frankfurter</a> project on infrastructure Augy controls, so
                     it can be used without an API key and without a request quota. Being self-hosted doesn't make it
-                    faster than the public API — it's still the same underlying provider data, refreshed on the same
+                    faster than the public API-it's still the same underlying provider data, refreshed on the same
                     daily schedule.
                 </p>
 

@@ -27,31 +27,52 @@ function buildSidebar() {
   `).join('');
 }
 
-function attachMobileNav() {
-  const toggle = document.getElementById('menu-toggle');
-  const sidebar = document.getElementById('sidebar');
-  const scrim = document.getElementById('sidebar-scrim');
-  if (!toggle || !sidebar || !scrim) return;
+/* ─── Sidebar hamburger ───
+   One button, two meanings depending on viewport: on desktop it collapses
+   an always-visible sidebar to free up width for the content column (and
+   remembers that choice); on mobile the sidebar starts hidden and the same
+   button opens it as an overlay with a scrim. Both use the same CSS class,
+   body.sidebar-toggled; see docs.css, which flips what the class means
+   at the 900px breakpoint. */
+const SIDEBAR_STORAGE_KEY = 'uwudocs.sidebarCollapsed';
 
-  function open() {
-    sidebar.classList.add('open');
-    scrim.classList.add('open');
-    toggle.setAttribute('aria-expanded', 'true');
+function isMobileViewport() {
+  return window.matchMedia('(max-width: 900px)').matches;
+}
+
+function attachSidebarToggle() {
+  const toggle = document.getElementById('menu-toggle');
+  const scrim = document.getElementById('sidebar-scrim');
+  const sidebar = document.getElementById('sidebar');
+  if (!toggle) return;
+
+  function setToggled(on) {
+    document.body.classList.toggle('sidebar-toggled', on);
+    const visible = isMobileViewport() ? on : !on;
+    toggle.setAttribute('aria-expanded', String(visible));
+    if (!isMobileViewport()) localStorage.setItem(SIDEBAR_STORAGE_KEY, on ? '1' : '0');
   }
-  function close() {
-    sidebar.classList.remove('open');
-    scrim.classList.remove('open');
-    toggle.setAttribute('aria-expanded', 'false');
+
+  if (!isMobileViewport() && localStorage.getItem(SIDEBAR_STORAGE_KEY) === '1') {
+    setToggled(true);
+  } else {
+    setToggled(document.body.classList.contains('sidebar-toggled'));
   }
+
   toggle.addEventListener('click', () => {
-    sidebar.classList.contains('open') ? close() : open();
+    setToggled(!document.body.classList.contains('sidebar-toggled'));
   });
-  scrim.addEventListener('click', close);
-  sidebar.addEventListener('click', e => {
-    if (e.target.closest('.side-link')) close();
+
+  scrim?.addEventListener('click', () => { if (isMobileViewport()) setToggled(false); });
+
+  sidebar?.addEventListener('click', e => {
+    if (isMobileViewport() && e.target.closest('.side-link')) setToggled(false);
   });
+
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') close();
+    if (e.key === 'Escape' && isMobileViewport() && document.body.classList.contains('sidebar-toggled')) {
+      setToggled(false);
+    }
   });
 }
 
@@ -137,7 +158,7 @@ function buildPager() {
 
 document.addEventListener('DOMContentLoaded', () => {
   buildSidebar();
-  attachMobileNav();
+  attachSidebarToggle();
   buildTOC();
   attachCodeCopy();
   buildPager();

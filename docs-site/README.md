@@ -3,9 +3,6 @@
 Documentation site for `api.currency.uwuapps.org`, deployed separately from
 the main converter app at `docs.api.currency.uwuapps.org`.
 
-Static HTML/CSS/JS. No build step is required to deploy, since the `.html`
-files at the root are already built. Vercel serves this directory as-is.
-
 ## Editing content
 
 The pages are generated from `_build/template.html` (the shared shell: topbar,

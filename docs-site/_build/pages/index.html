@@ -2,8 +2,7 @@
                 <p class="lead">
                     Self-hosted instance of <a href="https://frankfurter.dev" target="_blank"
                         rel="noopener">Frankfurter</a>, running on a Debian VPS via Docker, proxied through Nginx
-                    with TLS. Daily exchange rates from 84 central banks, 201 currencies, back to 1948, with no
-                    API key and no request quota.
+                    with TLS. Daily exchange rates from 84 central banks, 201 currencies, back to 1948.
                 </p>
 
                 <pre><code>curl https://api.currency.uwuapps.org/v2/rates</code></pre>
@@ -23,7 +22,7 @@
                     </div>
                     <div class="stat-card">
                         <div class="stat-card__label">Rate limits</div>
-                        <div class="stat-card__value">None, self-hosted with no request quota</div>
+                        <div class="stat-card__value">None</div>
                     </div>
                 </div>
 
@@ -83,10 +82,9 @@
                 <h2 id="why-self-hosted">Why self-hosted?</h2>
                 <p>
                     This instance runs the open-source <a href="https://github.com/lineofflight/frankfurter"
-                        target="_blank" rel="noopener">Frankfurter</a> project on infrastructure Augy controls, so
-                    it can be used without an API key and without a request quota. Being self-hosted doesn't make it
-                    faster than the public API-it's still the same underlying provider data, refreshed on the same
-                    daily schedule.
+                        target="_blank" rel="noopener">Frankfurter</a> project on infrastructure Augy controls.
+                    Being self-hosted doesn't make it faster than the public API, since it's still the same
+                    underlying provider data, refreshed on the same daily schedule.
                 </p>
 
                 <div class="callout">

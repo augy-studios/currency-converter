@@ -7,7 +7,7 @@ const NAV = [
     group: 'Getting Started',
     items: [
       { id: 'index', title: 'Overview', url: '/', desc: 'What this API is and how it is hosted' },
-      { id: 'quickstart', title: 'Quick Start', url: '/quickstart', desc: 'Your first request, no API key needed' },
+      { id: 'quickstart', title: 'Quick Start', url: '/quickstart', desc: 'Your first request in under a minute' },
     ],
   },
   {
@@ -55,7 +55,7 @@ const SEARCH_EXTRA = [
   { title: 'CSV output', url: '/output-formats', section: 'Output Formats', snippet: 'Append .csv or send Accept: text/csv' },
   { title: 'NDJSON output', url: '/output-formats', section: 'Output Formats', snippet: 'Newline-delimited JSON for large time series' },
   { title: 'Chart.js example', url: '/charting', section: 'Charting', snippet: 'Group flat rows into per-currency series' },
-  { title: 'Rate limits', url: '/faq', section: 'FAQ', snippet: 'No request quota, self-hosted with no API key' },
+  { title: 'Rate limits', url: '/faq', section: 'FAQ', snippet: 'No request quota on this self-hosted instance' },
   { title: 'CORS', url: '/faq', section: 'FAQ', snippet: 'Calling the API directly from browser JavaScript' },
   { title: 'Update frequency', url: '/faq', section: 'FAQ', snippet: 'Rates refresh roughly daily around 16:00 CET' },
   { title: '400 Bad Request', url: '/errors', section: 'Errors', snippet: 'Invalid parameter or malformed request' },

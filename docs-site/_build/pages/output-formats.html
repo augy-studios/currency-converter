@@ -11,7 +11,7 @@
 
                 <h2 id="ndjson">NDJSON</h2>
                 <p>
-                    Newline-delimited JSON-useful for large time series, since it avoids buffering the whole
+                    Newline-delimited JSON, useful for large time series since it avoids buffering the whole
                     response before you can start processing it. Send <code>Accept: application/x-ndjson</code>:
                 </p>
                 <pre><code>curl -H "Accept: application/x-ndjson" "https://api.currency.uwuapps.org/v2/rates?from=2026-01-01"</code></pre>

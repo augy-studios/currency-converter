@@ -1,6 +1,6 @@
 [
-  { "id": "index", "file": "index.html", "title": "Overview", "desc": "Developer documentation for api.currency.uwuapps.org, a self-hosted Frankfurter currency exchange rate API with 201 currencies, no API key, and no request quota." },
-  { "id": "quickstart", "file": "quickstart.html", "title": "Quick Start", "desc": "Make your first request to the currency exchange rate API in under a minute, with no signup and no API key." },
+  { "id": "index", "file": "index.html", "title": "Overview", "desc": "Developer documentation for api.currency.uwuapps.org, a self-hosted Frankfurter currency exchange rate API covering 201 currencies." },
+  { "id": "quickstart", "file": "quickstart.html", "title": "Quick Start", "desc": "Make your first request to the currency exchange rate API in under a minute." },
   { "id": "rates-latest", "file": "rates-latest.html", "title": "Latest Rates", "desc": "Fetch today's blended exchange rates, change the base currency, or filter to specific quotes." },
   { "id": "rates-historical", "file": "rates-historical.html", "title": "Historical Rates", "desc": "Fetch exchange rates for any single date back to 1948." },
   { "id": "rates-timeseries", "file": "rates-timeseries.html", "title": "Time Series", "desc": "Fetch exchange rates across a date range, with optional weekly or monthly downsampling." },

@@ -1,0 +1,30 @@
+# UwU Currency Exchange API
+
+> Developer documentation for a self-hosted Frankfurter currency exchange rate API at https://api.currency.uwuapps.org. Covers 201 currencies from 84 central bank providers, back to 1948, with JSON/CSV/NDJSON output and no API key.
+
+This file is a machine-readable index of the documentation at https://docs.api.currency.uwuapps.org, intended for LLMs and other automated readers. Every link below is an absolute URL to a full documentation page; each page also has interactive "Try it" consoles that only work in a browser and aren't reflected here.
+
+## Getting Started
+
+- [Overview](https://docs.api.currency.uwuapps.org/): what the API is, how it's hosted, and where to go next.
+- [Quick Start](https://docs.api.currency.uwuapps.org/quickstart): the base URL, a first request, and the response shape.
+
+## Endpoints
+
+- [Latest Rates](https://docs.api.currency.uwuapps.org/rates-latest): GET /v2/rates, today's blended exchange rates, with base/quotes/providers/expand params.
+- [Historical Rates](https://docs.api.currency.uwuapps.org/rates-historical): GET /v2/rates?date=..., rates for a single past date back to 1948.
+- [Time Series](https://docs.api.currency.uwuapps.org/rates-timeseries): GET /v2/rates?from=&to=&group=, rates across a date range with optional weekly/monthly downsampling.
+- [Single Pair Rate](https://docs.api.currency.uwuapps.org/single-pair): GET /v2/rate/{base}/{quote}, one currency pair in a single call.
+- [Currency Conversion](https://docs.api.currency.uwuapps.org/conversion): there's no /convert endpoint; the recipe for converting an amount client-side using the rate endpoint.
+- [Currencies](https://docs.api.currency.uwuapps.org/currencies): GET /v2/currencies and /v2/currency/{code}, including legacy/retired currencies via scope=all.
+- [Providers](https://docs.api.currency.uwuapps.org/providers): GET /v2/providers, the 84 central bank data sources, and how to pin a request to one.
+
+## Guides
+
+- [Charting Historical Data](https://docs.api.currency.uwuapps.org/charting): grouping flat time-series rows into per-currency series for Chart.js or pandas.
+- [Output Formats](https://docs.api.currency.uwuapps.org/output-formats): requesting JSON, CSV, or NDJSON responses.
+
+## Reference
+
+- [Errors](https://docs.api.currency.uwuapps.org/errors): HTTP status codes and the JSON error body shape.
+- [FAQ & Operational Notes](https://docs.api.currency.uwuapps.org/faq): update frequency, uptime, rate limits, CORS, and provider quirks.

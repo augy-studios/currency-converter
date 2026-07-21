@@ -2,7 +2,7 @@
 
 > Developer documentation for a self-hosted Frankfurter currency exchange rate API at https://api.currency.uwuapps.org. Covers 201 currencies from 84 central bank providers, back to 1948, with JSON/CSV/NDJSON output and no API key.
 
-This file is a machine-readable index of the documentation at https://docs.api.currency.uwuapps.org, intended for LLMs and other automated readers. Every link below is an absolute URL to a full documentation page; each page also has interactive "Try it" consoles that only work in a browser and aren't reflected here.
+This file is a machine-readable index of the documentation at https://docs.api.currency.uwuapps.org, intended for LLMs and other automated readers. Every link below is an absolute URL to a full documentation page. Append .md to any of those URLs (e.g. https://docs.api.currency.uwuapps.org/quickstart.md) to fetch that same page as plain Markdown instead of HTML; the only thing missing from the Markdown version is the interactive "Try it" console, which only works in a browser.
 
 ## Getting Started
 

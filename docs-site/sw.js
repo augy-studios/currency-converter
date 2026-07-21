@@ -1,4 +1,4 @@
-const CACHE = "currency-docs-v6";
+const CACHE = "currency-docs-v7";
 const FONT_CACHE = "currency-docs-fonts-v2";
 
 const ASSETS = [
@@ -16,6 +16,19 @@ const ASSETS = [
   "/errors",
   "/faq",
   "/llms.txt",
+  "/index.md",
+  "/quickstart.md",
+  "/rates-latest.md",
+  "/rates-historical.md",
+  "/rates-timeseries.md",
+  "/single-pair.md",
+  "/conversion.md",
+  "/currencies.md",
+  "/providers.md",
+  "/charting.md",
+  "/output-formats.md",
+  "/errors.md",
+  "/faq.md",
   "/css/theme.css",
   "/css/docs.css",
   "/js/nav-data.js",

@@ -1,0 +1,40 @@
+                <h1>Providers</h1>
+                <p class="lead">Rates are blended across 84 central bank data sources by default. You can inspect
+                    them or pin to just one.</p>
+
+                <h2 id="list">List all data sources</h2>
+                <div class="tryit__head" style="margin-bottom:18px;">
+                    <span class="badge badge--get">GET</span>
+                    <code>/v2/providers</code>
+                </div>
+                <pre><code>curl https://api.currency.uwuapps.org/v2/providers</code></pre>
+                <div class="try-it" data-method="GET" data-path="/v2/providers" data-params="[]"></div>
+
+                <h2 id="pin">Pin to one provider</h2>
+                <p>Every rates endpoint accepts <code>providers</code> to use official reference rates from a single
+                    source instead of the blended default, e.g. the ECB:</p>
+                <pre><code>curl https://api.currency.uwuapps.org/v2/rates?providers=ECB</code></pre>
+
+                <h2 id="expand">See which providers contributed</h2>
+                <pre><code>curl https://api.currency.uwuapps.org/v2/rates?expand=providers</code></pre>
+                <div class="callout">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="12" y1="16" x2="12" y2="12" />
+                        <line x1="12" y1="8" x2="12.01" y2="8" />
+                    </svg>
+                    <span>Pegged-currency rows omit the <code>providers</code> field in an expanded response —
+                        those rates come from the peg, not provider data.</span>
+                </div>
+
+                <h2 id="quirks">Provider quirks</h2>
+                <p>
+                    84 central bank adapters are pulled on a cron loop. Occasional single-provider errors are normal
+                    — the scheduler catches and logs them per-adapter without affecting the others. This is only
+                    worth investigating if the same error repeats every cycle for a currency you rely on, or several
+                    providers fail at once. A handful of providers (BAM, BANXICO, BCCH, BOT, FRED, TCMB) accept an
+                    optional API key upstream and may behave inconsistently without one configured — see the
+                    <a href="https://frankfurter.dev/deploy/" target="_blank" rel="noopener">Frankfurter deploy
+                        guide</a> for details.
+                </p>

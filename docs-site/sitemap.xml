@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://docs.api.currency.uwuapps.org/</loc></url>
+  <url><loc>https://docs.api.currency.uwuapps.org/quickstart</loc></url>
+  <url><loc>https://docs.api.currency.uwuapps.org/rates-latest</loc></url>
+  <url><loc>https://docs.api.currency.uwuapps.org/rates-historical</loc></url>
+  <url><loc>https://docs.api.currency.uwuapps.org/rates-timeseries</loc></url>
+  <url><loc>https://docs.api.currency.uwuapps.org/single-pair</loc></url>
+  <url><loc>https://docs.api.currency.uwuapps.org/conversion</loc></url>
+  <url><loc>https://docs.api.currency.uwuapps.org/currencies</loc></url>
+  <url><loc>https://docs.api.currency.uwuapps.org/providers</loc></url>
+  <url><loc>https://docs.api.currency.uwuapps.org/charting</loc></url>
+  <url><loc>https://docs.api.currency.uwuapps.org/output-formats</loc></url>
+  <url><loc>https://docs.api.currency.uwuapps.org/errors</loc></url>
+  <url><loc>https://docs.api.currency.uwuapps.org/faq</loc></url>
+</urlset>

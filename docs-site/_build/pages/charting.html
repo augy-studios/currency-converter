@@ -1,0 +1,76 @@
+                <h1>Charting Historical Data</h1>
+                <p class="lead">A time-series call returns a flat array — one row per date/currency pair, not
+                    grouped by date. Group it before you chart it.</p>
+
+                <h2 id="flat-rows">The flat row shape</h2>
+                <pre><code>[
+  {"date":"2026-07-01","base":"EUR","quote":"USD","rate":1.161},
+  {"date":"2026-07-01","base":"EUR","quote":"GBP","rate":0.866},
+  {"date":"2026-07-02","base":"EUR","quote":"USD","rate":1.159},
+  {"date":"2026-07-02","base":"EUR","quote":"GBP","rate":0.867}
+]</code></pre>
+                <p>To chart it, group the rows by <code>quote</code> into separate series, keyed on <code>date</code>.
+                </p>
+
+                <h2 id="chartjs">Chart.js example</h2>
+                <p>A self-contained example that plots one or more currencies against a base over a date range:</p>
+                <pre><code>&lt;canvas id="fxChart"&gt;&lt;/canvas&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+async function renderFxChart({ base = "EUR", quotes = ["USD", "GBP"], from, to }) {
+  const url = `https://api.currency.uwuapps.org/v2/rates?base=${base}&quotes=${quotes.join(",")}&from=${from}${to ? `&to=${to}` : ""}`;
+  const rows = await fetch(url).then(r => r.json());
+
+  // Group flat rows into { quote: { date: rate } }
+  const series = {};
+  const dateSet = new Set();
+  for (const row of rows) {
+    series[row.quote] ??= {};
+    series[row.quote][row.date] = row.rate;
+    dateSet.add(row.date);
+  }
+  const labels = [...dateSet].sort();
+
+  const datasets = Object.entries(series).map(([quote, byDate]) => ({
+    label: `${base}/${quote}`,
+    data: labels.map(d => byDate[d] ?? null),
+    spanGaps: true,
+    tension: 0.2,
+  }));
+
+  new Chart(document.getElementById("fxChart"), {
+    type: "line",
+    data: { labels, datasets },
+    options: { responsive: true, scales: { y: { beginAtZero: false } } },
+  });
+}
+
+renderFxChart({ base: "EUR", quotes: ["USD", "GBP", "JPY"], from: "2026-01-01" });
+&lt;/script&gt;</code></pre>
+
+                <h2 id="notes">Notes</h2>
+                <ul>
+                    <li><code>spanGaps: true</code> handles weekends/holidays where no new rate is published — the
+                        line just carries over instead of breaking.</li>
+                    <li>For a long range (multi-year, many currencies), use <code>group=month</code> or
+                        <code>group=week</code> on the request — see <a href="/rates-timeseries">Time Series</a> —
+                        to downsample before it reaches the browser.
+                    </li>
+                </ul>
+
+                <h2 id="pandas">Python / pandas instead</h2>
+                <p>
+                    For a quick analysis script rather than a web chart, fetch the same endpoint, load the JSON
+                    straight into a DataFrame, then pivot before plotting:
+                </p>
+                <pre><code>import pandas as pd
+import requests
+
+rows = requests.get(
+    "https://api.currency.uwuapps.org/v2/rates",
+    params={"base": "EUR", "quotes": "USD,GBP", "from": "2026-01-01"},
+).json()
+
+df = pd.json_normalize(rows)
+wide = df.pivot(index="date", columns="quote", values="rate")
+wide.plot()</code></pre>

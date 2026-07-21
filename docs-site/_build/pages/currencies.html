@@ -1,0 +1,28 @@
+                <h1>Currencies</h1>
+                <p class="lead">List and inspect the currencies this instance has data for.</p>
+
+                <h2 id="list-all">List all available currencies</h2>
+                <div class="tryit__head" style="margin-bottom:18px;">
+                    <span class="badge badge--get">GET</span>
+                    <code>/v2/currencies</code>
+                </div>
+                <pre><code>curl https://api.currency.uwuapps.org/v2/currencies</code></pre>
+
+                <div class="try-it" data-method="GET" data-path="/v2/currencies" data-params="[]"></div>
+
+                <h2 id="scope-all">Include legacy/retired currencies</h2>
+                <pre><code>curl https://api.currency.uwuapps.org/v2/currencies?scope=all</code></pre>
+                <div class="try-it" data-method="GET" data-path="/v2/currencies"
+                    data-params='[{"name":"scope","default":"all","placeholder":"all"}]'></div>
+
+                <h2 id="one-currency">Details for one currency</h2>
+                <div class="tryit__head" style="margin-bottom:18px;">
+                    <span class="badge badge--get">GET</span>
+                    <code>/v2/currency/{code}</code>
+                </div>
+                <pre><code>curl https://api.currency.uwuapps.org/v2/currency/EUR</code></pre>
+                <div class="try-it" data-method="GET" data-path="/v2/currency/{code}"
+                    data-params='[{"name":"code","default":"EUR","placeholder":"EUR","required":true}]'></div>
+
+                <p>Returns the currency's name, symbol, earliest available <code>start_date</code>, and which
+                    providers cover it.</p>

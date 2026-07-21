@@ -1,0 +1,64 @@
+                <h1>Single Pair Rate</h1>
+                <p class="lead">Fetch one base/quote currency pair in a single call.</p>
+
+                <div class="tryit__head" style="margin-bottom:18px;">
+                    <span class="badge badge--get">GET</span>
+                    <code>/v2/rate/{base}/{quote}</code>
+                </div>
+
+                <pre><code>curl https://api.currency.uwuapps.org/v2/rate/EUR/USD</code></pre>
+
+                <h2 id="params">Path and query parameters</h2>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Param</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>base</code></td>
+                                <td>path</td>
+                                <td>Base currency code, e.g. <code>EUR</code>.</td>
+                            </tr>
+                            <tr>
+                                <td><code>quote</code></td>
+                                <td>path</td>
+                                <td>Target currency code, e.g. <code>USD</code>.</td>
+                            </tr>
+                            <tr>
+                                <td><code>date</code></td>
+                                <td>query</td>
+                                <td>Optional. Same behaviour as <a href="/rates-historical">Historical Rates</a>.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>providers</code></td>
+                                <td>query</td>
+                                <td>Optional. Pin to one data source, e.g. <code>ECB</code>.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2 id="try-it">Try it</h2>
+                <div class="try-it" data-method="GET" data-path="/v2/rate/{base}/{quote}"
+                    data-params='[{"name":"base","default":"EUR","placeholder":"EUR","required":true},{"name":"quote","default":"USD","placeholder":"USD","required":true},{"name":"date","default":"","placeholder":"YYYY-MM-DD (optional)"}]'>
+                </div>
+
+                <h2 id="response">Response</h2>
+                <pre><code>{ "date": "2026-07-21", "base": "EUR", "quote": "USD", "rate": 1.161 }</code></pre>
+
+                <div class="callout">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="12" y1="16" x2="12" y2="12" />
+                        <line x1="12" y1="8" x2="12.01" y2="8" />
+                    </svg>
+                    <span>This is the endpoint the <a href="/conversion">Currency Conversion</a> recipe is built
+                        on.</span>
+                </div>

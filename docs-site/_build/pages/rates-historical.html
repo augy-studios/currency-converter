@@ -1,0 +1,65 @@
+                <h1>Historical Rates</h1>
+                <p class="lead">Exchange rates for a single date, back to 1948.</p>
+
+                <div class="tryit__head" style="margin-bottom:18px;">
+                    <span class="badge badge--get">GET</span>
+                    <code>/v2/rates</code>
+                </div>
+
+                <pre><code>curl https://api.currency.uwuapps.org/v2/rates?date=1999-01-04</code></pre>
+
+                <h2 id="query-params">Query parameters</h2>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Param</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>date</code></td>
+                                <td>string</td>
+                                <td>A single date as <code>YYYY-MM-DD</code>.</td>
+                            </tr>
+                            <tr>
+                                <td><code>base</code></td>
+                                <td>string</td>
+                                <td>Change the base currency (default <code>EUR</code>).</td>
+                            </tr>
+                            <tr>
+                                <td><code>quotes</code></td>
+                                <td>string</td>
+                                <td>Comma-separated list to filter target currencies.</td>
+                            </tr>
+                            <tr>
+                                <td><code>providers</code></td>
+                                <td>string</td>
+                                <td>Pin to one data source, e.g. <code>ECB</code>.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2 id="try-it">Try it</h2>
+                <div class="try-it" data-method="GET" data-path="/v2/rates"
+                    data-params='[{"name":"date","default":"1999-01-04","placeholder":"YYYY-MM-DD","required":true},{"name":"base","default":"EUR","placeholder":"EUR"},{"name":"quotes","default":"USD","placeholder":"USD (optional)"}]'>
+                </div>
+
+                <div class="callout callout--warn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                        <line x1="12" y1="9" x2="12" y2="13" />
+                        <line x1="12" y1="17" x2="12.01" y2="17" />
+                    </svg>
+                    <span>Weekends and bank holidays have no published rate for most providers — the response
+                        carries forward the most recent prior business day's rate for that date.</span>
+                </div>
+
+                <h2 id="response">Response</h2>
+                <pre><code>[
+  { "date": "1999-01-04", "base": "EUR", "quote": "USD", "rate": 1.1789 }
+]</code></pre>

@@ -1,0 +1,47 @@
+                <h1>Quick Start</h1>
+                <p class="lead">No signup, no API key, no dashboard. Point a request at the base URL and you're
+                    reading live exchange rates.</p>
+
+                <h2 id="base-url">Base URL</h2>
+                <p>Every endpoint hangs off this base:</p>
+                <pre><code>https://api.currency.uwuapps.org</code></pre>
+
+                <h2 id="first-request">Your first request</h2>
+                <p>Fetch today's blended rates with EUR as the default base:</p>
+                <pre><code>curl https://api.currency.uwuapps.org/v2/rates</code></pre>
+
+                <div class="try-it" data-method="GET" data-path="/v2/rates"
+                    data-params='[{"name":"base","default":"EUR","placeholder":"EUR"},{"name":"quotes","default":"USD,GBP","placeholder":"USD,GBP"}]'>
+                </div>
+
+                <h2 id="response-shape">Response shape</h2>
+                <p>A latest-rates call returns a flat array of base/quote rows:</p>
+                <pre><code>[
+  { "date": "2026-07-21", "base": "EUR", "quote": "USD", "rate": 1.161 },
+  { "date": "2026-07-21", "base": "EUR", "quote": "GBP", "rate": 0.866 }
+]</code></pre>
+
+                <h2 id="no-key">No authentication</h2>
+                <p>
+                    This instance is self-hosted, so there's no API key to generate and no request quota to run
+                    into. Just call the endpoints directly from a script, a server, or client-side JavaScript.
+                </p>
+
+                <div class="callout">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="12" y1="16" x2="12" y2="12" />
+                        <line x1="12" y1="8" x2="12.01" y2="8" />
+                    </svg>
+                    <span>Calling the API straight from browser JavaScript works out of the box — see the
+                        <a href="/faq#cors">CORS note</a> in the FAQ if you're proxying it instead.</span>
+                </div>
+
+                <h2 id="next-steps">Next steps</h2>
+                <ul>
+                    <li><a href="/rates-latest">Latest Rates</a> — change the base currency or filter to specific
+                        quotes.</li>
+                    <li><a href="/rates-timeseries">Time Series</a> — pull a date range for charting.</li>
+                    <li><a href="/currencies">Currencies</a> — look up supported codes and names.</li>
+                </ul>

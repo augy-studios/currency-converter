@@ -1,0 +1,41 @@
+                <h1>Errors</h1>
+                <p class="lead">Standard HTTP status codes with a small JSON error body.</p>
+
+                <h2 id="body-shape">Error body shape</h2>
+                <pre><code>{ "message": "Could not find currency ABC" }</code></pre>
+
+                <h2 id="status-codes">Status codes</h2>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Meaning</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>400</code></td>
+                                <td>Invalid parameter or malformed request.</td>
+                            </tr>
+                            <tr>
+                                <td><code>404</code></td>
+                                <td>Currency, rate, or resource not found.</td>
+                            </tr>
+                            <tr>
+                                <td><code>422</code></td>
+                                <td>Request understood but cannot be processed.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2 id="handling">Handling errors</h2>
+                <p>Check <code>res.ok</code> (or the status code) before parsing the body as a successful response
+                    — the shape is different on failure:</p>
+                <pre><code>const res = await fetch(url);
+if (!res.ok) {
+  const { message } = await res.json();
+  throw new Error(message);
+}
+const data = await res.json();</code></pre>

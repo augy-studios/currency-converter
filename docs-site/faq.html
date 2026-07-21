@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en" data-theme="classic">
+
+<head>
+    <meta charset="utf-8">
+    <title>FAQ & Operational Notes | UwU Currency API Docs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Update frequency, uptime, rate limits, CORS, and provider quirks for this instance.">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="FAQ & Operational Notes | UwU Currency API Docs" />
+    <meta property="og:site_name" content="UwU Currency API Docs" />
+    <meta property="og:description" content="Update frequency, uptime, rate limits, CORS, and provider quirks for this instance." />
+
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Jua&family=JetBrains+Mono:wght@400;500&display=optional">
+    <link rel="stylesheet" href="/css/theme.css">
+    <link rel="stylesheet" href="/css/docs.css">
+    <meta name="theme-color" content="#ccffcc" />
+
+    <link rel="apple-touch-icon" href="/icons/icon-main.png">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image:src" content="/icons/icon-main.png">
+    <meta property="og:image" content="/icons/icon-main.png" />
+</head>
+
+<body>
+    <a class="skip-link" href="#content">Skip to content</a>
+
+    <header class="topbar">
+        <button id="menu-toggle" class="btn btn--icon menu-toggle" aria-label="Toggle navigation"
+            aria-expanded="false">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+        </button>
+        <a href="/" class="topbar__brand">
+            <div class="topbar__logo">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="1" x2="12" y2="23" />
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                </svg>
+            </div>
+            <div class="topbar__title">API Docs<small>api.currency.uwuapps.org</small></div>
+        </a>
+        <button class="btn btn--search btn--search--desktop" data-search-open type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <span>Search docs…</span>
+            <kbd>Ctrl K</kbd>
+        </button>
+        <div class="topbar__spacer"></div>
+        <button class="btn btn--icon btn--search--mobile" data-search-open type="button" aria-label="Search docs">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+        </button>
+        <a href="https://donate.stripe.com/28o2akeAr3hv0DK6oo" target="_blank" rel="noopener"
+            class="btn btn--icon btn--coffee" title="Buy Augy a Coffee" aria-label="Buy Augy a Coffee">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
+                <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+                <line x1="6" y1="1" x2="6" y2="4" />
+                <line x1="10" y1="1" x2="10" y2="4" />
+                <line x1="14" y1="1" x2="14" y2="4" />
+            </svg>
+        </a>
+        <button id="theme-toggle" class="btn btn--icon" title="Choose theme" aria-label="Choose theme">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="13.5" cy="6.5" r=".5" fill="currentColor" />
+                <circle cx="17.5" cy="10.5" r=".5" fill="currentColor" />
+                <circle cx="8.5" cy="7.5" r=".5" fill="currentColor" />
+                <circle cx="6.5" cy="12.5" r=".5" fill="currentColor" />
+                <path
+                    d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z" />
+            </svg>
+        </button>
+    </header>
+
+    <div class="sidebar-scrim" id="sidebar-scrim"></div>
+
+    <div class="shell">
+        <nav class="sidebar" id="sidebar" aria-label="Docs navigation">
+            <div id="sidebar-nav"></div>
+        </nav>
+
+        <div class="content-wrap">
+            <main class="content" id="content">
+                <h1>FAQ &amp; Operational Notes</h1>
+                <p class="lead">Things worth knowing about this specific instance, beyond the endpoint reference.</p>
+
+                <h2 id="update-frequency">How often do rates update?</h2>
+                <p>
+                    Roughly daily, around 16:00 CET from the ECB, with other providers updating on their own
+                    schedules through the day. Self-hosting doesn't make this instance faster than the public
+                    Frankfurter API — it's the same underlying provider data either way.
+                </p>
+
+                <h2 id="rate-limits">Are there rate limits?</h2>
+                <p>
+                    No request quota. This is a self-hosted instance rather than a shared public one, so there's no
+                    per-key throttling to plan around. Be a good citizen with it regardless — cache responses on
+                    your end where it makes sense rather than re-fetching the same data in a tight loop.
+                </p>
+
+                <h2 id="cors">Can I call this directly from browser JavaScript?</h2>
+                <p>
+                    Yes — the endpoints are meant to be called client-side as well as server-side, and every
+                    example in these docs (including the <a href="/quickstart">Quick Start</a> and the
+                    <a href="/charting">Chart.js guide</a>) does exactly that with a plain <code>fetch()</code>,
+                    no proxy involved.
+                </p>
+
+                <h2 id="uptime">What's the uptime like?</h2>
+                <p>
+                    The service is configured to restart automatically if it or the host ever goes down, and TLS
+                    stays valid via automatic certificate renewal. As with any single-instance deployment, brief
+                    downtime during a redeploy or host maintenance window is possible — there's no multi-region
+                    failover behind this API.
+                </p>
+
+                <h2 id="data-persistence">Does historical data ever change or disappear?</h2>
+                <p>
+                    Rate history is stored durably and survives routine restarts and redeploys. Once a date's rates
+                    are published they aren't expected to change retroactively, aside from rare upstream corrections
+                    from a provider.
+                </p>
+
+                <h2 id="provider-errors">I see an occasional provider error in a response — is that a problem?</h2>
+                <p>
+                    Not usually. With 84 central bank adapters running on a schedule, an isolated parsing hiccup
+                    from a single provider on a single date is normal and doesn't affect the other providers or
+                    currencies. See <a href="/providers">Providers</a> for when it's actually worth flagging.
+                </p>
+
+                <h2 id="support">Something looks wrong — who do I tell?</h2>
+                <p>
+                    This API backs the <a href="https://frankfurter.dev" target="_blank" rel="noopener">Frankfurter</a>
+                    project's public data, run by Augy. If a rate looks off or an endpoint is behaving unexpectedly,
+                    that's the person to reach.
+                </p>
+                <nav class="pager" id="pager" aria-label="Page navigation"></nav>
+            </main>
+        </div>
+
+        <aside class="toc" id="toc">
+            <div class="toc__title">On this page</div>
+            <ul class="toc-list" id="toc-list"></ul>
+        </aside>
+    </div>
+
+    <footer class="site-footer">
+        <span>Docs for the self-hosted Frankfurter instance. Made with</span>
+        <svg class="icon-heart" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+            aria-label="love">
+            <path
+                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+        </svg>
+        <span>by Augy.</span>
+    </footer>
+
+    <div id="theme-modal" class="modal-overlay hidden" role="dialog" aria-modal="true"
+        aria-labelledby="theme-modal-title">
+        <div class="modal">
+            <div class="modal__header">
+                <h2 id="theme-modal-title" class="modal__title">Choose Theme</h2>
+                <button id="close-theme-modal" class="btn btn--icon" aria-label="Close theme picker">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </button>
+            </div>
+            <div class="theme-grid" id="theme-grid"></div>
+        </div>
+    </div>
+
+    <div id="search-modal" class="modal-overlay search-modal hidden" role="dialog" aria-modal="true"
+        aria-labelledby="search-modal-title">
+        <div class="modal">
+            <h2 id="search-modal-title" class="hidden">Search docs</h2>
+            <div class="search-box">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <input id="search-input" type="text" placeholder="Search docs…" autocomplete="off" />
+                <button id="close-search-modal" class="btn btn--icon" aria-label="Close search">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </button>
+            </div>
+            <ul class="search-results" id="search-results"></ul>
+        </div>
+    </div>
+
+    <script>window.PAGE_ID = 'faq';</script>
+    <script src="/js/nav-data.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/nav.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/try-it.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
+    </script>
+</body>
+
+</html>

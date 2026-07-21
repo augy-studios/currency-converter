@@ -1,5 +1,5 @@
-const CACHE = "currency-docs-v2";
-const FONT_CACHE = "currency-docs-fonts-v1";
+const CACHE = "currency-docs-v3";
+const FONT_CACHE = "currency-docs-fonts-v2";
 
 const ASSETS = [
   "/",
@@ -29,15 +29,16 @@ const ASSETS = [
   "/404.html"
 ];
 
-const GOOGLE_FONTS_CSS = "https://fonts.googleapis.com/css2?family=Jua&family=JetBrains+Mono:wght@400;500&display=optional";
+const GOOGLE_FONTS_CSS = "https://fonts.googleapis.com/css2?family=Jua&family=JetBrains+Mono:wght@400;500&display=swap";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
     Promise.all([
       caches.open(CACHE).then((cache) => cache.addAll(ASSETS)),
-      caches.open(FONT_CACHE).then((cache) =>
-        cache.add(new Request(GOOGLE_FONTS_CSS, { mode: "no-cors" })).catch(() => {})
-      )
+      // Google Fonts serves permissive CORS headers on both the stylesheet
+      // and the font files, so a plain fetch/add works and yields a normal
+      // (non-opaque) cached response - no mode override needed here.
+      caches.open(FONT_CACHE).then((cache) => cache.add(GOOGLE_FONTS_CSS).catch(() => {}))
     ])
   );
   self.skipWaiting();
@@ -60,14 +61,21 @@ self.addEventListener("fetch", (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Google Fonts: cache-first, content-hashed URLs so this is effectively immutable.
+  // Google Fonts: cache-first, content-hashed URLs so this is effectively
+  // immutable. Google serves proper CORS headers here, so this must stay a
+  // plain fetch() - wrapping it in mode:"no-cors" produces an opaque
+  // response, and Chrome hard-fails a respondWith() that hands an opaque
+  // response back for a request whose actual mode isn't "no-cors" (which
+  // is exactly how the browser requests cross-origin @font-face files).
   if (url.hostname === "fonts.googleapis.com" || url.hostname === "fonts.gstatic.com") {
     event.respondWith(
       caches.match(request).then((cached) => {
         if (cached) return cached;
-        return fetch(request, { mode: "no-cors" }).then((response) => {
-          const clone = response.clone();
-          caches.open(FONT_CACHE).then((cache) => cache.put(request, clone));
+        return fetch(request).then((response) => {
+          if (response.ok) {
+            const clone = response.clone();
+            caches.open(FONT_CACHE).then((cache) => cache.put(request, clone));
+          }
           return response;
         });
       })

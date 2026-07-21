@@ -2,9 +2,29 @@
   "name": "Currency API Docs | UwU Apps",
   "short_name": "Currency API Docs",
   "description": "Developer documentation for the self-hosted Frankfurter currency exchange rate API at api.currency.uwuapps.org.",
-  "icons": [
-    { "src": "/icons/icon-192.png", "type": "image/png", "sizes": "192x192" },
-    { "src": "/icons/icon-512.png", "type": "image/png", "sizes": "512x512" }
+  "icons": [{
+      "src": "/icons/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "screenshots": [{
+      "src": "/images/screenshot_1.png",
+      "type": "image/png",
+      "sizes": "1080x2340",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/images/screenshot_2.png",
+      "type": "image/png",
+      "sizes": "1920x988",
+      "form_factor": "wide"
+    }
   ],
   "start_url": "/",
   "theme_color": "#ccffcc",

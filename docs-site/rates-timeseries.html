@@ -167,7 +167,7 @@
 
                 <h2 id="try-it">Try it</h2>
                 <div class="try-it" data-method="GET" data-path="/v2/rates"
-                    data-params='[{"name":"from","default":"2026-01-01","placeholder":"YYYY-MM-DD","required":true},{"name":"to","default":"","placeholder":"YYYY-MM-DD (optional)"},{"name":"quotes","default":"USD","placeholder":"USD,GBP"},{"name":"group","default":"","placeholder":"week / month (optional)"}]'>
+                    data-params='[{"name":"from","default":"2026-01-01","type":"date","required":true},{"name":"to","default":"","type":"date"},{"name":"quotes","default":"USD","type":"currency-multi"},{"name":"group","default":"","type":"select","options":["week","month"]}]'>
                 </div>
 
                 <h2 id="response-shape">Response shape</h2>

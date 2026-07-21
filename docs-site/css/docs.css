@@ -514,7 +514,7 @@ tr:last-child td { border-bottom: none; }
   color: var(--muted);
   flex: 1 1 140px;
 }
-.tryit__field input {
+.tryit__field input, .tryit__field select {
   background: var(--input-bg);
   border: 1px solid var(--input-border);
   border-radius: var(--radius-xs);
@@ -523,7 +523,17 @@ tr:last-child td { border-bottom: none; }
   color: var(--text);
   font-family: 'Jua';
 }
-.tryit__field input:focus { border-color: var(--ring); }
+.tryit__field input:focus, .tryit__field select:focus { border-color: var(--ring); }
+.tryit__field select { cursor: pointer; }
+.tryit__field select[multiple] {
+  cursor: default;
+  padding: 4px;
+}
+.tryit__field select[multiple] option {
+  padding: 5px 7px;
+  border-radius: 5px;
+}
+.tryit__hint { font-size: 11px; color: var(--muted); }
 .tryit__send { flex-shrink: 0; }
 .tryit__result { margin-top: 14px; }
 .tryit__meta { display: flex; gap: 12px; align-items: center; margin-bottom: 6px; font-size: 12px; }

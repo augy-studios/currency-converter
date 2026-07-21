@@ -16,7 +16,7 @@ convert("EUR", "USD", 10).then(result => console.log(`10 EUR = ${result} USD`));
                 <p class="muted">Uses the same <a href="/single-pair">Single Pair Rate</a> endpoint under the hood.
                 </p>
                 <div class="try-it" data-method="GET" data-path="/v2/rate/{base}/{quote}"
-                    data-params='[{"name":"base","default":"EUR","placeholder":"EUR","required":true},{"name":"quote","default":"USD","placeholder":"USD","required":true}]'>
+                    data-params='[{"name":"base","default":"EUR","type":"currency","required":true},{"name":"quote","default":"USD","type":"currency","required":true}]'>
                 </div>
 
                 <h2 id="rounding">Rounding and precision</h2>

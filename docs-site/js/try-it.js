@@ -2,7 +2,76 @@
    Renders a live request builder for a <div class="try-it"> declared with
    data attributes, and calls the API directly from the browser, since this
    instance's Frankfurter deployment sends permissive CORS headers, so no
-   serverless proxy is needed for read-only GET calls. */
+   serverless proxy is needed for read-only GET calls.
+
+   Each entry in data-params can carry a "type" so the field renders as the
+   right native control instead of a plain text box:
+     - "date"           -> <input type="date">, so the browser's own picker opens
+     - "currency"       -> <select> of every supported code, fetched once
+     - "currency-multi" -> <select multiple>, for comma-separated params like quotes
+     - "select"         -> <select> from a fixed "options" list (e.g. week/month)
+     - (omitted)        -> plain text input, unchanged */
+
+let currencyOptionsPromise = null;
+
+function loadCurrencyOptions() {
+  if (!currencyOptionsPromise) {
+    currencyOptionsPromise = fetch(`${API_ORIGIN}/v2/currencies`, { cache: 'no-store' })
+      .then(res => res.json())
+      .then(rows => rows
+        .map(c => ({ code: c.iso_code, name: c.name }))
+        .sort((a, b) => a.code.localeCompare(b.code)))
+      .catch(() => []);
+  }
+  return currencyOptionsPromise;
+}
+
+function fieldMarkup(p) {
+  const required = p.required ? 'required' : '';
+  if (p.type === 'date') {
+    return `<input type="date" name="${p.name}" value="${p.default || ''}" ${required} />`;
+  }
+  if (p.type === 'select') {
+    const opts = (p.options || []).map(o => {
+      const value = typeof o === 'string' ? o : o.value;
+      const label = typeof o === 'string' ? o : o.label;
+      const selected = value === (p.default || '') ? 'selected' : '';
+      return `<option value="${value}" ${selected}>${label}</option>`;
+    }).join('');
+    const blank = p.required ? '' : '<option value="">(any)</option>';
+    return `<select name="${p.name}" ${required}>${blank}${opts}</select>`;
+  }
+  if (p.type === 'currency' || p.type === 'currency-multi') {
+    const multiple = p.type === 'currency-multi' ? 'multiple size="5"' : '';
+    return `<select name="${p.name}" ${multiple} ${required} data-currency-select="loading">
+      <option value="">Loading currencies…</option>
+    </select>`;
+  }
+  return `<input type="text" name="${p.name}" placeholder="${p.placeholder || ''}" value="${p.default || ''}" ${required} />`;
+}
+
+function hydrateCurrencySelect(select, p) {
+  loadCurrencyOptions().then(currencies => {
+    if (!currencies.length) {
+      select.innerHTML = `<option value="${p.default || ''}">${p.default || 'unavailable'}</option>`;
+      return;
+    }
+    const defaults = new Set((p.default || '').split(',').map(s => s.trim()).filter(Boolean));
+    select.innerHTML = currencies.map(c =>
+      `<option value="${c.code}" ${defaults.has(c.code) ? 'selected' : ''}>${c.code} - ${c.name}</option>`
+    ).join('');
+    select.removeAttribute('data-currency-select');
+  });
+}
+
+function fieldValue(form, p) {
+  const el = form.elements[p.name];
+  if (!el) return '';
+  if (p.type === 'currency-multi') {
+    return [...el.selectedOptions].map(o => o.value).join(',');
+  }
+  return el.value;
+}
 
 function renderTryIt(el) {
   const method = el.dataset.method || 'GET';
@@ -10,18 +79,17 @@ function renderTryIt(el) {
   let params = [];
   try { params = JSON.parse(el.dataset.params || '[]'); } catch (e) { params = []; }
 
-  const formId = `tryit-${Math.random().toString(36).slice(2, 8)}`;
-
   el.innerHTML = `
     <div class="tryit__head">
       <span class="badge badge--get">${method}</span>
       <code class="tryit__path">${path}</code>
     </div>
-    <form class="tryit__form" id="${formId}">
+    <form class="tryit__form">
       ${params.map(p => `
         <label class="tryit__field">
           <span>${p.name}${p.required ? ' *' : ''}</span>
-          <input type="text" name="${p.name}" placeholder="${p.placeholder || ''}" value="${p.default || ''}" ${p.required ? 'required' : ''} />
+          ${fieldMarkup(p)}
+          ${p.type === 'currency-multi' ? '<small class="tryit__hint">Ctrl/Cmd-click to select multiple</small>' : ''}
         </label>
       `).join('')}
       <button type="submit" class="btn btn--primary tryit__send">Send request</button>
@@ -42,16 +110,20 @@ function renderTryIt(el) {
   const codeEl = el.querySelector('.tryit__response code');
   const sendBtn = el.querySelector('.tryit__send');
 
+  params
+    .filter(p => p.type === 'currency' || p.type === 'currency-multi')
+    .forEach(p => hydrateCurrencySelect(form.elements[p.name], p));
+
   form.addEventListener('submit', async e => {
     e.preventDefault();
-    const data = new FormData(form);
     let url = API_ORIGIN + path;
     const search = new URLSearchParams();
-    for (const [key, value] of data.entries()) {
-      if (path.includes(`{${key}}`)) {
-        url = url.replace(`{${key}}`, encodeURIComponent(value || ''));
+    for (const p of params) {
+      const value = fieldValue(form, p);
+      if (path.includes(`{${p.name}}`)) {
+        url = url.replace(`{${p.name}}`, encodeURIComponent(value || ''));
       } else if (value) {
-        search.set(key, value);
+        search.set(p.name, value);
       }
     }
     const qs = search.toString();

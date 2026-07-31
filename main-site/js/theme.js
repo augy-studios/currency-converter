@@ -1,9 +1,9 @@
-/* ─── Theme system (shared across every docs page) ───
+/* ─── Theme system ───
    7 brand colour swatches + light/dark mode, two independent axes.
    Default is always light + classic, regardless of OS preference.
    Once the user picks something, it is persisted. */
 
-const APP_KEY = "uwuconvert-docs";
+const APP_KEY = "uwuconvert";
 
 const COLOR_THEMES = [
   { id: "classic", label: "Classic", hex: "#ccffcc" },
@@ -19,7 +19,7 @@ const STORAGE_KEY_COLOR = `${APP_KEY}.colorTheme`;
 const STORAGE_KEY_MODE = `${APP_KEY}.mode`;
 
 // Pre-mode-axis key, values were a flat swatch id.
-const LEGACY_KEY_COLOR = "uwudocs.theme";
+const LEGACY_KEY_COLOR = `${APP_KEY}.theme`;
 const LEGACY_COLOR_IDS = {
   classic: "classic",
   notgreen1: "not-green-1",

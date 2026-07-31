@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="classic">
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -17,6 +17,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Jua&family=JetBrains+Mono:wght@400;500&display=swap">
+    <script>
+        // Land the saved theme before first paint, so a dark-mode user never
+        // sees a light flash. Keep APP_KEY in sync with js/theme.js.
+        (function () {
+            var k = "uwuconvert-docs";
+            var legacy = { classic: "classic", notgreen1: "not-green-1", notgreen2: "not-green-2", notgreen3: "not-green-3", notgreen4: "not-green-4", notgreen5: "not-green-5", white: "really-light-green" };
+            var m = localStorage.getItem(k + ".mode") || "light";
+            var c = localStorage.getItem(k + ".colorTheme") || legacy[localStorage.getItem("uwudocs.theme")] || "classic";
+            document.documentElement.setAttribute("data-mode", m);
+            document.documentElement.setAttribute("data-color-theme", c);
+        })();
+    </script>
     <link rel="stylesheet" href="/css/theme.css">
     <link rel="stylesheet" href="/css/docs.css">
     <meta name="theme-color" content="#ccffcc" />
@@ -86,16 +98,8 @@
                     <line x1="14" y1="1" x2="14" y2="4" />
                 </svg>
             </a>
-            <button id="theme-toggle" class="btn btn--icon" title="Choose theme" aria-label="Choose theme">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="13.5" cy="6.5" r=".5" fill="currentColor" />
-                    <circle cx="17.5" cy="10.5" r=".5" fill="currentColor" />
-                    <circle cx="8.5" cy="7.5" r=".5" fill="currentColor" />
-                    <circle cx="6.5" cy="12.5" r=".5" fill="currentColor" />
-                    <path
-                        d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z" />
-                </svg>
+            <button class="icon-btn" id="themeBtn" type="button" aria-label="Theme">
+                <span data-icon="sun"></span>
             </button>
         </div>
     </header>
@@ -175,26 +179,9 @@
         <span>by Augy.</span>
     </footer>
 
-    <div id="theme-modal" class="modal-overlay hidden" role="dialog" aria-modal="true"
-        aria-labelledby="theme-modal-title">
-        <div class="modal">
-            <div class="modal__header">
-                <h2 id="theme-modal-title" class="modal__title">Choose Theme</h2>
-                <button id="close-theme-modal" class="btn btn--icon" aria-label="Close theme picker">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2.5" stroke-linecap="round">
-                        <line x1="18" y1="6" x2="6" y2="18" />
-                        <line x1="6" y1="6" x2="18" y2="18" />
-                    </svg>
-                </button>
-            </div>
-            <div class="theme-grid" id="theme-grid"></div>
-        </div>
-    </div>
-
     <div id="search-modal" class="modal-overlay search-modal hidden" role="dialog" aria-modal="true"
         aria-labelledby="search-modal-title">
-        <div class="modal">
+        <div class="modal glass">
             <h2 id="search-modal-title" class="hidden">Search docs</h2>
             <div class="search-box">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -215,8 +202,30 @@
         </div>
     </div>
 
+    <div class="modal-backdrop hidden" id="themeModal">
+        <div class="modal glass" role="dialog" aria-modal="true" aria-labelledby="themeModalTitle">
+            <div class="modal-head">
+                <h2 id="themeModalTitle">Theme</h2>
+                <button class="icon-btn small" type="button" data-close-modal="themeModal" aria-label="Close">
+                    <span data-icon="close"></span>
+                </button>
+            </div>
+            <p class="modal-section-label">Mode</p>
+            <div class="mode-toggle" id="modeToggle">
+                <button class="mode-btn" type="button" data-mode="light" aria-pressed="false"><span
+                        data-icon="sun"></span>Light</button>
+                <button class="mode-btn" type="button" data-mode="dark" aria-pressed="false"><span
+                        data-icon="moon"></span>Dark</button>
+            </div>
+            <p class="modal-section-label">Brand colour</p>
+            <div class="swatch-grid" id="swatchGrid"></div>
+        </div>
+    </div>
+
     <script>window.PAGE_ID = 'quickstart';</script>
     <script src="/js/nav-data.js"></script>
+    <script src="/js/icons.js"></script>
+    <script src="/js/ui.js"></script>
     <script src="/js/theme.js"></script>
     <script src="/js/nav.js"></script>
     <script src="/js/search.js"></script>

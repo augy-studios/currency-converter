@@ -1,27 +1,70 @@
-/* ─── CSS Custom Properties: Theme System ───
-   Same palette contract as the main Currency Converter app so both
-   properties feel like one product. Themes are static colours only,
-   with no gradients and no orbs/blobs. */
-:root {
-  --bg: #ccffcc;
-  --accent: #99ff99;
-  --accent-dark: #55cc55;
-  --ring: #3aa165;
-  --link: #167a45;
+/* ─── Theme tokens ───
+   Same contract as the main Currency Converter app so both properties feel
+   like one product. Two independent axes: brand colour (7 swatches,
+   data-color-theme) and mode (light/dark, data-mode). No gradients, no orbs. */
 
-  /* Structural, constant across themes */
-  --text: #111827;
-  --muted: #4b5563;
-  --card-bg: rgba(255, 255, 255, 0.62);
-  --card-border: rgba(255, 255, 255, 0.88);
-  --panel-bg: rgba(255, 255, 255, 0.5);
-  --input-bg: rgba(255, 255, 255, 0.72);
-  --input-border: rgba(0, 0, 0, 0.11);
+/* ─── Brand colour tokens (7 swatches) ─── */
+:root,
+:root[data-color-theme="classic"] {
+  --brand: #ccffcc;
+  --brand-rgb: 204, 255, 204;
+}
+:root[data-color-theme="not-green-1"] { --brand: #ffcccc; --brand-rgb: 255, 204, 204; }
+:root[data-color-theme="not-green-2"] { --brand: #ccccff; --brand-rgb: 204, 204, 255; }
+:root[data-color-theme="not-green-3"] { --brand: #ffffcc; --brand-rgb: 255, 255, 204; }
+:root[data-color-theme="not-green-4"] { --brand: #ffccff; --brand-rgb: 255, 204, 255; }
+:root[data-color-theme="not-green-5"] { --brand: #ccffff; --brand-rgb: 204, 255, 255; }
+:root[data-color-theme="really-light-green"] { --brand: #ffffff; --brand-rgb: 255, 255, 255; }
+
+/* ─── Light / dark surface tokens ─── */
+:root,
+:root[data-mode="light"] {
+  --bg: #eef2f0;
+  --surface: rgba(255, 255, 255, 0.55);
+  --surface-strong: rgba(255, 255, 255, 0.78);
+  --surface-border: rgba(255, 255, 255, 0.65);
+  --ink: #121815;
+  --muted: #5b665f;
+  --shadow: 0 10px 30px rgba(20, 40, 30, 0.10);
+  --brand-ink: #1f6b3d;
+  --ok: #0f7234;
+  --warn: #a24b08;
+  --busy: #627288;
+  --error: #b91c1c;
+}
+
+:root[data-mode="dark"] {
+  --bg: #0c100e;
+  --surface: rgba(255, 255, 255, 0.06);
+  --surface-strong: rgba(255, 255, 255, 0.11);
+  --surface-border: rgba(255, 255, 255, 0.14);
+  --ink: #eef2ef;
+  --muted: #9aa7a0;
+  --shadow: 0 10px 34px rgba(0, 0, 0, 0.5);
+  --brand-ink: #bff5cf;
+  --ok: #4ade80;
+  --warn: #fbbf24;
+  --busy: #94a3b8;
+  --error: #fa9696;
+}
+
+/* Same in both modes: brand tints are pale whatever the mode. */
+:root {
+  --on-brand: #121815;
+  /* Brand-derived fills. Any surface that tracked the brand swatch before
+     still tracks it, in both modes. Text on these is always --on-brand. */
+  --brand-fill: color-mix(in srgb, var(--brand) 55%, var(--surface-strong));
+  --brand-fill-strong: color-mix(in srgb, var(--brand) 75%, var(--surface-strong));
+  /* Secondary text on --surface-strong. Plain --muted only reaches 3.6:1
+     there in dark mode, since the strong surface lightens the backdrop. */
+  --muted-strong: color-mix(in srgb, var(--ink) 70%, transparent);
+
+  /* Code blocks stay a fixed dark surface in both modes. Inverting them
+     would put near-black code on a near-black page in dark mode. */
   --code-bg: rgba(15, 23, 42, 0.94);
   --code-text: #e5e7eb;
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.07);
-  --shadow: 0 8px 32px rgba(0, 0, 0, 0.10), 0 2px 8px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.14);
+
+  /* Non-colour tokens */
   --radius: 20px;
   --radius-sm: 12px;
   --radius-xs: 8px;

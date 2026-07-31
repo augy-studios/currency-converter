@@ -1,4 +1,4 @@
-const CACHE = "currency-docs-v8";
+const CACHE = "currency-docs-v9";
 const FONT_CACHE = "currency-docs-fonts-v2";
 
 const ASSETS = [
@@ -32,6 +32,8 @@ const ASSETS = [
   "/css/theme.css",
   "/css/docs.css",
   "/js/nav-data.js",
+  "/js/icons.js",
+  "/js/ui.js",
   "/js/theme.js",
   "/js/nav.js",
   "/js/search.js",

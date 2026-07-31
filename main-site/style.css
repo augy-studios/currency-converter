@@ -1,24 +1,60 @@
-/* ─── CSS Custom Properties ─── */
-:root {
-  /* Classic theme (default) — overridden per theme via JS */
-  --bg: #ccffcc;
-  --accent: #99ff99;
-  --accent-dark: #55cc55;
-  --ring: #3aa165;
-  --link: #167a45;
+/* ─── Brand colour tokens (7 swatches) ─── */
+:root,
+:root[data-color-theme="classic"] {
+  --brand: #ccffcc;
+  --brand-rgb: 204, 255, 204;
+}
+:root[data-color-theme="not-green-1"] { --brand: #ffcccc; --brand-rgb: 255, 204, 204; }
+:root[data-color-theme="not-green-2"] { --brand: #ccccff; --brand-rgb: 204, 204, 255; }
+:root[data-color-theme="not-green-3"] { --brand: #ffffcc; --brand-rgb: 255, 255, 204; }
+:root[data-color-theme="not-green-4"] { --brand: #ffccff; --brand-rgb: 255, 204, 255; }
+:root[data-color-theme="not-green-5"] { --brand: #ccffff; --brand-rgb: 204, 255, 255; }
+:root[data-color-theme="really-light-green"] { --brand: #ffffff; --brand-rgb: 255, 255, 255; }
 
-  /* Structural variables — constant across themes */
-  --text: #111827;
-  --muted: #4b5563;
-  --card-bg: rgba(255, 255, 255, 0.62);
-  --card-border: rgba(255, 255, 255, 0.88);
-  --input-bg: rgba(255, 255, 255, 0.72);
-  --input-border: rgba(0, 0, 0, 0.11);
-  --result-bg: rgba(255, 255, 255, 0.38);
-  --result-border: rgba(255, 255, 255, 0.55);
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.07);
-  --shadow: 0 8px 32px rgba(0, 0, 0, 0.10), 0 2px 8px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.14);
+/* ─── Light / dark surface tokens ─── */
+:root,
+:root[data-mode="light"] {
+  --bg: #eef2f0;
+  --surface: rgba(255, 255, 255, 0.55);
+  --surface-strong: rgba(255, 255, 255, 0.78);
+  --surface-border: rgba(255, 255, 255, 0.65);
+  --ink: #121815;
+  --muted: #5b665f;
+  --shadow: 0 10px 30px rgba(20, 40, 30, 0.10);
+  --brand-ink: #1f6b3d;
+  --ok: #0f7234;
+  --warn: #a24b08;
+  --busy: #627288;
+  --error: #b91c1c;
+}
+
+:root[data-mode="dark"] {
+  --bg: #0c100e;
+  --surface: rgba(255, 255, 255, 0.06);
+  --surface-strong: rgba(255, 255, 255, 0.11);
+  --surface-border: rgba(255, 255, 255, 0.14);
+  --ink: #eef2ef;
+  --muted: #9aa7a0;
+  --shadow: 0 10px 34px rgba(0, 0, 0, 0.5);
+  --brand-ink: #bff5cf;
+  --ok: #4ade80;
+  --warn: #fbbf24;
+  --busy: #94a3b8;
+  --error: #fa9696;
+}
+
+/* Same in both modes: brand tints are pale whatever the mode. */
+:root {
+  --on-brand: #121815;
+  /* Brand-derived fills. Any surface that tracked the brand swatch before
+     still tracks it, in both modes. Text on these is always --on-brand. */
+  --brand-fill: color-mix(in srgb, var(--brand) 55%, var(--surface-strong));
+  --brand-fill-strong: color-mix(in srgb, var(--brand) 75%, var(--surface-strong));
+  /* Secondary text on --surface-strong. Plain --muted only reaches 3.6:1
+     there in dark mode, since the strong surface lightens the backdrop. */
+  --muted-strong: color-mix(in srgb, var(--ink) 70%, transparent);
+
+  /* Non-colour tokens */
   --radius: 20px;
   --radius-sm: 12px;
   --radius-xs: 8px;
@@ -34,7 +70,7 @@
   margin: 0;
   border: none;
   outline: none;
-  font-family: 'Jua';
+  font-family: "Jua", "Segoe UI", sans-serif;
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -53,8 +89,16 @@ p {
 }
 
 ::selection {
-  color: var(--text);
-  background: var(--accent);
+  color: var(--on-brand);
+  background: var(--brand-fill-strong);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }
 
 /* ─── Base ─── */
@@ -63,25 +107,45 @@ body {
   height: 100%;
 }
 
+/* flat, static colour derived from theme, no gradients */
 body {
-  color: var(--text);
-  background: var(--bg);
-  transition: background var(--transition);
+  color: var(--ink);
+  background-color: color-mix(in srgb, var(--brand) 10%, var(--bg));
   min-height: 100vh;
+  overflow-x: hidden;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-a {
-  color: var(--link);
+:link,
+:visited {
+  color: var(--brand-ink);
   text-decoration: none;
 }
 
 a:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
-a:visited {
-  color: var(--link);
-  opacity: 0.75;
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* ─── Glass primitive ─── */
+.glass {
+  background: var(--surface);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
 
 /* ─── Layout ─── */
@@ -118,19 +182,13 @@ a:visited {
   }
 }
 
-/* ─── Card — Glassmorphism ─── */
+/* ─── Card ─── */
 .card {
   /* Grid items default to min-width: auto, which floors shrinkage at the
-     content's min-content size (e.g. a canvas's intrinsic width) — this
+     content's min-content size (e.g. a canvas's intrinsic width); this
      override lets cards shrink below that on narrow viewports instead of
      overflowing the container. */
   min-width: 0;
-  background: var(--card-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
   padding: 24px;
   transition: background var(--transition), border-color var(--transition);
 }
@@ -175,10 +233,10 @@ a:visited {
   border-radius: 12px;
   display: grid;
   place-items: center;
-  background: var(--accent);
-  color: var(--text);
+  background: var(--brand-fill);
+  color: var(--on-brand);
   flex-shrink: 0;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow);
   transition: background var(--transition);
 }
 
@@ -191,7 +249,7 @@ a:visited {
   font-size: clamp(17px, 3.5vw, 22px);
   font-weight: 400;
   margin: 0;
-  color: var(--text);
+  color: var(--ink);
 }
 
 .meta {
@@ -245,31 +303,27 @@ a:visited {
   letter-spacing: 0.3px;
 }
 
-/* ─── Inputs — Glassmorphism ─── */
+/* ─── Inputs ─── */
 .input {
   width: 100%;
-  background: var(--input-bg);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid var(--input-border);
-  color: var(--text);
+  background: var(--surface-strong);
+  border: 1px solid var(--surface-border);
+  color: var(--ink);
   border-radius: var(--radius-sm);
   padding: 12px 14px;
   font-size: 16px;
-  font-family: 'Jua';
   transition: border-color var(--transition), box-shadow var(--transition),
     background var(--transition);
 }
 
 .input:focus {
-  border-color: var(--ring);
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.07);
-  background: rgba(255, 255, 255, 0.88);
+  border-color: var(--brand-ink);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-ink) 28%, transparent);
 }
 
 .input::placeholder {
-  color: var(--muted);
-  opacity: 0.65;
+  color: var(--muted-strong);
+  opacity: 1;
 }
 
 /* ─── Combo ─── */
@@ -287,7 +341,7 @@ a:visited {
   top: 50%;
   transform: translateY(-50%);
   background: transparent;
-  color: var(--muted);
+  color: var(--muted-strong);
   cursor: pointer;
   padding: 5px;
   border-radius: 6px;
@@ -302,8 +356,8 @@ a:visited {
 }
 
 .combo__clear:hover {
-  color: var(--text);
-  background: rgba(0, 0, 0, 0.07);
+  color: var(--ink);
+  background: color-mix(in srgb, var(--ink) 10%, transparent);
 }
 
 /* ─── Swap Wrap ─── */
@@ -319,7 +373,6 @@ a:visited {
   cursor: pointer;
   border-radius: var(--radius-sm);
   padding: 10px 20px;
-  font-family: 'Jua';
   font-size: 15px;
   font-weight: 400;
   transition: transform 0.08s ease, background var(--transition), box-shadow var(--transition);
@@ -337,43 +390,41 @@ a:visited {
 
 /* Primary */
 .btn--primary {
-  background: var(--accent);
-  color: var(--text);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  background: var(--brand-fill);
+  color: var(--on-brand);
+  box-shadow: var(--shadow);
   transition: background var(--transition), box-shadow var(--transition), transform 0.08s ease;
 }
 
 .btn--primary:hover {
-  background: var(--accent-dark);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+  background: var(--brand-fill-strong);
 }
 
 .btn--primary:disabled {
-  opacity: 0.55;
+  opacity: 0.6;
   cursor: not-allowed;
   transform: none;
 }
 
 /* Ghost */
 .btn--ghost {
-  background: rgba(255, 255, 255, 0.52);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: var(--text);
-  border: 1px solid rgba(0, 0, 0, 0.11);
+  background: var(--surface-strong);
+  color: var(--ink);
+  border: 1px solid var(--surface-border);
 }
 
 .btn--ghost:hover {
-  background: rgba(255, 255, 255, 0.75);
+  background: var(--brand-fill);
+  color: var(--on-brand);
 }
 
 /* Swap */
 .btn--swap {
-  background: var(--accent);
-  color: var(--text);
+  background: var(--brand-fill);
+  color: var(--on-brand);
   padding: 11px;
   border-radius: var(--radius-sm);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);
+  box-shadow: var(--shadow);
   transition: background var(--transition), box-shadow var(--transition), transform 0.08s ease;
 }
 
@@ -383,17 +434,15 @@ a:visited {
 }
 
 .btn--swap:hover {
-  background: var(--accent-dark);
+  background: var(--brand-fill-strong);
 }
 
 /* Icon */
 .btn--icon {
   padding: 8px;
-  background: rgba(255, 255, 255, 0.52);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: var(--text);
-  border: 1px solid rgba(0, 0, 0, 0.09);
+  background: var(--surface-strong);
+  color: var(--ink);
+  border: 1px solid var(--surface-border);
   border-radius: 10px;
 }
 
@@ -404,10 +453,12 @@ a:visited {
 }
 
 .btn--icon:hover {
-  background: rgba(255, 255, 255, 0.78);
+  background: var(--brand-fill);
+  color: var(--on-brand);
 }
 
-/* Coffee button */
+/* Coffee. Fixed-meaning accent: the brown reads as coffee whatever the
+   brand swatch is, so it does not track the theme. */
 .btn--coffee {
   color: #7b3f00;
   background: rgba(255, 240, 210, 0.68);
@@ -415,9 +466,38 @@ a:visited {
 }
 
 .btn--coffee:hover {
+  color: #7b3f00;
   background: rgba(255, 240, 210, 0.92);
   text-decoration: none;
 }
+
+/* ─── Icon button (theme trigger, modal close) ─── */
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: var(--surface-strong);
+  border: 1px solid var(--surface-border);
+  color: var(--ink);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+.icon-btn:hover { transform: translateY(-1px); }
+.icon-btn svg { width: 20px; height: 20px; }
+.icon-btn.small { width: 34px; height: 34px; }
+.icon-btn.small svg { width: 16px; height: 16px; }
+
+/* The header row packs several controls into a small strip, so the theme
+   trigger matches the .btn--icon buttons beside it rather than the 42px
+   default. */
+.meta .icon-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+}
+.meta .icon-btn svg { width: 18px; height: 18px; }
 
 /* ─── Card Footer ─── */
 .card__footer {
@@ -429,18 +509,18 @@ a:visited {
   flex-wrap: wrap;
 }
 
-/* ─── Share Menu — Glassmorphism ─── */
+/* ─── Share Menu ─── */
 .share-menu {
   position: absolute;
   right: 0;
   bottom: calc(100% + 8px);
   min-width: 210px;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.95);
+  background: var(--surface-strong);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  border: 1px solid var(--surface-border);
   border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow);
   padding: 6px;
   z-index: 50;
 }
@@ -456,8 +536,7 @@ a:visited {
   top: 100%;
   border-width: 8px 8px 0 8px;
   border-style: solid;
-  border-color: rgba(255, 255, 255, 0.92) transparent transparent transparent;
-  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.07));
+  border-color: var(--surface-border) transparent transparent transparent;
 }
 
 .share-menu__item {
@@ -467,41 +546,45 @@ a:visited {
   padding: 10px 12px;
   border-radius: var(--radius-xs);
   cursor: pointer;
-  transition: background var(--transition);
+  color: var(--ink);
+  transition: background var(--transition), color var(--transition);
 }
 
 .share-menu__item:hover {
-  background: var(--accent);
+  background: var(--brand-fill);
+  color: var(--on-brand);
 }
 
 .share-menu__item svg {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
-  color: var(--text);
+  color: currentColor;
 }
 
 .share-menu__text {
   font-size: 14px;
-  color: var(--text);
+  color: currentColor;
 }
 
-/* ─── Result — Glassmorphism ─── */
+/* ─── Result ─── */
 .result {
   margin-top: 18px;
-  background: var(--result-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--result-border);
+  background: var(--surface-strong);
+  border: 1px solid var(--surface-border);
   border-radius: 14px;
   padding: 16px 18px;
   transition: background var(--transition);
 }
 
 .result.share-theme {
-  background: var(--accent);
-  border-color: var(--accent-dark);
-  color: var(--text);
+  background: var(--brand-fill);
+  border-color: var(--brand-fill-strong);
+  color: var(--on-brand);
+}
+
+.result.share-theme .result__sub {
+  color: var(--on-brand);
 }
 
 .result.share-theme .result__equals {
@@ -522,7 +605,7 @@ a:visited {
 
 .result__sub {
   margin-top: 8px;
-  color: var(--muted);
+  color: var(--muted-strong);
   font-size: 13px;
 }
 
@@ -532,19 +615,18 @@ a:visited {
   left: 50%;
   bottom: 24px;
   transform: translateX(-50%);
-  background: rgba(15, 23, 42, 0.92);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: var(--brand-fill-strong);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  color: var(--on-brand);
+  border: 1px solid var(--surface-border);
   padding: 10px 18px;
   border-radius: var(--radius-sm);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+  box-shadow: var(--shadow);
   z-index: 1000;
   font-size: 14px;
   white-space: nowrap;
   animation: toast-fade 2.6s ease forwards;
-  font-family: 'Jua';
 }
 
 @keyframes toast-fade {
@@ -567,7 +649,8 @@ a:visited {
   }
 }
 
-/* ─── Heart Icon ─── */
+/* ─── Heart Icon ───
+   Fixed-meaning accent: it has to read as a heart on every swatch. */
 .icon-heart {
   width: 13px;
   height: 13px;
@@ -578,95 +661,134 @@ a:visited {
   top: -1px;
 }
 
-/* ─── Theme Modal — Glassmorphism ─── */
-.modal-overlay {
+/* ─── Modal shell ─── */
+.modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.28);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   z-index: 200;
-  padding: 16px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(10, 15, 12, 0.35);
+  padding: 12px;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.2s ease, visibility 0s linear 0s;
+}
+.modal-backdrop.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.18s ease, visibility 0s linear 0.18s;
 }
 
-.modal-overlay.hidden {
-  display: none;
+@media (min-width: 640px) {
+  .modal-backdrop { align-items: center; }
 }
 
 .modal {
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
-  border: 1px solid rgba(255, 255, 255, 0.96);
-  border-radius: var(--radius);
-  padding: 24px;
-  max-width: 440px;
   width: 100%;
-  box-shadow: var(--shadow-lg);
+  max-width: 420px;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--surface-strong);
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.18s ease;
+}
+.modal-backdrop.hidden .modal {
+  opacity: 0;
+  transform: translateY(14px) scale(0.97);
 }
 
-.modal__header {
+.modal-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+}
+.modal-head h2 { font-size: 1.1rem; color: var(--brand-ink); }
+
+/* Section labels inside the modal: "Mode", "Brand colour". */
+.modal-section-label {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 4px;
 }
 
-.modal__title {
-  font-size: 18px;
-  font-weight: 400;
-  color: var(--text);
-}
+body.modal-open { overflow: hidden; }
 
-/* ─── Theme Grid ─── */
-.theme-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.theme-swatch {
-  appearance: none;
-  border: 2px solid transparent;
+/* ─── Mode toggle ─── */
+.mode-toggle {
+  display: flex;
+  gap: 6px;
+  padding: 4px;
   border-radius: 14px;
-  padding: 14px 12px;
-  cursor: pointer;
+  background: var(--surface);
+}
+.mode-btn {
+  flex: 1;
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-family: 'Jua';
-  font-size: 13px;
-  font-weight: 400;
-  color: var(--text);
-  background: rgba(255, 255, 255, 0.5);
+  justify-content: center;
+  gap: 6px;
+  padding: 8px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  /* The toggle's --surface sits on the modal's --surface-strong, so the two
+     overlays stack and plain --muted only reaches 4.0:1 in dark mode. */
+  color: var(--muted-strong);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.mode-btn svg { width: 16px; height: 16px; }
+.mode-btn.active {
+  background: var(--brand-fill);
+  color: var(--on-brand);
+}
+
+/* ─── Swatch grid ─── */
+.swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+.swatch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 14px;
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  color: var(--ink);
+  font-size: 0.78rem;
   text-align: left;
-  transition: border-color var(--transition), background var(--transition), transform 0.1s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
-
-.theme-swatch:hover {
-  transform: translateY(-1px);
-  background: rgba(255, 255, 255, 0.72);
+/* Ringed in its own colour, plus a containment ring. On a light modal the
+   pale swatches reach only 1:1 against the surface on their own, so the
+   outer ring is what actually carries the active state, at 3.4:1. */
+.swatch.active {
+  border-color: var(--swatch-color);
+  box-shadow:
+    0 0 0 2px var(--swatch-color),
+    0 0 0 3px color-mix(in srgb, var(--ink) 50%, transparent);
 }
-
-.theme-swatch.active {
-  border-color: var(--ring);
-  background: rgba(255, 255, 255, 0.82);
-}
-
 .swatch-dot {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  border: 2px solid rgba(0, 0, 0, 0.10);
+  background: var(--swatch-color);
+  border: 1px solid color-mix(in srgb, var(--ink) 30%, transparent);
   flex-shrink: 0;
 }
+.swatch-label { flex: 1; line-height: 1.3; }
 
-.swatch-name {
-  flex: 1;
-  line-height: 1.3;
+@media (max-width: 480px) {
+  .swatch-grid { grid-template-columns: 1fr; }
 }
 
 /* ─── Historical Graph ─── */
@@ -687,23 +809,24 @@ a:visited {
 .range-picker__btn {
   appearance: none;
   cursor: pointer;
-  font-family: 'Jua';
   font-size: 13px;
   padding: 6px 12px;
   border-radius: var(--radius-xs);
-  background: rgba(255, 255, 255, 0.52);
-  color: var(--text);
-  border: 1px solid rgba(0, 0, 0, 0.09);
-  transition: background var(--transition), border-color var(--transition);
+  background: var(--surface-strong);
+  color: var(--ink);
+  border: 1px solid var(--surface-border);
+  transition: background var(--transition), border-color var(--transition), color var(--transition);
 }
 
 .range-picker__btn:hover {
-  background: rgba(255, 255, 255, 0.78);
+  background: var(--brand-fill);
+  color: var(--on-brand);
 }
 
 .range-picker__btn.active {
-  background: var(--accent);
-  border-color: var(--accent-dark);
+  background: var(--brand-fill);
+  color: var(--on-brand);
+  border-color: var(--brand-fill-strong);
 }
 
 .currency-chips {
@@ -719,10 +842,10 @@ a:visited {
   gap: 6px;
   padding: 6px 8px 6px 12px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.55);
-  border: 1px solid rgba(0, 0, 0, 0.09);
+  background: var(--surface-strong);
+  border: 1px solid var(--surface-border);
   font-size: 13px;
-  color: var(--text);
+  color: var(--ink);
 }
 
 .chip__swatch {
@@ -740,13 +863,13 @@ a:visited {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  color: var(--muted);
+  color: var(--muted-strong);
   transition: color var(--transition), background var(--transition);
 }
 
 .chip__remove:hover {
-  color: var(--text);
-  background: rgba(0, 0, 0, 0.08);
+  color: var(--ink);
+  background: color-mix(in srgb, var(--ink) 10%, transparent);
 }
 
 .chip__remove svg {

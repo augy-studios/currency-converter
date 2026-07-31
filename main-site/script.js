@@ -1,90 +1,3 @@
-/* ─── Theme System ─── */
-
-const THEMES = [
-  { id: 'classic',     name: 'Classic',                  bg: '#ccffcc', accent: '#99ff99', accentDark: '#55cc55', ring: '#3aa165', link: '#167a45' },
-  { id: 'notgreen1',   name: 'Not green 1',              bg: '#ffcccc', accent: '#ff9999', accentDark: '#ee5555', ring: '#cc4444', link: '#8b1a1a' },
-  { id: 'notgreen2',   name: 'Not green 2',              bg: '#ccccff', accent: '#9999ff', accentDark: '#5555ee', ring: '#4444cc', link: '#1a1a8b' },
-  { id: 'notgreen3',   name: 'Not green 3',              bg: '#ffffcc', accent: '#ffff88', accentDark: '#cccc33', ring: '#8b8b00', link: '#5a5a00' },
-  { id: 'notgreen4',   name: 'Not green 4',              bg: '#ffccff', accent: '#ff99ff', accentDark: '#dd44dd', ring: '#aa00aa', link: '#6a006a' },
-  { id: 'notgreen5',   name: 'Not green 5',              bg: '#ccffff', accent: '#88ffff', accentDark: '#33cccc', ring: '#007a7a', link: '#005a5a' },
-  { id: 'white',       name: 'Really really light green', bg: '#ffffff', accent: '#ccffcc', accentDark: '#88cc88', ring: '#3aa165', link: '#167a45' },
-];
-
-function applyTheme(themeId) {
-  const theme = THEMES.find(t => t.id === themeId) || THEMES[0];
-  const root = document.documentElement;
-  root.setAttribute('data-theme', theme.id);
-  root.style.setProperty('--bg', theme.bg);
-  root.style.setProperty('--accent', theme.accent);
-  root.style.setProperty('--accent-dark', theme.accentDark);
-  root.style.setProperty('--ring', theme.ring);
-  root.style.setProperty('--link', theme.link);
-  localStorage.setItem('uwuconvert.theme', theme.id);
-
-  // Update active swatch in picker
-  document.querySelectorAll('.theme-swatch').forEach(el => {
-    el.classList.toggle('active', el.dataset.theme === theme.id);
-  });
-}
-
-function buildThemePicker() {
-  const grid = document.getElementById('theme-grid');
-  if (!grid) return;
-  grid.innerHTML = '';
-  THEMES.forEach(theme => {
-    const btn = document.createElement('button');
-    btn.className = 'theme-swatch';
-    btn.dataset.theme = theme.id;
-    btn.setAttribute('aria-label', `Apply ${theme.name} theme`);
-    btn.innerHTML = `
-      <span class="swatch-dot" style="background:${theme.bg};"></span>
-      <span class="swatch-name">${theme.name}</span>
-    `;
-    btn.addEventListener('click', () => {
-      applyTheme(theme.id);
-    });
-    grid.appendChild(btn);
-  });
-}
-
-function initTheme() {
-  buildThemePicker();
-  const saved = localStorage.getItem('uwuconvert.theme') || 'classic';
-  applyTheme(saved);
-}
-
-/* ─── Theme Modal ─── */
-
-function attachThemeModal() {
-  const modal = document.getElementById('theme-modal');
-  const openBtn = document.getElementById('theme-toggle');
-  const closeBtn = document.getElementById('close-theme-modal');
-  if (!modal || !openBtn || !closeBtn) return;
-
-  function open() {
-    modal.classList.remove('hidden');
-    closeBtn.focus();
-  }
-
-  function close() {
-    modal.classList.add('hidden');
-    openBtn.focus();
-  }
-
-  openBtn.addEventListener('click', open);
-  closeBtn.addEventListener('click', close);
-
-  // Close on backdrop click
-  modal.addEventListener('click', e => {
-    if (e.target === modal) close();
-  });
-
-  // Close on Escape
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && !modal.classList.contains('hidden')) close();
-  });
-}
-
 /* ─── Currency Converter ─── */
 
 const API_BASE = '/api';
@@ -255,10 +168,30 @@ function invertRate() {
   els.rateLine.textContent = `1 ${toCode} = ${nf.format(inv)} ${fromCode}`;
 }
 
+// html2canvas evaluates neither color-mix() nor backdrop-filter, so the
+// themed colours are resolved to plain computed values for the duration of
+// the capture and restored afterwards.
+function pinComputedColors(el) {
+  const cs = getComputedStyle(el);
+  const prev = el.getAttribute('style');
+  el.style.backgroundColor = cs.backgroundColor;
+  el.style.borderColor = cs.borderColor;
+  el.style.color = cs.color;
+  return () => {
+    if (prev === null) el.removeAttribute('style');
+    else el.setAttribute('style', prev);
+  };
+}
+
 async function captureResultCard() {
   els.resultCard.classList.add('share-theme');
+  const restore = pinComputedColors(els.resultCard);
+  // The card sits on a translucent surface, so composite it over the real
+  // page colour instead of transparency.
+  const pageBg = getComputedStyle(document.body).backgroundColor;
   const scale = Math.max(2, Math.ceil(window.devicePixelRatio || 1));
-  const canvas = await html2canvas(els.resultCard, { backgroundColor: null, scale });
+  const canvas = await html2canvas(els.resultCard, { backgroundColor: pageBg, scale });
+  restore();
   els.resultCard.classList.remove('share-theme');
   return new Promise(resolve => { canvas.toBlob(blob => resolve(blob), 'image/png'); });
 }
@@ -411,6 +344,20 @@ function colorFor(index) {
   return CHART_COLORS[index % CHART_COLORS.length];
 }
 
+// The series palette is fixed, but the chart's own chrome (axes, grid,
+// legend, tooltip text) has to follow the light/dark tokens or it goes
+// unreadable in dark mode.
+function chartChrome() {
+  const cs = getComputedStyle(document.documentElement);
+  const ink = cs.getPropertyValue('--ink').trim();
+  const muted = cs.getPropertyValue('--muted').trim();
+  // Canvas support for color-mix() is uneven, so the grid tint is mixed
+  // here rather than handed to Chart.js as a CSS function.
+  const n = parseInt(ink.replace('#', ''), 16);
+  const grid = `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, 0.14)`;
+  return { ink, muted, grid };
+}
+
 function computeFromDate(range) {
   const today = new Date();
   const d = new Date(today);
@@ -525,6 +472,8 @@ async function loadGraph() {
         };
       });
 
+    const chrome = chartChrome();
+
     if (rateChart) rateChart.destroy();
     rateChart = new Chart(els.chart, {
       type: 'line',
@@ -533,16 +482,18 @@ async function loadGraph() {
         responsive: true,
         maintainAspectRatio: false,
         interaction: { mode: 'index', intersect: false },
+        color: chrome.ink,
         scales: {
           y: {
             beginAtZero: false,
-            grid: { color: 'rgba(0,0,0,0.08)' },
-            title: { display: indexed, text: 'Indexed (100 = start of range)' },
+            grid: { color: chrome.grid },
+            ticks: { color: chrome.muted },
+            title: { display: indexed, text: 'Indexed (100 = start of range)', color: chrome.muted },
           },
-          x: { grid: { display: false } },
+          x: { grid: { display: false }, ticks: { color: chrome.muted } },
         },
         plugins: {
-          legend: { display: datasets.length > 1 },
+          legend: { display: datasets.length > 1, labels: { color: chrome.ink } },
           tooltip: {
             callbacks: indexed
               ? { label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y == null ? '—' : ctx.parsed.y.toFixed(2)}` }
@@ -572,6 +523,17 @@ function attachGraphEvents() {
     els.addCurrency.value = '';
     if (code && currencies[code]) addGraphQuote(code);
   });
+
+  // Chart chrome is baked in at construction time, so redraw when the mode
+  // flips. Watching the attribute keeps theme.js free of app hooks; the
+  // guard avoids a refetch when the active mode is re-selected.
+  let lastMode = document.documentElement.getAttribute('data-mode');
+  new MutationObserver(() => {
+    const mode = document.documentElement.getAttribute('data-mode');
+    if (mode === lastMode) return;
+    lastMode = mode;
+    loadGraph();
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-mode'] });
 }
 
 /* ─── State Persistence ─── */
@@ -683,8 +645,6 @@ function registerSW() {
 /* ─── Init ─── */
 
 (async function init() {
-  initTheme();
-  attachThemeModal();
   attachEvents();
   registerSW();
   try {

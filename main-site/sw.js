@@ -1,4 +1,4 @@
-const CACHE = "currency-v13";
+const CACHE = "currency-v14";
 const FONT_CACHE = "currency-fonts-v2";
 
 const ASSETS = [
@@ -6,6 +6,9 @@ const ASSETS = [
   "/index.html",
   "/style.css",
   "/script.js",
+  "/js/icons.js",
+  "/js/ui.js",
+  "/js/theme.js",
   "/CC-main.png",
   "/CC-192.png",
   "/CC-512.png",

@@ -1,4 +1,6 @@
-telethon>=1.36
+# 1.44.0 is the first release whose TL layer carries `rich_message` on
+# messages.SendMessage / EditMessage / EditInlineBotMessage (see src/reply.py).
+telethon>=1.44.0
 aiohttp>=3.9
 python-dotenv>=1.0
 matplotlib>=3.8

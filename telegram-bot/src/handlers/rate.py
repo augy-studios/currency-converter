@@ -1,5 +1,21 @@
 from .. import db, pending_rate
-from ..format import code
+from ..format import escape_md
+from ..reply import send_rich_message
+
+PROMPT = 'Send me the base currency you would like to compare against (e.g. USD).'
+
+
+def build_rate_view(preferred):
+    codes = [c.upper() for c in preferred]
+    rich = {
+        'markdown': (
+            '# Your preferred currencies\n\n'
+            + '\n'.join(f'- {escape_md(c)}' for c in codes)
+            + f'\n\n{PROMPT}'
+        ),
+        'fallback': f"Your preferred currencies:\n{', '.join(codes)}\n\n{PROMPT}",
+    }
+    return rich, None
 
 
 async def rate_handler(event):
@@ -13,9 +29,5 @@ async def rate_handler(event):
         )
 
     pending_rate.mark(event.sender_id)
-    listing = ', '.join(code(c.upper()) for c in preferred)
-    await event.respond(
-        f'**Your preferred currencies:**\n{listing}\n\n'
-        f"Send me the base currency you would like to compare against (e.g. {code('USD')}).",
-        parse_mode='md',
-    )
+    rich, buttons = build_rate_view(preferred)
+    await send_rich_message(event.client, event.chat_id, rich, buttons)

@@ -125,7 +125,8 @@ src/
   currency.py                currency list + rate/history caching on top of api.py
   convert.py                 shared conversion logic and message formatting
   graph.py                   matplotlib rendering of the historical-rate chart
-  format.py                  Markdown code-span and number formatting helpers
+  format.py                  number formatting, Rich Markdown escaping and table helpers
+  reply.py                   sends/edits genuine Telegram Rich Messages via raw TL requests
   keyboards.py               inline keyboard builders
   pending_rate.py            in-memory "awaiting base currency" state for /rate
   pending_graph_add.py       in-memory "awaiting currency to add" state for graphs
@@ -148,3 +149,13 @@ Telegram, separate from the bot token) in addition to the usual
 `BOT_TOKEN`. In exchange it gives native support for everything this bot
 needs: inline queries, callback queries, and the `copy_text` clipboard
 button used for the per-currency Copy buttons.
+
+Structured replies (`/start`, `/rate`, conversion results in chat and
+inline mode) are sent as genuine Telegram **Rich Messages** (headings,
+tables, lists) rather than parse-mode approximations. Telethon's
+high-level `send_message`/`edit_message` don't expose the `rich_message`
+field, so `src/reply.py` issues the raw `messages.SendMessage` /
+`EditMessage` / `EditInlineBotMessage` requests (Telethon ≥ 1.44.0) with a
+plain-text fallback in the required `message=` field; if Telegram rejects
+the rich payload the helpers log a `falling back` line and resend as plain
+text. One-line notices still go through `event.respond()`.

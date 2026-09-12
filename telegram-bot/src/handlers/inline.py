@@ -1,9 +1,10 @@
 import re
 import uuid
 
+from telethon.tl import functions, types
+
 from .. import currency, db
-from ..convert import build_conversion_message, compute_conversion
-from ..keyboards import convert_keyboard
+from ..convert import build_conversion_view, compute_conversion
 
 AMOUNT_CODE_RE = re.compile(r'^(-?\d+(?:\.\d+)?)\s+([A-Za-z]{2,10})$')
 
@@ -48,18 +49,38 @@ async def inline_handler(event):
         return await event.answer([result])
 
     conversion = await compute_conversion(user_id, amount, code)
-    text = build_conversion_message(conversion)
     interaction_id = db.create_interaction('convert', user_id, {'amount': amount, 'base': code})
-    keyboard = convert_keyboard(interaction_id, conversion['results'], False)
+    # No copy buttons: inline-mode messages can't carry them.
+    rich, keyboard = build_conversion_view(conversion, interaction_id, False)
 
+    title = f'{match.group(1)} {match.group(2).upper()} converted'
     summary = ', '.join(f"{r['code'].upper()}: {r['formatted']}" for r in conversion['results'])
-    result = builder.article(
-        f'{match.group(1)} {match.group(2).upper()} converted',
-        description=summary,
-        text=text,
-        parse_mode='md',
-        link_preview=False,
-        buttons=keyboard,
+
+    # Telethon's builder.article() can't carry a rich message, so build the
+    # result and answer the query with raw TL objects instead.
+    result = types.InputBotInlineResult(
         id=str(uuid.uuid4()),
+        type='article',
+        title=title,
+        description=summary,
+        send_message=types.InputBotInlineMessageRichMessage(
+            rich_message=types.InputRichMessageMarkdown(markdown=rich['markdown']),
+            reply_markup=event.client.build_reply_markup(keyboard),
+        ),
     )
-    await event.answer([result])
+    try:
+        await event.client(functions.messages.SetInlineBotResultsRequest(
+            query_id=event.query.query_id, results=[result], cache_time=0,
+        ))
+    except Exception as err:
+        print(f'[inline_handler] rich inline result failed, falling back: {err}')
+        result = builder.article(
+            title,
+            description=summary,
+            text=rich['fallback'],
+            parse_mode=None,  # the fallback is plain text
+            link_preview=False,
+            buttons=keyboard,
+            id=str(uuid.uuid4()),
+        )
+        await event.answer([result])

@@ -1,9 +1,6 @@
-from telethon.tl import types
-
 from .. import db
-from ..convert import build_conversion_message, compute_conversion
-from ..edit_utils import safe_edit
-from ..keyboards import convert_keyboard
+from ..convert import build_conversion_view, compute_conversion
+from ..reply import edit_rich_message, is_inline_callback
 
 
 async def setpref_callback(event):
@@ -42,11 +39,8 @@ async def convert_refresh_callback(event):
     if not conversion:
         return await event.answer('No preferred currencies set anymore.', alert=True)
 
-    text = build_conversion_message(conversion)
-    is_inline = isinstance(
-        event.query.msg_id, (types.InputBotInlineMessageID, types.InputBotInlineMessageID64)
-    )
-    keyboard = convert_keyboard(interaction_id, conversion['results'], not is_inline)
+    # Copy buttons aren't available on inline-mode messages.
+    rich, buttons = build_conversion_view(conversion, interaction_id, not is_inline_callback(event))
 
     await event.answer('Refreshed')
-    await safe_edit(event, text, buttons=keyboard, parse_mode='md', link_preview=False)
+    await edit_rich_message(event.client, event, rich, buttons)

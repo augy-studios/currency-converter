@@ -1,6 +1,7 @@
 from . import currency, db
-from .format import code, format_number
+from .format import escape_md, format_number, table
 from .keyboards import convert_keyboard
+from .reply import send_rich_message
 
 
 # Computes conversion of `amount` in `base_code` into every one of the
@@ -28,21 +29,40 @@ async def compute_conversion(user_id, amount, base_code, force=False):
     return {'date': date, 'base': base, 'amount': amount, 'results': results}
 
 
-def build_conversion_message(conversion):
+# Builds the conversion result as a Rich Message: a heading, a table of
+# preferred currency -> converted amount, and the rate date. The fallback
+# carries the same information as plain text.
+def build_conversion_view(conversion, interaction_id, include_copy_buttons):
     date, base, amount, results = (
         conversion['date'],
         conversion['base'],
         conversion['amount'],
         conversion['results'],
     )
-    amount_str = format_number(amount)
-    header = f"**Converting** {code(f'{amount_str} {base.upper()}')}"
+    title = f'Converting {format_number(amount)} {base.upper()}'
 
     if not results:
-        return f'{header}\n\nNone of your preferred currencies have rate data for this base right now.'
+        note = 'None of your preferred currencies have rate data for this base right now.'
+        rich = {
+            'markdown': f'# {escape_md(title)}\n\n{note}',
+            'fallback': f'{title}\n\n{note}',
+        }
+    else:
+        rich = {
+            'markdown': (
+                f'# {escape_md(title)}\n\n'
+                + table(['Amount'], [(r['code'].upper(), r['formatted']) for r in results])
+                + f'\n\n*Rates as of {escape_md(date)}*'
+            ),
+            'fallback': (
+                f'{title}\n\n'
+                + '\n'.join(f"{r['code'].upper()}: {r['formatted']}" for r in results)
+                + f'\n\nRates as of {date}'
+            ),
+        }
 
-    lines = [f"**{r['code'].upper()}:** {code(r['formatted'])}" for r in results]
-    return f"{header}\n\n" + '\n'.join(lines) + f"\n\n__Rates as of {code(date)}__"
+    buttons = convert_keyboard(interaction_id, results, include_copy_buttons)
+    return rich, buttons
 
 
 # Sends a fresh conversion result as a new chat message, backed by an
@@ -56,6 +76,5 @@ async def send_conversion(event, user_id, amount, base_code):
         )
 
     interaction_id = db.create_interaction('convert', user_id, {'amount': amount, 'base': base_code.lower()})
-    text = build_conversion_message(conversion)
-    buttons = convert_keyboard(interaction_id, conversion['results'], True)
-    return await event.respond(text, buttons=buttons, parse_mode='md', link_preview=False)
+    rich, buttons = build_conversion_view(conversion, interaction_id, True)
+    return await send_rich_message(event.client, event.chat_id, rich, buttons)

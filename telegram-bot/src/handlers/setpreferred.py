@@ -1,9 +1,7 @@
 import re
 
-from telethon.tl import types
-
 from .. import currency, db, pending_setpref
-from ..edit_utils import safe_edit, safe_edit_message
+from ..edit_utils import clear_buttons, safe_edit, safe_edit_message
 from ..format import code
 from ..keyboards import set_preferred_keyboard
 
@@ -63,9 +61,7 @@ async def callback(event, parts):
         pending_setpref.clear(event.sender_id, interaction_id)
         preferred = set(db.get_preferences(event.sender_id))
         await event.answer('Saved')
-        return await safe_edit(
-            event, _done_text(preferred), buttons=types.ReplyInlineMarkup(rows=[]), parse_mode='md'
-        )
+        return await clear_buttons(event, _done_text(preferred), parse_mode='md')
 
     toast = None
     if action == 'page':

@@ -18,8 +18,9 @@ def _rich_markdown(rich):
     return types.InputRichMessageMarkdown(markdown=rich['markdown'])
 
 
-# Editing without reply_markup keeps the old keyboard; an empty inline
-# keyboard is what actually removes it.
+# An empty inline keyboard removes the buttons on edit. Telegram has started
+# rejecting it in some cases with REPLY_MARKUP_INVALID (see edit_utils.py),
+# which the except-branch below absorbs by retrying with buttons=None.
 _NO_BUTTONS = types.ReplyInlineMarkup(rows=[])
 
 

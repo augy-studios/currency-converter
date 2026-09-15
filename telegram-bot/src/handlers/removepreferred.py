@@ -1,7 +1,5 @@
-from telethon.tl import types
-
 from .. import currency, db
-from ..edit_utils import safe_edit
+from ..edit_utils import clear_buttons, safe_edit
 from ..keyboards import remove_preferred_keyboard
 
 INTRO = 'Tap a currency to remove it from your preferred list.'
@@ -46,10 +44,7 @@ async def callback(event, parts):
 
     if action == 'done':
         await event.answer('Saved')
-        return await safe_edit(
-            event, 'Done removing preferred currencies.', buttons=types.ReplyInlineMarkup(rows=[]),
-            parse_mode='md',
-        )
+        return await clear_buttons(event, 'Done removing preferred currencies.', parse_mode='md')
 
     toast = None
     if action == 'page':
@@ -63,7 +58,7 @@ async def callback(event, parts):
 
     currencies = await _preferred_currencies(event.sender_id)
     if not currencies:
-        return await safe_edit(event, EMPTY, buttons=types.ReplyInlineMarkup(rows=[]), parse_mode='md')
+        return await clear_buttons(event, EMPTY, parse_mode='md')
 
     keyboard = remove_preferred_keyboard(interaction_id, page, currencies)
     await safe_edit(event, INTRO, buttons=keyboard, parse_mode='md')

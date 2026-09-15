@@ -1,4 +1,11 @@
-from telethon.errors import MessageNotModifiedError
+from telethon.errors import MessageNotModifiedError, ReplyMarkupInvalidError
+from telethon.tl import types
+
+# An inline keyboard with zero rows. Sending this on an edit removed the
+# buttons reliably for months, but Telegram has started answering some of
+# these edits with REPLY_MARKUP_INVALID (first seen 2026-09-15, tapping
+# ✅ Done on /setpreferred) - see clear_buttons() below.
+_EMPTY_MARKUP = types.ReplyInlineMarkup(rows=[])
 
 
 # Telegram rejects an edit whose text/buttons are byte-identical to what's
@@ -11,6 +18,19 @@ async def safe_edit(event, *args, **kwargs):
         await event.edit(*args, **kwargs)
     except MessageNotModifiedError:
         pass
+
+
+# Edits the message to `text` and removes its inline keyboard (the "Done"
+# state of the /setpreferred and /removepreferred menus). Tries the empty
+# keyboard first, and if Telegram rejects it falls back to an edit with no
+# reply_markup at all, which is what the Bot API sends to drop a keyboard.
+async def clear_buttons(event, text, **kwargs):
+    try:
+        await event.edit(text, buttons=_EMPTY_MARKUP, **kwargs)
+    except MessageNotModifiedError:
+        pass
+    except ReplyMarkupInvalidError:
+        await safe_edit(event, text, buttons=None, **kwargs)
 
 
 # Same as safe_edit, but for editing a message located via (chat_id, message_id)

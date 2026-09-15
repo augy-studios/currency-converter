@@ -4,6 +4,7 @@ from .. import currency, db, pending_rate
 from ..convert import send_conversion
 from ..format import code
 from .graph import try_consume_pending_add
+from .setpreferred import try_consume_typed_codes
 
 AMOUNT_CODE_RE = re.compile(r'^(-?\d+(?:\.\d+)?)\s+([A-Za-z]{2,10})$')
 BARE_CODE_RE = re.compile(r'^([A-Za-z]{2,10})$')
@@ -24,6 +25,11 @@ async def message_handler(event):
     bare_match = BARE_CODE_RE.match(text)
     if bare_match and pending_rate.consume(event.sender_id):
         return await _handle_convert(event, 1, bare_match.group(1))
+
+    # Checked after the one-shot prompts above: /rate is an explicit, more
+    # recent request, whereas an open /setpreferred menu is a standing mode.
+    if await try_consume_typed_codes(event):
+        return
 
     # Not a recognised format, and not something we're expecting - stay quiet
     # rather than nagging on every unrelated message in a group chat.

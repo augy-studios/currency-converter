@@ -102,6 +102,11 @@ def toggle_preference(user_id, code):
     return True
 
 
+def add_preference(user_id, code):
+    _conn.execute('INSERT OR IGNORE INTO preferences (user_id, code) VALUES (?, ?)', (user_id, code))
+    _conn.commit()
+
+
 def clear_preferences(user_id):
     _conn.execute('DELETE FROM preferences WHERE user_id = ?', (user_id,))
     _conn.commit()

@@ -59,7 +59,7 @@ Still talking to BotFather:
 
 ```text
 start - About the bot and quick links
-setpreferred - Choose which currencies you want conversions in
+setpreferred - Choose which currencies you want conversions in (tap or type codes)
 removepreferred - Remove currencies from your preferred list
 rate - Check the current rate for your preferred currencies
 ```

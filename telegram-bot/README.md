@@ -33,7 +33,7 @@ Built with [Telethon](https://docs.telethon.dev/) (Python).
 | Command | What it does |
 | --- | --- |
 | `/start` | Shows what the bot does, with links to the web app and a donation page. |
-| `/setpreferred` | Opens a paginated list of currencies. Tap one to add/remove it from your preferred list — you can pick as many as you like. Tap **⭐ Show Preferred** to switch the same list to just your picks (tapping one there removes it, an alternate way to unpick without leaving the menu), and **✅ Done** to lock in your picks and clear the buttons. |
+| `/setpreferred` | Opens a paginated list of currencies. Tap one to add/remove it from your preferred list — you can pick as many as you like. While the menu is open you can also just type currency codes into the chat (e.g. `USD EUR JPY`, spaces or commas) to add them without scrolling; the bot confirms what it added and updates the menu's ✅ marks. Tap **⭐ Show Preferred** to switch the same list to just your picks (tapping one there removes it, an alternate way to unpick without leaving the menu), and **✅ Done** to lock in your picks and clear the buttons. |
 | `/removepreferred` | Opens a paginated list of only your currently preferred currencies. Tap one to remove it, or **✅ Done** when finished. |
 | `/rate` | Lists your preferred currencies, then waits for you to send a base currency (e.g. `USD`) to compare them against. |
 
@@ -130,12 +130,13 @@ src/
   keyboards.py               inline keyboard builders
   pending_rate.py            in-memory "awaiting base currency" state for /rate
   pending_graph_add.py       in-memory "awaiting currency to add" state for graphs
+  pending_setpref.py         in-memory "menu open, typed codes add to preferred" state for /setpreferred
   handlers/
     start.py
-    setpreferred.py
+    setpreferred.py          paged toggle menu + typed-codes shortcut
     removepreferred.py
     rate.py
-    message.py               parses "<amount> <code>" and bare-code replies
+    message.py               parses "<amount> <code>", bare-code replies and typed preferred codes
     callbacks.py              routes button taps (refresh, remove, open graph)
     graph.py                  graph rendering flow: range/add/remove callbacks
     inline.py                 inline query handler

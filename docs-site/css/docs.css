@@ -84,7 +84,7 @@ svg { display: block; }
 /* ─── Topbar, glassmorphism ─── */
 .topbar {
   position: fixed;
-  top: 0; left: 0; right: 0;
+  top: var(--update-notice-h, 0px); left: 0; right: 0;
   height: var(--topbar-h);
   display: flex;
   align-items: center;
@@ -180,6 +180,13 @@ svg { display: block; }
 }
 .btn--primary:hover { background: var(--brand-fill-strong); }
 
+.btn--ghost {
+  background: var(--surface-strong);
+  color: var(--ink);
+  border: 1px solid var(--surface-border);
+}
+.btn--ghost:hover { background: var(--brand-fill); color: var(--on-brand); }
+
 .btn--icon {
   padding: 8px;
   background: var(--surface-strong);
@@ -256,7 +263,7 @@ svg { display: block; }
 /* ─── Shell layout ─── */
 .shell {
   display: flex;
-  padding-top: var(--topbar-h);
+  padding-top: var(--chrome-h);
   min-height: 100vh;
 }
 
@@ -266,7 +273,7 @@ svg { display: block; }
    flips this same class to mean "shown as a mobile overlay" instead. */
 .sidebar {
   position: fixed;
-  top: var(--topbar-h);
+  top: var(--chrome-h);
   left: 0;
   bottom: 0;
   width: var(--sidebar-w);
@@ -325,7 +332,7 @@ body.sidebar-toggled .sidebar {
 .sidebar-scrim {
   position: fixed;
   inset: 0;
-  top: var(--topbar-h);
+  top: var(--chrome-h);
   background: rgba(10, 15, 12, 0.35);
   z-index: 90;
   opacity: 0;
@@ -368,13 +375,13 @@ body.sidebar-toggled .content-wrap {
   font-size: 22px;
   font-weight: 400;
   margin: 40px 0 14px;
-  scroll-margin-top: calc(var(--topbar-h) + 16px);
+  scroll-margin-top: calc(var(--chrome-h) + 16px);
 }
 .content h3 {
   font-size: 17px;
   font-weight: 400;
   margin: 26px 0 10px;
-  scroll-margin-top: calc(var(--topbar-h) + 16px);
+  scroll-margin-top: calc(var(--chrome-h) + 16px);
 }
 .content p { margin-bottom: 14px; color: var(--ink); }
 .content p.muted { color: var(--muted); }
@@ -620,10 +627,10 @@ tr:last-child td { border-bottom: none; }
   flex: 0 0 var(--toc-w);
   align-self: flex-start;
   position: sticky;
-  top: calc(var(--topbar-h) + 24px);
+  top: calc(var(--chrome-h) + 24px);
   margin-top: 40px;
   padding-right: 24px;
-  max-height: calc(100vh - var(--topbar-h) - 48px);
+  max-height: calc(100vh - var(--chrome-h) - 48px);
   overflow-y: auto;
 }
 .toc__title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); margin-bottom: 10px; }
@@ -761,7 +768,8 @@ body.modal-open { overflow: hidden; }
 
 /* ─── Mode toggle ─── */
 .mode-toggle {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 6px;
   padding: 4px;
   border-radius: 14px;
@@ -785,6 +793,55 @@ body.modal-open { overflow: hidden; }
 .mode-btn.active {
   background: var(--brand-fill);
   color: var(--on-brand);
+}
+
+/* Time based mode. Light and dark stay side by side and the third spans the
+   row beneath them: two equal columns would put the longer label in a box
+   too narrow to read at 320px, and the full width row also signals this is
+   a different kind of choice, a rule for picking a mode rather than a mode. */
+.mode-btn-wide { grid-column: 1 / -1; }
+.mode-note {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  /* Sits on the modal's --surface-strong, where plain --muted misses AA in
+     dark mode. */
+  color: var(--muted-strong);
+}
+
+/* ─── Update notice ───
+   Drawn by js/update.js when a new version is waiting. Full width at the top
+   of the document, quieter than the topbar, tinted enough to read as a
+   notice. Fixed above the topbar, which moves down by --update-notice-h
+   (published by update.js) for as long as the bar is there. */
+.update-notice {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 110;
+  background: color-mix(in srgb, var(--brand-ink) 12%, color-mix(in srgb, var(--brand) 10%, var(--bg)));
+  border-bottom: 1px solid color-mix(in srgb, var(--brand-ink) 20%, transparent);
+  color: var(--ink);
+  font-size: 0.875rem;
+  animation: update-notice-in 0.2s ease;
+}
+.update-notice.is-leaving { animation: update-notice-out 0.18s ease forwards; }
+
+.update-notice-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 16px;
+  /* Under the notch on a phone, where the bar is the topmost thing on screen. */
+  padding-top: max(0.5rem, env(safe-area-inset-top));
+}
+.update-notice p { flex: 1 1 auto; min-width: 0; }
+.update-notice .btn { flex: none; padding: 6px 14px; font-size: 0.85rem; }
+
+@keyframes update-notice-in { from { opacity: 0; } }
+@keyframes update-notice-out { to { opacity: 0; } }
+
+@media (max-width: 480px) {
+  .update-notice-inner { flex-wrap: wrap; }
+  .update-notice p { flex-basis: 100%; }
 }
 
 /* ─── Swatch grid ─── */

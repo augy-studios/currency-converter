@@ -72,4 +72,7 @@
   --sidebar-w: 272px;
   --toc-w: 220px;
   --topbar-h: 64px;
+  /* Everything fixed at the top: the topbar, plus the update notice while
+     one is showing (js/update.js sets --update-notice-h on <html>). */
+  --chrome-h: calc(var(--topbar-h) + var(--update-notice-h, 0px));
 }

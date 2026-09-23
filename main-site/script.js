@@ -634,19 +634,12 @@ function attachEvents() {
   attachGraphEvents();
 }
 
-/* ─── Service Worker ─── */
-
-function registerSW() {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').catch(err => console.warn('SW registration failed:', err));
-  }
-}
-
-/* ─── Init ─── */
+/* ─── Init ───
+   The service worker is registered by js/update.js, which also owns the
+   update prompt. */
 
 (async function init() {
   attachEvents();
-  registerSW();
   try {
     await loadCurrencies();
     loadState();

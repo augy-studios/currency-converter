@@ -7,7 +7,7 @@
 //                       Android 12+, where the system has a palette to give.
 //   Glass               the desktop's second look, in place of Material You, as close to its
 //                       system's own glass as the system lets an app get (glassKind()):
-//                         Windows  Fluent 2: Mica behind the window, Acrylic-like panels over
+//                         Windows  Fluent 2: a painted Mica-like backdrop, Acrylic-like panels over
 //                                  it, Segoe UI Variable, the system's accent, 8 px corners
 //                         macOS    Tahoe: the desktop through the window (NSVisualEffectView),
 //                                  rounded glass panels with a light catching their top edge,
@@ -87,7 +87,7 @@ String glassLabel([String? kind]) =>
 /// What the second look is, in a line.
 String glassNote([String? kind]) =>
     const {
-      'fluent': 'Windows 11’s own look: Mica and Acrylic, Segoe UI and your accent colour.',
+      'fluent': 'Windows 11’s look: a Mica-like backdrop, Acrylic panels, Segoe UI and your accent colour.',
       'tahoe': 'macOS Tahoe’s glass: the desktop through the window, your accent colour and the system’s font.',
       'frosted': 'Deepin and COSMIC’s frosted glass, in your accent colour and the system’s font.',
     }[kind ?? glassKind()] ??
@@ -626,7 +626,7 @@ ThemeData buildTheme({
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     ),
     dialogTheme: DialogThemeData(
-      backgroundColor: colors.glass ? Color.alphaBlend(colors.surfaceStrong.withValues(alpha: 0.9), colors.bg) : scheme.surfaceContainerHigh,
+      backgroundColor: colors.glass ? Color.alphaBlend(colors.surfaceStrong.withValues(alpha: colors.surfaceStrong.a * 0.9), colors.bg) : scheme.surfaceContainerHigh,
       surfaceTintColor: Colors.transparent,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(material ? 28 : (glassLook ? colors.corner + 4 : 18)),
@@ -634,7 +634,7 @@ ThemeData buildTheme({
       ),
     ),
     bottomSheetTheme: BottomSheetThemeData(
-      backgroundColor: colors.glass ? Color.alphaBlend(colors.surfaceStrong.withValues(alpha: 0.9), colors.bg) : scheme.surfaceContainerLow,
+      backgroundColor: colors.glass ? Color.alphaBlend(colors.surfaceStrong.withValues(alpha: colors.surfaceStrong.a * 0.9), colors.bg) : scheme.surfaceContainerLow,
       surfaceTintColor: Colors.transparent,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(material ? 28 : 18))),
     ),

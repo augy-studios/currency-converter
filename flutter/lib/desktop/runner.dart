@@ -1,6 +1,6 @@
 // The runner's own channel (docs/flutter-desktop-app-spec.md §2.7), for what no package does:
 //   Windows  the Jump List (the pairs converted lately), the taskbar's thumbnail buttons, and
-//            the Fluent 2 look's Mica
+//            the Fluent 2 look's window border, light or dark
 //            (windows/runner/flutter_window.cpp)
 //   macOS    the Dock menu and badge, and the Tahoe look's glass (macos/Runner/AppDelegate.swift)
 // Events back: 'thumb' with a button id or link, 'dock' with a pair's code, 'open' with a link and
@@ -54,9 +54,9 @@ class Runner {
     ],
   });
 
-  /// The glass look's material behind the window: Mica on Windows 11, NSVisualEffectView on
-  /// macOS. True when the system put it there; false (Linux, Windows 10, an error) means the
-  /// app paints its own backdrop.
+  /// The glass look's material behind the window: NSVisualEffectView on macOS. True when the
+  /// system put it there; false (Windows, which only sets its border's light or dark; Linux; an
+  /// error) means the app paints its own backdrop.
   static Future<bool> setGlass({required bool on, required bool dark}) async {
     try {
       return await _channel.invokeMethod<bool>('setGlass', {'on': on, 'dark': dark}) ?? false;

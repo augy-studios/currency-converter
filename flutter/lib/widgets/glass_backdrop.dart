@@ -1,8 +1,8 @@
 // The desktop's glass look's backdrop, where the system has no material to put behind the window
-// (Linux, whose Deepin and COSMIC blur only their own windows; Windows 10; the browser build):
-// a soft wash of the accent's colours, blurred, as a frosted desktop would show through. On
-// Windows 11 (Mica) and macOS (NSVisualEffectView) the window's own material shows instead, and
-// this stays away (lib/desktop/desktop_main.dart sets [native]).
+// (Linux, whose Deepin and COSMIC blur only their own windows; Windows, Fluent 2's Mica-like
+// backdrop; the browser build): a soft wash of the accent's colours, blurred, as a frosted
+// desktop would show through. On macOS (NSVisualEffectView) the window's own material shows
+// instead, and this stays away (lib/desktop/desktop_main.dart sets [native]).
 import 'dart:ui';
 
 import 'package:flutter/material.dart';

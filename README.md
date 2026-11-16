@@ -49,8 +49,8 @@ to its Dart). The specs they follow are in `docs/`: `flutter-android-app-spec.md
   eur"), the converter and the graph side by side, the tray with a tray rate, desktop rate widgets,
   the Jump List and Dock, screenshots, a pointing hand on everything pressable, and self-updating
   installers built by GitHub Actions. Their second look, in place of Material You, is the system's
-  glass: Fluent 2 with Mica (Windows 11), the desktop through the window (macOS), or a frosted
-  backdrop (Linux), always in the system's accent colour.
+  glass: Fluent 2 with a painted Mica-like backdrop (Windows), the desktop through the window
+  (macOS), or a frosted backdrop (Linux), always in the system's accent colour.
 - No ads and no analytics in the apps. The website keeps its Google Analytics (and its ads).
 
 ### Build them

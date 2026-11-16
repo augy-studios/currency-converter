@@ -163,7 +163,7 @@ bool FlutterWindow::OnCreate() {
     } else if (call.method_name() == "setBadge") {
       result->Success();
     } else if (call.method_name() == "setGlass") {
-      // The Fluent 2 look (lib/theme/theme.dart): Mica behind the window, or nothing.
+      // The Fluent 2 look (lib/theme/theme.dart): the window border's light or dark.
       bool on = false, dark = false;
       if (const auto* args = std::get_if<flutter::EncodableMap>(call.arguments())) {
         auto flag = [&](const char* key) {
@@ -202,27 +202,26 @@ void FlutterWindow::OnDestroy() {
   Win32Window::OnDestroy();
 }
 
-// The Fluent 2 look's material (docs/desktop-features-spec.md, the desktop's second look): Mica,
-// the desktop's wallpaper blurred and tinted behind the whole window, light or dark as the app
-// is. The frame is extended over the client area so DWM draws it there, and the Flutter view,
-// whose page is see-through in that look, shows it. Windows 11 22H2 and later take the system
-// backdrop type; 21H2 the older Mica switch. Says whether either took: on Windows 10 neither
-// does, and the app paints its own frosted backdrop instead.
+// The Fluent 2 look (docs/desktop-features-spec.md, the desktop's second look). The window's
+// border follows the app's light or dark; the material behind the page is painted by the app
+// (lib/widgets/glass_backdrop.dart), so this always says no system material was put there.
+//
+// Not DWM's Mica: that needs the frame extended over the whole client area, and then DWM draws
+// its own minimise, maximise and close over the app's title bar (two sets of buttons), and with
+// "Show accent colour on title bars" on, it fills the whole window with the accent colour.
+// The frame and backdrop are put back as they were, for a window an older build had changed.
 bool FlutterWindow::SetGlass(bool on, bool dark) {
   HWND window = GetHandle();
   if (!window) return false;
   BOOL dark_mode = dark ? TRUE : FALSE;
   ::DwmSetWindowAttribute(window, 20 /* DWMWA_USE_IMMERSIVE_DARK_MODE */, &dark_mode, sizeof(dark_mode));
-  MARGINS margins = on ? MARGINS{-1, -1, -1, -1} : MARGINS{0, 0, 0, 0};
+  MARGINS margins{0, 0, 0, 0};
   ::DwmExtendFrameIntoClientArea(window, &margins);
-  int backdrop = on ? 2 /* DWMSBT_MAINWINDOW, Mica */ : 1 /* DWMSBT_NONE */;
-  HRESULT hr = ::DwmSetWindowAttribute(window, 38 /* DWMWA_SYSTEMBACKDROP_TYPE */, &backdrop, sizeof(backdrop));
-  if (FAILED(hr)) {
-    BOOL mica = on ? TRUE : FALSE;
-    hr = ::DwmSetWindowAttribute(window, 1029 /* DWMWA_MICA_EFFECT, 21H2 */, &mica, sizeof(mica));
-  }
+  int backdrop = 1 /* DWMSBT_NONE */;
+  ::DwmSetWindowAttribute(window, 38 /* DWMWA_SYSTEMBACKDROP_TYPE */, &backdrop, sizeof(backdrop));
   ::RedrawWindow(window, nullptr, nullptr, RDW_INVALIDATE | RDW_FRAME | RDW_ALLCHILDREN);
-  return on && SUCCEEDED(hr);
+  (void)on;
+  return false;
 }
 
 void FlutterWindow::SetFavourites(const std::vector<Favourite>& favourites) {

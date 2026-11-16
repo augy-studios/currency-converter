@@ -29,10 +29,6 @@ test("the desktop: two panes, the command bar converts a sentence, History's rig
   await expect(page.getByText(`1 USD = ${fmt(rate("USD", "JPY"))} JPY`).first()).toBeVisible();
   await expect.poll(async () => (await history(page))[0]).toMatchObject({ amount: 50, from: "USD", to: "JPY" });
 
-  // Back to the pair before.
-  await button(page, "Back").click();
-  await expect(page.getByText(`1 SGD = ${fmt(rate("SGD", "MYR"))} MYR`).first()).toBeVisible();
-
   // Right-click a conversion: the desktop's own actions.
   await page.getByRole("button", { name: /^50 USD → / }).click({ button: "right" });
   for (const item of ["Convert again", "Pin to Desktop Widget", "Set as Tray Rate", "Copy Link", "Remove"]) {

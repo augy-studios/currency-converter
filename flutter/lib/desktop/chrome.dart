@@ -2,14 +2,14 @@
 // §5, docs/flutter-desktop-app-spec.md §2.3–2.5). 40 px tall, in the brand colour (writing light
 // or dark by contrast), draggable where there's nothing to click, double-click to maximise:
 //
-//   (macOS traffic lights) Back Forward Reload  [ Command / Search bar ]  Copy link Screenshot
+//   (macOS traffic lights)  [ Command / Search bar ]  Copy link Screenshot
 //   Long screenshot (Update) (Windows, Linux: minimise, maximise, close)
 //
 // The command bar shows the conversion on show at rest; Ctrl+K, Ctrl+F, Ctrl+L or F6 (⌘K, ⌘F, ⌘L)
 // opens a live search of currencies, past conversions and the app's commands, and converts what's
 // typed as a sentence ("100 usd to eur", "50 sgd myr"). A pasted uwu://currency/ link, the site's
-// address or a #sync/… path opens in the app; another site's address opens in the browser. Back
-// and Forward step through the pairs converted this session. The title bar hides in full screen.
+// address or a #sync/… path opens in the app; another site's address opens in the browser. Alt+Left
+// and Alt+Right step through the pairs converted this session. The title bar hides in full screen.
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -556,39 +556,9 @@ class _DesktopChromeState extends State<DesktopChrome> {
         height: titleBarHeight,
         child: Row(
           children: [
-            SizedBox(width: mac ? 78 : 8),
-            ValueListenableBuilder<int>(
-              valueListenable: ViewHistory.changed,
-              builder: (context, _, _) => Row(
-                children: [
-                  tool(
-                    'arrow-left',
-                    'Back',
-                    ViewHistory.canBack ? ViewHistory.back : null,
-                  ),
-                  tool(
-                    'arrow-right',
-                    'Forward',
-                    ViewHistory.canForward ? ViewHistory.forward : null,
-                  ),
-                ],
-              ),
-            ),
-            _reloading
-                ? SizedBox(
-                    width: 32,
-                    child: Center(
-                      child: SizedBox(
-                        width: 14,
-                        height: 14,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: ink,
-                        ),
-                      ),
-                    ),
-                  )
-                : tool('refresh', 'Reload', _reload),
+            // No back, forward or reload buttons: the app is one page, and the converter has its
+            // own refresh. F5 and Alt+Left/Right still work from the keyboard.
+            SizedBox(width: mac ? 78 : 12),
             Expanded(
               child: DragToMoveArea(
                 child: SizedBox(

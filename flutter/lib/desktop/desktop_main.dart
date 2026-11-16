@@ -10,7 +10,7 @@
 // - the tray rate, the Jump List and Dock (glance.dart);
 // - desktop widgets, each in its own window and engine (widgets_window.dart);
 // - starting at sign-in, uwu://currency/ links shared with the sibling apps (desk.dart);
-// - the glass look's material behind the window: Mica, or the desktop through it on macOS.
+// - the glass look's material behind the window: the desktop through it on macOS.
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -147,8 +147,8 @@ Future<void> desktopAfterApp(List<String> args) async {
 
 String _glassWas = '';
 
-/// Mica (Windows 11) or the desktop through the window (macOS) behind the glass look, or none. A
-/// system that has none to give (Linux, Windows 10) leaves the app to paint its own backdrop.
+/// The desktop through the window (macOS) behind the glass look; elsewhere (Windows, Linux) the
+/// app paints its own backdrop, and Windows' border follows light or dark.
 Future<void> _applyGlass() async {
   final t = ThemeController.I;
   final key = '${t.isGlass}:${t.brightness}';
@@ -159,9 +159,11 @@ Future<void> _applyGlass() async {
     return;
   }
   final dark = t.brightness == Brightness.dark;
-  if (t.isGlass) await windowManager.setBackgroundColor(Colors.transparent);
+  // Only macOS puts a system material behind the window (Windows' Fluent 2 is painted, see
+  // windows/runner/flutter_window.cpp), so only there is the window left see-through.
+  if (t.isGlass && Platform.isMacOS) await windowManager.setBackgroundColor(Colors.transparent);
   final ok = await Runner.setGlass(on: t.isGlass, dark: dark);
-  if (!t.isGlass) await windowManager.setBackgroundColor(dark ? const Color(0xFF0C100E) : const Color(0xFFEEF2F0));
+  if (!(t.isGlass && ok)) await windowManager.setBackgroundColor(dark ? const Color(0xFF0C100E) : const Color(0xFFEEF2F0));
   GlassBackdrop.native.value = t.isGlass && ok;
 }
 

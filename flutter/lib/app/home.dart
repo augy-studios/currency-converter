@@ -184,15 +184,16 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: grid
                 ? [
-                    IntrinsicHeight(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(flex: 2, child: converter),
-                          const SizedBox(width: 20),
-                          const Expanded(flex: 1, child: AboutCard()),
-                        ],
-                      ),
+                    // Not in an IntrinsicHeight: the converter card lays itself out with a
+                    // LayoutBuilder, which can't report its height, so the row took About's
+                    // height and cut the converter off below From and To.
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(flex: 2, child: converter),
+                        const SizedBox(width: 20),
+                        const Expanded(flex: 1, child: AboutCard()),
+                      ],
                     ),
                     const SizedBox(height: 20),
                     const GraphCard(),

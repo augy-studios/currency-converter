@@ -17,8 +17,9 @@ import '../widgets/common.dart';
 import 'home.dart';
 import 'nav.dart';
 
-/// `context` is any under the app's theme. At most `maxHeight` pixels tall, and at most `maxSide`
-/// along its longer side, its resolution lowered to fit; null if it couldn't be drawn.
+/// `context` is any under the app's theme. One pixel to a logical pixel, at most `maxHeight`
+/// tall (a longer page is cut off at the bottom), and so within `maxSide`; null if it couldn't be
+/// drawn.
 Future<ui.Image?> drawWholePage(BuildContext context, {double maxHeight = 16384, double maxSide = 16384}) async {
   // Called from above the navigator too (the title bar): the navigator's overlay.
   final overlay = AppNav.navigatorKey.currentState?.overlay;
@@ -29,7 +30,6 @@ Future<ui.Image?> drawWholePage(BuildContext context, {double maxHeight = 16384,
     final size = MediaQuery.sizeOf(context);
     final width = math.min(size.width, 980.0);
     final theme = Theme.of(context);
-    final ratio = MediaQuery.devicePixelRatioOf(context);
     final mq = MediaQuery.of(context).copyWith(size: Size(width, maxHeight));
     final grid = width >= 880;
     entry = OverlayEntry(
@@ -60,15 +60,14 @@ Future<ui.Image?> drawWholePage(BuildContext context, {double maxHeight = 16384,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           if (grid)
-                            const IntrinsicHeight(
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(flex: 2, child: ConverterCard()),
-                                  SizedBox(width: 20),
-                                  Expanded(child: AboutCard()),
-                                ],
-                              ),
+                            // No IntrinsicHeight, as on the page (home.dart): it cut the converter off.
+                            const Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(flex: 2, child: ConverterCard()),
+                                SizedBox(width: 20),
+                                Expanded(child: AboutCard()),
+                              ],
                             )
                           else
                             const ConverterCard(),
@@ -93,9 +92,11 @@ Future<ui.Image?> drawWholePage(BuildContext context, {double maxHeight = 16384,
     await Future<void>.delayed(const Duration(milliseconds: 700));
     final box = key.currentContext?.findRenderObject() as RenderRepaintBoundary?;
     if (box == null) return null;
-    final longest = math.max(box.size.width, box.size.height);
-    final r = math.min(ratio, math.min(maxHeight / math.max(box.size.height, 1), maxSide / math.max(longest, 1)));
-    return await box.toImage(pixelRatio: r);
+    // At 1:1. On Android and Windows this off-screen page is drawn at 1:1 whatever pixel ratio is
+    // asked for, while the picture is sized by it: at a phone's 3× the page filled a third of the
+    // picture, the rest left blank (white once made a JPEG). The page is never taller than
+    // maxHeight (the OverflowBox above), nor wider than 980, so it's within maxSide too.
+    return await box.toImage(pixelRatio: 1);
   } finally {
     entry?.remove();
   }

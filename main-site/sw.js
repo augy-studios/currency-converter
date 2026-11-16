@@ -3,7 +3,7 @@
 // is ever offered the new version. A new worker installs and then waits; it
 // only takes over when somebody presses Reload in the update bar
 // (js/update.js), which posts "skip-waiting".
-const VERSION = 17;
+const VERSION = 18;
 const CACHE = `currency-v${VERSION}`;
 const FONT_CACHE = "currency-fonts-v2";
 

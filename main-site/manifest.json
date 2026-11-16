@@ -30,7 +30,6 @@
     "theme_color": "#cfc",
     "background_color": "#cfc",
     "display": "standalone",
-    "display_override": ["fullscreen", "minimal-ui", "window-controls-overlay"],
     "orientation": "portrait",
     "id": "org.uwuapps.currency",
     "related_applications": [{

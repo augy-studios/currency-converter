@@ -34,7 +34,7 @@ const portrait = [
 ];
 
 const landscape = [
-  { file: "01-convert", raw: "01-convert", head: "Live rates, in a moment.", notes: [{ text: "Type a code<br>or a name", side: "l", y: 0.5, to: [0.28, 0.42] }, { text: "Every action in<br>the edge tray", side: "r", y: 0.5, to: [0.97, 0.25] }] },
+  { file: "01-convert", raw: "01-convert", head: "Live rates, in a moment.", notes: [{ text: "Type a code<br>or a name", side: "l", y: 0.5, to: [0.24, 0.31] }, { text: "Every action in<br>the edge tray", side: "r", y: 0.5, to: [0.97, 0.25] }] },
   { file: "02-graph", raw: "02-graph", head: "See how a rate has moved.", notes: [{ text: "Five days<br>to every day", side: "l", y: 0.4, to: [0.3, 0.2] }, { text: "Compare up to<br>six at once", side: "r", y: 0.62, to: [0.62, 0.6] }] },
   { file: "03-history", raw: "03-history", head: "Every conversion, kept for you.", notes: [{ text: "Tap one to<br>convert it again", side: "l", y: 0.6, to: [0.3, 0.5] }, { text: "Share it with your<br>other devices", side: "r", y: 0.42, to: [0.62, 0.3] }] },
   { file: "04-material-you", raw: "04-material-you", head: "In your device's colours.", notes: [{ text: "Material You,<br>by default", side: "l", y: 0.42, to: [0.3, 0.3] }, { text: "From your<br>wallpaper", side: "r", y: 0.5, to: [0.62, 0.22] }] },

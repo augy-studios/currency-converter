@@ -123,7 +123,8 @@ class BugShot {
   /// screen. Returns the picture and whether it's a whole page (bigger than the screen).
   static Future<(String, bool)?> take(BuildContext context) async {
     final ratio = MediaQuery.devicePixelRatioOf(context);
-    final screen = MediaQuery.sizeOf(context) * ratio;
+    // In logical pixels, as drawWholePage draws the page (one pixel to each).
+    final screen = MediaQuery.sizeOf(context);
     ui.Image? shot;
     var whole = false;
     if (!AppSheet.anyOpen) {

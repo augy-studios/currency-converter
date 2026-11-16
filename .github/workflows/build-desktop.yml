@@ -184,8 +184,17 @@ jobs:
         run: |
           v="${{ steps.v.outputs.version }}"
           test -d parts/windows-x64/windows-x64 || { echo "The x64 build failed"; exit 1; }
-          command -v makensis || choco install nsis -y --no-progress
+          # NSIS from Chocolatey, tried a few times: its server sometimes answers 504, and 1.0.3's
+          # Windows installers were missing until the job was run again.
           export PATH="$PATH:/c/Program Files (x86)/NSIS"
+          for try in 1 2 3 4 5; do
+            command -v makensis && break
+            choco install nsis -y --no-progress || true
+            command -v makensis && break
+            echo "NSIS isn't installed yet (try $try of 5); waiting before trying again."
+            sleep $((try * 20))
+          done
+          command -v makensis || { echo "::error::Couldn't install NSIS from Chocolatey."; exit 1; }
           mkdir -p out
           x64="$(cygpath -w "$PWD/parts/windows-x64/windows-x64")"
           args=(-DVERSION="$v" -DX64="$x64" -DOUT="$(cygpath -w "$PWD/out/uwucurrency-$v-setup.exe")")

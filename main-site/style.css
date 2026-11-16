@@ -79,6 +79,7 @@
 
 /* Allow text selection in data-heavy areas */
 input,
+textarea,
 .result__line,
 .result__sub,
 p {
@@ -1448,7 +1449,9 @@ body.modal-open { overflow: hidden; }
   min-width: 0;
 }
 
+/* The site's .input (index.html), in the page's font, as sgbus's code field is. */
 .syncCodeInput {
+  font-family: inherit;
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
@@ -1845,11 +1848,26 @@ body.touring {
   max-width: 460px;
 }
 
+/* Its fields are the site's .input, as sgbus's are: a textarea and an input left to the browser
+   came out white, square and unpadded, the textarea in monospace. */
 .bugText {
+  display: block;
+  height: auto;
   min-height: 120px;
+  resize: vertical;
   font: inherit;
-  font-size: 0.9rem;
+  font-size: 0.9375rem;
   line-height: 1.4;
+}
+
+#bugContact {
+  display: block;
+  font: inherit;
+  font-size: 0.9375rem;
+}
+
+#bugModal .input + .modal-section-label {
+  margin-top: 12px;
 }
 
 .bug-modal [data-icon],

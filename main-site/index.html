@@ -328,7 +328,7 @@
                 <button id="syncHostBtn" class="btn-primary" type="button"><span data-icon="sync"></span> Show a code on
                     this device</button>
                 <div class="syncJoin">
-                    <input id="syncCodeInput" class="syncCodeInput" type="text" maxlength="12" autocomplete="off"
+                    <input id="syncCodeInput" class="input syncCodeInput" type="text" maxlength="12" autocomplete="off"
                         autocapitalize="characters" spellcheck="false" enterkeyhint="go"
                         placeholder="Or enter the other device&rsquo;s code" aria-label="Code from the other device" />
                     <button id="syncJoinBtn" class="btn-ghost" type="button">Connect</button>
@@ -389,10 +389,10 @@
                 </button>
             </div>
             <label class="modal-section-label" for="bugText">What went wrong?</label>
-            <textarea id="bugText" class="bugText" rows="5" maxlength="2000" required
+            <textarea id="bugText" class="input bugText" rows="5" maxlength="2000" required
                 placeholder="What you did, what happened, and what you expected"></textarea>
             <label class="modal-section-label" for="bugContact">How to reach you (optional)</label>
-            <input id="bugContact" type="text" maxlength="200" autocomplete="off" spellcheck="false"
+            <input id="bugContact" class="input" type="text" maxlength="200" autocomplete="off" spellcheck="false"
                 placeholder="Telegram @name or email, for an answer" />
             <!-- Pictures, up to three: from the device, or a page of the site (js/bug-report.js) -->
             <p class="modal-section-label">Pictures (optional)</p>

@@ -1,0 +1,38 @@
+# Secrets, wherever one lands by mistake. flutter/.gitignore has the full list for the app.
+*.keystore
+*.jks
+*.p12
+*.pfx
+keystore.properties
+google-services.json
+*firebase-adminsdk*.json
+upload_certificate.pem
+
+# Real environment files never go in the repo. The examples do (main-site/.env.example).
+.env
+.env.*
+!.env.example
+
+# Vercel's local project link and build output.
+.vercel/
+
+# Dependencies and test output.
+node_modules/
+test-results/
+playwright-report/
+
+# Built apps, each version in a folder of its own (release/<version>/): the APK and the App
+# Bundle are committed. The R8 mapping and Dart symbols that read obfuscated crashes back stay on
+# this computer, never shared. The desktop installers are built on GitHub and go only on the
+# release. GitHub refuses any file over 100 MB: one that big is listed here by name and goes only
+# on the GitHub release (none so far).
+release/*/*-mapping.txt
+release/*/*-symbols.zip
+release/*/*.exe
+release/*/*.msi
+release/*/*.dmg
+release/*/*.zip
+release/*/*.deb
+release/*/*.rpm
+release/*/*.AppImage
+release/*/latest*.yml

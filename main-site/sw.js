@@ -3,7 +3,7 @@
 // is ever offered the new version. A new worker installs and then waits; it
 // only takes over when somebody presses Reload in the update bar
 // (js/update.js), which posts "skip-waiting".
-const VERSION = 16;
+const VERSION = 17;
 const CACHE = `currency-v${VERSION}`;
 const FONT_CACHE = "currency-fonts-v2";
 
@@ -16,6 +16,15 @@ const ASSETS = [
   "/js/ui.js",
   "/js/theme.js",
   "/js/update.js",
+  "/js/tray.js",
+  "/js/qr.js",
+  "/js/p2p.js",
+  "/js/history.js",
+  "/js/sync.js",
+  "/js/tour.js",
+  "/js/bug-report.js",
+  "/privacy",
+  "/privacy.css",
   "/CC-main.png",
   "/CC-192.png",
   "/CC-512.png",
@@ -68,6 +77,12 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("message", (event) => {
   const type = typeof event.data === "string" ? event.data : event.data?.type;
 
+  // Report a bug asks which version is serving the page (js/bug-report.js).
+  if (type === "version" && event.ports?.[0]) {
+    event.ports[0].postMessage(`v${VERSION}`);
+    return;
+  }
+
   // The only place skipWaiting is ever called.
   if (type === "skip-waiting") {
     event.waitUntil(self.skipWaiting().then(() => self.clients.claim()));
@@ -77,6 +92,14 @@ self.addEventListener("message", (event) => {
 self.addEventListener("fetch", (event) => {
   const { request } = event;
   const url = new URL(request.url);
+
+  // Only GETs are cached: a bug report or anything else sent goes straight to the network.
+  if (request.method !== "GET") return;
+
+  // Pairing for Sync (js/p2p.js) needs the network anyway, and an old signalling client or a
+  // cached answer from the broker (a peer id handed out twice) is worse than a clear "could not
+  // load" (docs/STUN-p2p-spec.md, "PWA integration").
+  if (url.hostname.endsWith("peerjs.com") || url.pathname.includes("/peerjs/")) return;
 
   // Google Fonts: cache-first, since the stylesheet/font URLs are effectively
   // immutable (content-hashed) and this keeps the Jua font available offline

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- In the app's cache: a downloaded update for Android's installer (MainActivity.installApk), and a
+     conversion's picture for the share sheet (MainActivity.share). -->
+<paths>
+    <cache-path name="updates" path="." />
+</paths>

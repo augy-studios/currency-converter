@@ -272,3 +272,7 @@ document.addEventListener("DOMContentLoaded", () => {
   buildThemeModal();
   wireModals();
 });
+
+// For js/sync.js, which shares the theme with another device. Functions declared at the top of
+// a script are on window already; a const isn't.
+window.COLOR_THEMES = COLOR_THEMES;

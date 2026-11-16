@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
+  <!-- uwuCurrency Bug Reports: the Telegram bot's profile picture (BUG-REPORT-SETUP.md). Drawn in
+       the app icon's flat style (docs/assets/uwucurrency-icon.svg): the same mint ground and the
+       same gold coin, right half a shade darker, with a bug on it where the dollar sign would be.
+       Telegram crops profile pictures to a circle, so everything sits inside the 400-radius circle
+       the app icon keeps to. -->
+  <rect width="1000" height="1000" fill="#ccffcc"/>
+
+  <!-- The coin -->
+  <circle cx="500" cy="500" r="330" fill="#ffc534"/>
+  <path d="M500 170 A330 330 0 0 1 500 830 Z" fill="#f5ab12"/>
+  <circle cx="500" cy="500" r="262" fill="#ffd96b"/>
+  <path d="M500 238 A262 262 0 0 1 500 762 Z" fill="#ffc93f"/>
+
+  <!-- The bug -->
+  <g transform="translate(500 520)">
+    <!-- Legs and feelers, under the body -->
+    <g fill="none" stroke="#8a5300" stroke-width="24" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M-62 -40 L-124 -76 L-150 -64"/>
+      <path d="M62 -40 L124 -76 L150 -64"/>
+      <path d="M-72 22 L-158 22"/>
+      <path d="M72 22 L158 22"/>
+      <path d="M-62 88 L-118 126 L-128 160"/>
+      <path d="M62 88 L118 126 L128 160"/>
+      <path d="M-20 -130 Q-42 -170 -80 -180"/>
+      <path d="M20 -130 Q42 -170 80 -180"/>
+    </g>
+    <g fill="#8a5300">
+      <circle cx="-84" cy="-181" r="16"/>
+      <circle cx="84" cy="-181" r="16"/>
+      <!-- Head -->
+      <circle cx="0" cy="-104" r="52"/>
+      <!-- Body -->
+      <ellipse cx="0" cy="32" rx="92" ry="120"/>
+    </g>
+    <!-- The line down its back, in the coin's gold -->
+    <path d="M0 -70 V148" stroke="#ffd96b" stroke-width="16" stroke-linecap="round"/>
+  </g>
+</svg>

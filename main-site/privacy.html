@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en-GB">
+
+<head>
+    <!-- Google tag (gtag.js): the site's own, as on every page (said in "The website" below). -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FMCYFTFPEL"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-FMCYFTFPEL');
+    </script>
+
+    <meta charset="utf-8">
+    <title>Privacy | uwuCurrency</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="What uwuCurrency keeps about you, where it goes, and how to delete it." />
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Privacy | uwuCurrency" />
+    <meta property="og:site_name" content="UwU Apps" />
+    <meta property="og:description" content="What uwuCurrency keeps about you, where it goes, and how to delete it." />
+
+    <script>
+        // The reader's light or dark mode and colour, as the converter has them (index.html does
+        // the same before first paint; keep the hours in step with js/theme.js).
+        (function () {
+            var k = "uwuconvert";
+            var m = "light", c = "classic";
+            try {
+                m = localStorage.getItem(k + ".mode") || "light";
+                c = localStorage.getItem(k + ".colorTheme") || "classic";
+            } catch (e) {}
+            if (m === "time") {
+                var h = new Date().getHours();
+                m = h >= 9 && h < 18 ? "light" : "dark";
+            }
+            document.documentElement.setAttribute("data-mode", m);
+            document.documentElement.setAttribute("data-color-theme", c);
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&display=swap">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/privacy.css">
+    <meta name="theme-color" content="#ccffcc" />
+
+    <link rel="apple-touch-icon" href="/CC-main.png">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta property="og:image" content="/CC-main.png" />
+</head>
+
+<body class="legal">
+    <main class="glass glass-panel legal-page">
+        <a class="legal-home" href="/">
+            <img src="/CC-192.png" width="32" height="32" alt="" />
+            <span class="logo-text">uwuCurrency</span>
+        </a>
+
+        <h1>Privacy</h1>
+        <p class="legal-date">Last updated 16 November 2026</p>
+
+        <p>uwuCurrency (Currency Converter by UwU Apps) is made by Augy Studios. This page says what
+            uwuCurrency keeps about you, where it goes, and how to delete it. It covers the website at
+            currency.uwuapps.org, the Android app (from Google Play or GitHub), and the Windows, macOS
+            and Linux apps.</p>
+
+        <section class="legal-short" aria-labelledby="short">
+            <h2 id="short">The short version</h2>
+            <ul>
+                <li>There are no accounts. You don't sign up, and we don't know who you are.</li>
+                <li>Your conversion history and settings stay on your device. Nothing is sent to us.</li>
+                <li>The apps have no ads, no analytics and no tracking, and don't use your device's
+                    advertising ID. The website has Google Analytics and Google ads (section 5).</li>
+                <li>Nothing about you is sold.</li>
+            </ul>
+        </section>
+
+        <h2 id="device">1. What stays on your device</h2>
+        <p>uwuCurrency keeps these on your device only, in your browser's storage on the website and in
+            the app's own storage in the apps:</p>
+        <ul>
+            <li>the amount and currencies you last converted, so they're there next time;</li>
+            <li><strong>your conversion history</strong>: each conversion's amount, currencies, rate,
+                result and when you made it, up to the last 500;</li>
+            <li>your theme (light, dark or time-based, and the colour), and which tours you've seen;</li>
+            <li>the last exchange rates fetched, so the converter works offline.</li>
+        </ul>
+        <p>None of this is sent to uwuCurrency's server or anyone else, except when you choose to share
+            it with another of your devices (section 3).</p>
+
+        <h2 id="rates">2. Exchange rates</h2>
+        <p>To convert, uwuCurrency asks its server for exchange rates: which currency you're converting
+            from, and for the graph, which currencies and dates. Not the amount. The server gets them
+            from Augy Studios' own exchange rate service (api.currency.uwuapps.org, built on
+            Frankfurter), which sees the server's address, not yours.</p>
+
+        <h2 id="sync">3. Sharing history with another device</h2>
+        <p><strong>Share with another device</strong> copies conversions and your theme straight from
+            one of your devices to another, with a code or QR code. To connect the two devices:</p>
+        <ul>
+            <li>A free public service, <strong>PeerJS</strong> (0.peerjs.com), introduces them. It sees
+                both devices' IP addresses and a random code, but not your history.</li>
+            <li><strong>Google's and Cloudflare's STUN servers</strong> tell each device its own public
+                address. They see your IP address.</li>
+        </ul>
+        <p>Your conversions then go straight from one device to the other, encrypted on the way (WebRTC
+            with DTLS). They don't pass through uwuCurrency's server, and the other device learns your
+            device's IP address.</p>
+
+        <h2 id="bug">4. Report a bug</h2>
+        <p>If you use <strong>Report a bug</strong> (in the edge tray), what you send goes to
+            uwuCurrency's server and on to Augy Studios as a message from a Telegram bot. It contains:</p>
+        <ul>
+            <li>what you typed, and a way to reach you, if you give one;</li>
+            <li>up to three pictures, if you add them: from your device, or a screenshot of a page of
+                the app. A screenshot shows whatever is on that page, which can include your history;</li>
+            <li>what helps find the bug, all shown to you before it's sent: the app's version, which app
+                (website, Android, desktop), your device and system as your browser or app describes
+                them, and the kind of page you were on. Never the amounts or currencies you typed,
+                unless a picture you add shows them.</li>
+        </ul>
+        <p>uwuCurrency's server doesn't store reports. They're kept in Augy Studios' Telegram chats,
+            which Telegram stores under <a href="https://telegram.org/privacy">its own privacy
+            policy</a>. To limit misuse, the server counts reports from each IP address, for a minute
+            and, where set up, for an hour; then the count is gone. Each report gets an ID (like
+            20261116-7K3Q): quote it to have that report deleted.</p>
+
+        <h2 id="website">5. The website</h2>
+        <ul>
+            <li><strong>Google Analytics</strong> counts visits to the website's pages: which pages are
+                opened, roughly where from, and on what kind of device and browser. It uses cookies to
+                tell visits apart. It's on the website only, not in the apps.</li>
+            <li><strong>Google AdSense</strong> shows ads on the website, and Google may use cookies to
+                choose them. You can change how Google personalises ads at
+                <a href="https://adssettings.google.com">adssettings.google.com</a>. There are no ads in
+                the apps.</li>
+            <li><strong>Google Fonts</strong> serves the website's font, and <strong>jsDelivr</strong>
+                its graph and picture libraries, so they see your IP address when they load. The apps
+                carry their own.</li>
+            <li>For sharing history, the website loads the PeerJS library from <strong>cdnjs</strong>
+                (Cloudflare).</li>
+            <li><strong>Buy Augy a Coffee</strong> opens Stripe's page, only if you click it. What you
+                give there is handled by Stripe.</li>
+        </ul>
+        <p>Your browser's settings or an ad blocker can stop the analytics and ads; the converter works
+            the same without them.</p>
+
+        <h2 id="updates">6. Updates and notifications</h2>
+        <ul>
+            <li><strong>The Android app from GitHub</strong> asks uwuCurrency's server whether there's a
+                new version, and downloads it from GitHub, which sees your IP address.</li>
+            <li><strong>"New versions of the app"</strong> (Android, off unless you turn it on) uses
+                Firebase Cloud Messaging, Google's push service. Your phone joins a topic for
+                uwuCurrency's new versions, and Google handles the address it sends notifications to.
+                uwuCurrency's server keeps no list of phones.</li>
+            <li><strong>The Android app from Google Play</strong> is updated by Google Play, and has no
+                updater of its own.</li>
+            <li><strong>The Windows, macOS and Linux apps</strong> check GitHub for new versions
+                themselves, about once an hour.</li>
+        </ul>
+
+        <h2 id="android">7. Android permissions</h2>
+        <ul>
+            <li><strong>Internet</strong>: for exchange rates, sharing history and Report a bug.</li>
+            <li><strong>Notifications</strong>: only asked for when you turn on "New versions of the
+                app".</li>
+            <li><strong>Install apps</strong>: the GitHub version only, to install its own updates when
+                you choose <strong>Update</strong>. The Google Play version doesn't have it.</li>
+            <li><strong>Keep the screen on</strong>: only while sharing with another device, so the
+                connection isn't dropped.</li>
+        </ul>
+        <p>uwuCurrency doesn't use your location, contacts, camera, microphone or advertising ID.</p>
+
+        <h2 id="providers">8. Who else handles your data</h2>
+        <p>These companies run parts of uwuCurrency for us. They handle your data only to provide that
+            part, under their own privacy policies. We don't sell or share your data with anyone
+            else.</p>
+        <div class="legal-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">Who</th>
+                        <th scope="col">What for</th>
+                        <th scope="col">What it handles</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td data-label="Who"><a href="https://vercel.com/legal/privacy-policy">Vercel</a></td>
+                        <td data-label="What for">Runs the website and uwuCurrency's server</td>
+                        <td data-label="What it handles">Requests for rates and bug reports, and request logs
+                            (with IP addresses), kept for a short time</td>
+                    </tr>
+                    <tr>
+                        <td data-label="Who"><a href="https://telegram.org/privacy">Telegram</a></td>
+                        <td data-label="What for">Delivers bug reports to Augy Studios</td>
+                        <td data-label="What it handles">The reports you send (section 4)</td>
+                    </tr>
+                    <tr>
+                        <td data-label="Who"><a href="https://policies.google.com/privacy">Google</a></td>
+                        <td data-label="What for">Firebase Cloud Messaging; Google Analytics, AdSense and Google
+                            Fonts (website); STUN for sharing</td>
+                        <td data-label="What it handles">Notification addresses, visit counts, ad cookies, IP
+                            addresses</td>
+                    </tr>
+                    <tr>
+                        <td data-label="Who"><a href="https://www.cloudflare.com/privacypolicy/">Cloudflare</a></td>
+                        <td data-label="What for">STUN for sharing, and cdnjs (website)</td>
+                        <td data-label="What it handles">IP addresses</td>
+                    </tr>
+                    <tr>
+                        <td data-label="Who"><a href="https://peerjs.com/">PeerJS</a></td>
+                        <td data-label="What for">Introduces two devices for sharing</td>
+                        <td data-label="What it handles">IP addresses and a random code</td>
+                    </tr>
+                    <tr>
+                        <td data-label="Who"><a href="https://www.jsdelivr.com/terms/privacy-policy-jsdelivr-net">jsDelivr</a></td>
+                        <td data-label="What for">The graph and picture libraries (website)</td>
+                        <td data-label="What it handles">IP addresses</td>
+                    </tr>
+                    <tr>
+                        <td data-label="Who"><a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement">GitHub</a></td>
+                        <td data-label="What for">Hosts the app downloads and their updates</td>
+                        <td data-label="What it handles">IP addresses</td>
+                    </tr>
+                    <tr>
+                        <td data-label="Who"><a href="https://upstash.com/trust/privacy.pdf">Upstash</a></td>
+                        <td data-label="What for">Counts bug reports, to limit misuse, where set up</td>
+                        <td data-label="What it handles">IP addresses, for up to an hour</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p>Some of these are outside your country, so your data may be handled in other countries,
+            such as Singapore and the United States.</p>
+
+        <h2 id="delete">9. Deleting your data</h2>
+        <ul>
+            <li><strong>Your history</strong>: <strong>Clear</strong> on the History card deletes every
+                conversion on that device; the × beside one deletes just that one. Other devices keep
+                their own copies until you clear them there.</li>
+            <li><strong>Everything on a device</strong>: clear the website's data in your browser, or
+                uninstall the app.</li>
+            <li><strong>Bug reports</strong>: email us and quote the report's ID.</li>
+        </ul>
+
+        <h2 id="rights">10. Your choices and rights</h2>
+        <p>You can use uwuCurrency without giving any personal details at all. Depending on where you
+            live (for example under the UK or EU GDPR, or Singapore's PDPA), you may have the right to
+            see the data we hold about you, have it corrected or deleted, take a copy, or object to how
+            it's used. As we hold nothing but bug reports you send, email us about those, and we'll
+            answer within 30 days. You can also complain to your local data protection authority.</p>
+
+        <h2 id="security">11. Keeping it safe</h2>
+        <p>Everything between the apps and uwuCurrency's server is sent over HTTPS, and sharing with
+            another device is encrypted from device to device. No service is perfectly secure, but if
+            something goes wrong that affects your data, we'll tell you.</p>
+
+        <h2 id="children">12. Children</h2>
+        <p>uwuCurrency is suitable for everyone, and collects no personal data from anyone, children
+            included. The website's ads come from Google; the apps have none.</p>
+
+        <h2 id="changes">13. Changes to this page</h2>
+        <p>If what uwuCurrency does with your data changes, this page changes with it, and the date at
+            the top says when. Bigger changes are also said in the apps' release notes.</p>
+
+        <h2 id="contact">14. Contact</h2>
+        <p>Augy Studios, <a href="mailto:augy@augystudios.com">augy@augystudios.com</a>.</p>
+
+        <p class="legal-back"><a href="/">Back to uwuCurrency</a></p>
+    </main>
+</body>
+
+</html>

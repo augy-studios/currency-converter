@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
+  <!-- uwuCurrency app icon, in UwU Apps' flat style: solid fills, each shape's right half a shade
+       darker, no gradients, shadows or sparkles. Two coins changing hands: a euro behind, a
+       dollar in front, and the two arrows of an exchange round them. The whole drawing is
+       centred on the canvas (its box runs 175 to 825 across, 215 to 800 down), and nothing
+       reaches further than 340 from the centre, so a round crop (radius 500) or a maskable one
+       (radius 400) keeps all of it. The launcher's adaptive icon draws #ui at 80%
+       (flutter/tool/make_icons.py), inside Android's safe circle. -->
+  <rect width="1000" height="1000" fill="#ccffcc"/>
+
+  <g id="ui" transform="translate(0 -8)">
+    <!-- The exchange: an arrow over the top right, coming down, and one under the bottom left,
+         going up. -->
+    <g fill="none" stroke="#1f6b3d" stroke-width="44" stroke-linecap="round">
+      <path d="M590 215 A205 205 0 0 1 795 420"/>
+      <path d="M410 785 A205 205 0 0 1 205 580"/>
+    </g>
+    <g fill="#1f6b3d">
+      <path d="M758 404 L832 404 L795 462 Z"/>
+      <path d="M168 596 L242 596 L205 538 Z"/>
+    </g>
+    <g fill="#185632">
+      <path d="M795 404 L832 404 L795 462 Z"/>
+      <path d="M205 596 L242 596 L205 538 Z"/>
+    </g>
+
+    <!-- The euro, behind. -->
+    <circle cx="420" cy="410" r="190" fill="#2f8cff"/>
+    <path d="M420 220 A190 190 0 0 1 420 600 Z" fill="#1f73e8"/>
+    <circle cx="420" cy="410" r="150" fill="#5aa5ff"/>
+    <path d="M420 260 A150 150 0 0 1 420 560 Z" fill="#3f93f7"/>
+    <g fill="none" stroke="#ffffff" stroke-width="28" stroke-linecap="round">
+      <path d="M478 352 A78 78 0 1 0 478 468"/>
+      <path d="M350 392 H440"/>
+      <path d="M350 430 H440"/>
+    </g>
+
+    <!-- The dollar, in front, with a ring of the ground round it to part it from the euro. -->
+    <circle cx="585" cy="600" r="210" fill="#ccffcc"/>
+    <circle cx="585" cy="600" r="198" fill="#ffc534"/>
+    <path d="M585 402 A198 198 0 0 1 585 798 Z" fill="#f5ab12"/>
+    <circle cx="585" cy="600" r="156" fill="#ffd96b"/>
+    <path d="M585 444 A156 156 0 0 1 585 756 Z" fill="#ffc93f"/>
+    <g fill="none" stroke="#8a5300" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"
+       transform="translate(585 600) scale(9.6) translate(-12 -12)">
+      <path d="M12 2.2v19.6" stroke-width="3.3"/>
+      <path d="M16.6 5.6H9.9a3.3 3.3 0 0 0 0 6.6h4.2a3.3 3.3 0 0 1 0 6.6H7" stroke-width="3.3"/>
+    </g>
+  </g>
+</svg>

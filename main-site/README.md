@@ -1,49 +1,92 @@
-# Currency Converter by Augy Studios
-The (finally) open source version of the currency converter! (As advertised on Augy Studios)
+# uwuCurrency: the website
 
-Currently live on [convertcurrencyfor.me](https://convertcurrencyfor.me)
+The currency converter at <https://currency.uwuapps.org>, a PWA: plain HTML, CSS and JavaScript
+with no build step, and a few Vercel serverless functions. It's the specification the apps in
+`../flutter/` follow: the same words, storage keys (`uwuconvert.*` in `localStorage`) and API.
 
-## About
-A simple currency converter, converting currencies has never been easier!
+## What's here
 
-## How to Use: General Use
-### Convert Currency
-1. Key in the amount that you want to convert
-2. Select the initial currency on the left
-3. Select the converted currency on the right
-4. Click/Tap on the "Convert" button to convert
-5. Click/Tap on the "Swap" button to swap the left and right currency places
+```text
+index.html, style.css, script.js   the converter, the graph, History and About
+js/
+  theme.js        seven colours; light, dark or time-based (dark from 18:00 to 09:00)
+  tray.js         the edge tray: Theme, History, Share, Show me around, Report a bug
+  history.js      conversion history, kept in localStorage (uwuconvert.history)
+  sync.js, p2p.js, qr.js   sharing history and the theme with another device: a code or QR code,
+                  then WebRTC straight between the two (PeerJS's broker, STUN only)
+  tour.js         Show me around, scrolling to each step
+  bug-report.js   Report a bug, with Screenshot a page (vendor/html-to-image)
+  update.js       the "new version is ready" bar
+  icons.js, ui.js
+sw.js             the service worker: offline, and its VERSION is what offers an update
+privacy.html      the Privacy page (Google Play links to it)
+.well-known/assetlinks.json   lets the Android app open this site's links
+api/
+  currencies.js, rates.js, history.js   the self-hosted Frankfurter API (api.currency.uwuapps.org),
+                  proxied with an hour's edge cache, as it sends no CORS headers
+  app-release.js  the newest Android release, for the app's updater and Updates page
+  push/release.js GitHub's release webhook: "a new version is out" through Firebase
+  bug-report.js   Report a bug, sent on to Telegram
+  _lib/           shared by the functions (the leading _ keeps Vercel from serving them)
+```
 
-## How to Use: Share your current page
-1. Click/Tap on your browser's address bar
-2. Copy the link (should contain the `from`, `to`, and `value` queries) and share to your friends!
-3. When you first load into the page, if there is nothing stated in the query, the default query is `?from=SGD&to=MYR&value=1`. This is not a bug.
+## Using it
 
-## How to Use: Install PWA on Android/iOS device
-> **_NOTE:_** When you're on a compatible browser, you should receive a prompt to install the web app onto your mobile device. If you do not receive the prompt, follow these steps.
-1. Tap on your browser's options button
-2. Tap on "install app" or "add to homescreen"
-3. Tap on "Install" in the pop-up
+- Type an amount, pick the two currencies (a code like `USD` or a name like `Euro`), and it
+  converts as you type. **Swap** turns it round, **Invert rate** the rate line, **Share** sends it
+  to Telegram, X, WhatsApp, Facebook or the device's share sheet, or saves it as a picture.
+- **Historical Rates** shows the pair over 5D to Max; add up to six currencies to compare, each
+  then indexed to 100 at the start of the range.
+- **History** keeps every conversion once it settles: when it's asked for (Convert, Enter, Swap,
+  a currency picked), or once the amount's been left alone for a moment. Opening the page and
+  refreshing don't add one. Press one to convert it again.
+- **Share with another device**: one device shows a code (and a QR code, and a link
+  `/#sync/CODE`), the other enters it. Both need the same wifi, or one on the other's hotspot.
+  Each side then imports or sends conversions and the theme; copying adds, never deletes.
+- Shared text works as a share target: installed as an app, share "50 USD" to it, or open
+  `/?text=50%20USD`.
 
-## How to Use: Opening from the installed PWA App
-- Tap on the app icon in your homescreen, ***OR***
-- Tap and hold on the app icon for shortcuts
+## Running it locally
 
-## App Version
-Google Play: https://play.google.com/store/apps/details?id=com.augystudios.moneyconvert
+`vercel dev` in this folder serves the site and its functions. Without the Vercel CLI, any static
+server shows the site; its `/api/*` then needs answering some other way (the Playwright suite in
+`../flutter/e2e` answers it itself).
 
-Install APK: https://cloud.kancil.xyz/s/5yCeBwAs9NcFD97
+## Environment variables
 
-## Special Thanks
-[Paxriel](https://paxriel.art/) for general coding help
+Set these in the Vercel project (Settings → Environment Variables, Production), or in
+`.env.local` for `vercel dev`. [.env.example](.env.example) lists them, with what each is for.
+**All are optional**: the converter, History and sharing work without any of them.
 
-[Frankfurter](https://frankfurter.dev), self-hosted, for the API
+| Variable | What it does | Set up with |
+| --- | --- | --- |
+| `FIREBASE_SERVICE_ACCOUNT` | Sends "uwuCurrency x.y.z is out" to Android phones | [../flutter/FIREBASE-SETUP.md](../flutter/FIREBASE-SETUP.md) |
+| `GITHUB_WEBHOOK_SECRET` | Proves the release webhook came from GitHub | the same |
+| `GITHUB_TOKEN` | Raises GitHub's limit on the release lookups | the same |
+| `BUG_REPORT_BOT_TOKEN`, `BUG_REPORT_CHAT_ID` | Where Report a bug sends reports; without them it offers email | [../BUG-REPORT-SETUP.md](../BUG-REPORT-SETUP.md) |
+| `KV_REST_API_URL`, `KV_REST_API_TOKEN` | Report a bug's hourly limits (Vercel KV or Upstash Redis) | the same, section 5 |
+
+## Deploying
+
+Deploy this folder as a Vercel project. `vercel.json` sends unknown paths to `404.html`;
+`cleanUrls` serves `/privacy` from `privacy.html`.
+
+**Every change to a file the service worker caches** (the HTML, JS, CSS, manifest, icons) must
+bump `VERSION` in [sw.js](sw.js) and add any new file to its `ASSETS`. Otherwise anyone who has
+the site cached never gets the update.
+
+## Analytics and ads
+
+The site has Google Analytics and Google AdSense (in `index.html` and `privacy.html`'s head). The
+apps have neither. The Privacy page says so.
+
+## Special thanks
+
+[Paxriel](https://paxriel.art/) for general coding help, and [Frankfurter](https://frankfurter.dev),
+self-hosted, for the rates.
 
 ---
 
 [Buy Augy a Coffee](https://donate.stripe.com/28o2akeAr3hv0DK6oo) or [Support Augy Monthly](https://donate.stripe.com/6oEbKUdwn9FTgCI7st)!
 
-
-[Terms](https://augystudios.com/terms) • [EULA](https://augystudios.com/eula) • [Cookies Policy](https://augystudios.com/cookies) • [Privacy Policy](https://augystudios.com/privacy) • [Report an Issue](https://forms.gle/4wKTdjgiC6MGX1aN8)
-
-Made with 💚 in [Singapore](https://www.google.com/maps/place/Singapore) by Augy Studios 2024
+Made with 💚 in Singapore by Augy Studios.

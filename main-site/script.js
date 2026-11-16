@@ -104,7 +104,35 @@ async function loadCurrencies() {
   if (!els.to.value)   els.to.value   = optionLabel('MYR', currencies['MYR'] || 'Malaysian Ringgit');
 }
 
-async function convert() {
+/* ─── History (js/history.js) ───
+   A conversion is remembered once it settles: straight away when it was asked for (Convert,
+   Enter, Swap, a currency picked), or once the amount has been left alone for a moment while
+   typing. Refreshing and opening the page don't add one. */
+
+const RECORD_AFTER_MS = 1500;
+let recordTimer = null;
+
+function remember(entry, how) {
+  clearTimeout(recordTimer);
+  if (!how || !window.ConvHistory) return;
+  if (how === 'now') ConvHistory.record(entry);
+  else recordTimer = setTimeout(() => ConvHistory.record(entry), RECORD_AFTER_MS);
+}
+
+// An entry put back in the converter (the History card, or a link): converted again at
+// today's rate, without adding another entry.
+window.applyHistory = function applyHistory(entry) {
+  if (!entry || !currencies[entry.from] || !currencies[entry.to]) { showToast('That currency is no longer available'); return; }
+  els.amount.value = entry.amount;
+  els.from.value = optionLabel(entry.from, currencies[entry.from]);
+  els.to.value = optionLabel(entry.to, currencies[entry.to]);
+  saveState();
+  convert();
+  document.querySelector('.card--converter').scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
+
+// `record`: 'now', 'soon' (after RECORD_AFTER_MS without another), or nothing.
+async function convert({ record } = {}) {
   const amount   = parseFloat(els.amount.value || '0');
   const fromCode = codeFromInput(els.from.value);
   const toCode   = codeFromInput(els.to.value);
@@ -121,6 +149,7 @@ async function convert() {
     els.rateLine.textContent   = `1 ${fromCode} = 1 ${toCode}`;
     setUpdatedText(new Date().toISOString().slice(0, 10));
     onCurrencyPairChanged();
+    remember({ amount, from: fromCode, to: toCode, rate: 1, date: new Date().toISOString().slice(0, 10) }, record);
     return;
   }
 
@@ -144,6 +173,7 @@ async function convert() {
     els.toCode.textContent     = toCode;
     els.rateLine.textContent   = `1 ${fromCode} = ${nf.format(lastRate)} ${toCode}`;
     onCurrencyPairChanged();
+    remember({ amount, from: fromCode, to: toCode, rate: lastRate, date: row.date }, record);
   } catch (err) {
     console.error(err);
     showToast('Failed to fetch rates. Try refresh.');
@@ -157,7 +187,8 @@ function swapCurrencies() {
   const a = els.from.value;
   els.from.value = els.to.value;
   els.to.value = a;
-  convert();
+  saveState();
+  convert({ record: 'now' });
 }
 
 function invertRate() {
@@ -603,7 +634,7 @@ function applySharedText() {
 /* ─── Event Wiring ─── */
 
 function attachEvents() {
-  els.convert.addEventListener('click', convert);
+  els.convert.addEventListener('click', () => convert({ record: 'now' }));
   els.swap.addEventListener('click', swapCurrencies);
   els.invert.addEventListener('click', invertRate);
   els.refresh.addEventListener('click', () => { showToast('Refreshing…'); convert(); });
@@ -614,24 +645,51 @@ function attachEvents() {
       const code = codeFromInput(input.value);
       if (code && currencies[code]) input.value = optionLabel(code, currencies[code]);
       saveState();
-      convert();
+      convert({ record: 'now' });
     });
   });
 
   els.amount.addEventListener('input', () => {
     clearTimeout(els.amount.__t);
-    els.amount.__t = setTimeout(() => { saveState(); convert(); }, 250);
+    els.amount.__t = setTimeout(() => { saveState(); convert({ record: 'soon' }); }, 250);
   });
 
   els.clearFrom.addEventListener('click', () => { els.from.value = ''; els.from.focus(); saveState(); });
   els.clearTo.addEventListener('click',   () => { els.to.value   = ''; els.to.focus();   saveState(); });
 
   [els.amount, els.from, els.to].forEach(el =>
-    el.addEventListener('keydown', e => { if (e.key === 'Enter') convert(); })
+    el.addEventListener('keydown', e => { if (e.key === 'Enter') convert({ record: 'now' }); })
   );
 
   createShareMenu();
   attachGraphEvents();
+  attachTrayEvents();
+}
+
+/* ─── Edge tray: History, Show me around (js/tour.js); Theme, Sync and Report a bug wire
+   themselves ─── */
+
+function attachTrayEvents() {
+  document.getElementById('historyBtn').addEventListener('click', () => {
+    const card = document.getElementById('historyCard');
+    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    (card.querySelector('.historyOpen') || document.getElementById('historySync')).focus({ preventScroll: true });
+  });
+
+  document.getElementById('tourBtn').addEventListener('click', () => {
+    document.getElementById('tourPicks').innerHTML = Tour.pickers();
+    openModal('tourModal');
+  });
+  document.getElementById('tourPicks').addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-tour]');
+    if (!btn || btn.disabled) return;
+    closeModal('tourModal');
+    // After the window has gone.
+    setTimeout(() => Tour.start(btn.dataset.tour), 300);
+  });
+
+  ConvHistory.init();
+  Sync.init();
 }
 
 /* ─── Init ───
@@ -649,4 +707,8 @@ function attachEvents() {
     console.error(err);
     showToast('Could not load currencies.');
   }
+  // The converter is drawn: the welcome tour, the first time.
+  document.body.classList.add('app-ready');
+  Tour.init();
+  window.dispatchEvent(new Event('pagechange'));
 })();

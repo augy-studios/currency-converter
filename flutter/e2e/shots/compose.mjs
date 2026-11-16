@@ -1,0 +1,220 @@
+// Frames the pictures from capture.mjs as store screenshots, in the style SG Bus Timings' have:
+// a deep coloured page (each its own blend of colours), a headline in Jua, the app in a phone, tablet or window, and handwritten
+// notes with arrows to what they're about. Each number has its own colour (`themes`), the same
+// on the phone, tablet and desktop ones. Writes them into docs/:
+//
+//   docs/phone-assets/01…08.png            1620 × 2880
+//   docs/tablet-assets/7-inch/01…08.png    1620 × 2880
+//   docs/tablet-assets/10-inch/01…08.png   2880 × 1620
+//   docs/desktop-assets/01…08.png          2880 × 1620
+//   docs/feature-graphic.png               1024 × 500
+//
+//     node shots/compose.mjs
+import { chromium } from "@playwright/test";
+import { mkdirSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
+
+const here = dirname(fileURLToPath(import.meta.url));
+const raw = (f) => pathToFileURL(join(here, "raw", `${f}.png`)).href;
+const docs = join(here, "../../../docs");
+const jua = pathToFileURL(join(here, "../../assets/fonts/Jua-Regular.ttf")).href;
+const icon = pathToFileURL(join(here, "../../assets/images/icon-512.png")).href;
+
+// What each picture says. `to` is where an arrow points, as a fraction of the screen it's on.
+const portrait = [
+  { file: "01-convert", raw: "01-convert", head: "Live rates,<br>in a moment.", notes: [{ text: "Type a code<br>or a name", side: "l", y: 0.5, to: [0.3, 0.32] }, { text: "Every action in<br>the edge tray", side: "r", y: 0.62, to: [0.93, 0.2] }] },
+  { file: "02-graph", raw: "02-graph", head: "See how a rate<br>has moved.", notes: [{ text: "Five days<br>to every day", side: "l", y: 0.42, to: [0.25, 0.2] }, { text: "Compare up to<br>six at once", side: "r", y: 0.66, to: [0.55, 0.6] }] },
+  { file: "03-history", raw: "03-history", head: "Every conversion,<br>kept for you.", notes: [{ text: "Tap one to<br>convert it again", side: "l", y: 0.6, to: [0.3, 0.45] }, { text: "Share it with your<br>other devices", side: "r", y: 0.42, to: [0.5, 0.075] }] },
+  { file: "04-material-you", raw: "04-material-you", head: "In your phone's<br>colours.", notes: [{ text: "Material You,<br>by default", side: "l", y: 0.42, to: [0.3, 0.22] }, { text: "From your<br>wallpaper", side: "r", y: 0.62, to: [0.45, 0.68] }] },
+  { file: "05-theme", raw: "05-theme", head: "Or uwuCurrency's<br>own look.", notes: [{ text: "Seven brand<br>colours", side: "l", y: 0.72, to: [0.35, 0.9] }, { text: "Light, dark, or<br>by the clock", side: "r", y: 0.6, to: [0.7, 0.76] }] },
+  { file: "06-share", raw: "06-share", head: "Share without<br>an account.", notes: [{ text: "Scan it with your<br>other device", side: "l", y: 0.66, to: [0.38, 0.78] }, { text: "Straight from one<br>to the other", side: "r", y: 0.46, to: [0.62, 0.62] }] },
+  { file: "07-updates", raw: "07-updates", head: "Always<br>up to date.", notes: [{ text: "What's new in<br>every version", side: "l", y: 0.66, to: [0.3, 0.83] }, { text: "A note when a<br>new one's out", side: "r", y: 0.48, to: [0.88, 0.71] }] },
+  { file: "08-dark-tour", raw: "08-dark-tour", head: "Shown around<br>the first time.", notes: [{ text: "One step<br>at a time", side: "l", y: 0.56, to: [0.3, 0.4] }, { text: "Dark when<br>you like", side: "r", y: 0.34, to: [0.62, 0.1] }] },
+];
+
+const landscape = [
+  { file: "01-convert", raw: "01-convert", head: "Live rates, in a moment.", notes: [{ text: "Type a code<br>or a name", side: "l", y: 0.5, to: [0.28, 0.42] }, { text: "Every action in<br>the edge tray", side: "r", y: 0.5, to: [0.97, 0.25] }] },
+  { file: "02-graph", raw: "02-graph", head: "See how a rate has moved.", notes: [{ text: "Five days<br>to every day", side: "l", y: 0.4, to: [0.3, 0.2] }, { text: "Compare up to<br>six at once", side: "r", y: 0.62, to: [0.62, 0.6] }] },
+  { file: "03-history", raw: "03-history", head: "Every conversion, kept for you.", notes: [{ text: "Tap one to<br>convert it again", side: "l", y: 0.6, to: [0.3, 0.5] }, { text: "Share it with your<br>other devices", side: "r", y: 0.42, to: [0.62, 0.3] }] },
+  { file: "04-material-you", raw: "04-material-you", head: "In your device's colours.", notes: [{ text: "Material You,<br>by default", side: "l", y: 0.42, to: [0.3, 0.3] }, { text: "From your<br>wallpaper", side: "r", y: 0.5, to: [0.62, 0.22] }] },
+  { file: "05-theme", raw: "05-theme", head: "Or uwuCurrency's own look.", notes: [{ text: "Seven brand<br>colours", side: "l", y: 0.66, to: [0.42, 0.74] }, { text: "Light, dark, or<br>by the clock", side: "r", y: 0.5, to: [0.58, 0.6] }] },
+  { file: "06-share", raw: "06-share", head: "Share without an account.", notes: [{ text: "Scan it with your<br>other device", side: "l", y: 0.6, to: [0.44, 0.62] }, { text: "Straight from one<br>to the other", side: "r", y: 0.42, to: [0.58, 0.4] }] },
+  { file: "07-updates", raw: "07-updates", head: "Always up to date.", notes: [{ text: "What's new in<br>every version", side: "l", y: 0.6, to: [0.4, 0.62] }, { text: "A note when a<br>new one's out", side: "r", y: 0.42, to: [0.66, 0.46] }] },
+  { file: "08-dark-tour", raw: "08-dark-tour", head: "Shown around the first time.", notes: [{ text: "One step<br>at a time", side: "l", y: 0.6, to: [0.3, 0.5] }, { text: "Dark when<br>you like", side: "r", y: 0.4, to: [0.7, 0.15] }] },
+];
+
+const desktop = [
+  { file: "01-convert", raw: "01-convert", head: "Convert, and see the trend beside it.", notes: [{ text: "Your history,<br>right there", side: "l", y: 0.6, to: [0.12, 0.8] }, { text: "Compare up to<br>six at once", side: "r", y: 0.46, to: [0.7, 0.4] }] },
+  { file: "02-fluent", raw: "02-fluent", head: "Fluent 2 on Windows.", notes: [{ text: "Mica, behind<br>the window", side: "l", y: 0.5, to: [0.15, 0.4] }, { text: "In your accent<br>colour", side: "r", y: 0.46, to: [0.83, 0.11] }] },
+  { file: "03-command", raw: "03-command", head: "Type it, and it's converted.", notes: [{ text: "\"100 usd to eur\"<br>with Ctrl+K", side: "l", y: 0.5, to: [0.35, 0.03] }, { text: "Your history and<br>every command", side: "r", y: 0.42, to: [0.62, 0.25] }] },
+  { file: "04-tahoe", raw: "04-tahoe", head: "macOS Tahoe's glass on a Mac.", notes: [{ text: "The desktop<br>through it", side: "l", y: 0.5, to: [0.15, 0.4] }, { text: "Rounded,<br>like the system", side: "r", y: 0.5, to: [0.85, 0.3] }] },
+  { file: "05-menu", raw: "05-menu", head: "Keep a rate in sight.", notes: [{ text: "Pin it to your<br>desktop", side: "l", y: 0.4, to: [0.2, 0.62] }, { text: "Or follow it<br>in the tray", side: "r", y: 0.6, to: [0.3, 0.66] }] },
+  { file: "06-welcome", raw: "06-welcome", head: "Make it yours.", window: "Make uwuCurrency yours", notes: [{ text: "Starts when you<br>sign in", side: "r", y: 0.32, to: [0.92, 0.22] }, { text: "Or your computer's<br>accent colour", side: "r", y: 0.66, to: [0.96, 0.53] }] },
+  { file: "07-frosted", raw: "07-frosted", head: "Frosted glass on Linux.", notes: [{ text: "As Deepin and<br>COSMIC draw it", side: "l", y: 0.5, to: [0.15, 0.4] }, { text: "Dark when<br>you like", side: "r", y: 0.5, to: [0.7, 0.3] }] },
+  { file: "08-share", raw: "08-share", head: "Share without an account.", notes: [{ text: "Scan it with your<br>phone", side: "l", y: 0.6, to: [0.47, 0.7] }, { text: "Straight from one<br>to the other", side: "r", y: 0.42, to: [0.6, 0.55] }] },
+];
+
+// The page's colours for each numbered picture, in order: a deep shade of a hue from the top-left
+// (`from`) into a neighbouring one (`to`), hills in a third (`hill`), and the words and arrows in
+// the app's own pastel brand colour of that hue (`ink`, theme.dart's colorThemes), which reads on it.
+const themes = [
+  { from: "#1f6b3d", to: "#13585a", hill: "#2f8a52", ink: "#ccffcc" }, // 01 green
+  { from: "#0e6470", to: "#1c4f8a", hill: "#16808a", ink: "#ccffff" }, // 02 teal
+  { from: "#3a3f9e", to: "#5b2f93", hill: "#4d55c4", ink: "#ccccff" }, // 03 indigo
+  { from: "#7a2a84", to: "#9c2a5e", hill: "#9a3aa6", ink: "#ffccff" }, // 04 plum
+  { from: "#a3294a", to: "#a8481f", hill: "#c23a5c", ink: "#ffcccc" }, // 05 raspberry
+  { from: "#94560c", to: "#5e6a14", hill: "#b06c12", ink: "#ffffcc" }, // 06 amber
+  { from: "#1d5c9e", to: "#1f6b3d", hill: "#2a74bf", ink: "#ccffff" }, // 07 blue
+  { from: "#2b2f6e", to: "#4d2a6e", hill: "#3c418f", ink: "#ccccff" }, // 08 midnight, for the dark one
+];
+// The feature graphic sweeps through the first three.
+const featureTheme = { from: "#1f6b3d", to: "#3a3f9e", via: "#0e6470", hill: "#2f8a52", hill2: "#4d55c4", ink: "#ccffcc" };
+
+const css = `
+@font-face { font-family: Jua; src: url("${jua}"); }
+* { box-sizing: border-box; margin: 0; }
+body { width: var(--w); height: var(--h); overflow: hidden; background: linear-gradient(155deg, var(--from), var(--via, var(--from)) 45%, var(--to)); font-family: Jua, sans-serif; position: relative; }
+.hill { position: absolute; border-radius: 50%; background: var(--hill); opacity: .55; }
+.hill.dark { background: #000; opacity: .16; }
+.head { position: absolute; left: 0; right: 0; text-align: center; color: var(--ink); line-height: 1.08; }
+.screen { position: absolute; overflow: hidden; background: #fff; }
+.screen img { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; }
+.frame { position: absolute; background: #121815; box-shadow: 0 40px 90px rgba(0,0,0,.35); }
+.note { position: absolute; color: var(--ink); font-family: "Patrick Hand", "Segoe Print", cursive; text-align: center; line-height: 1.15; }
+svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.status { position: absolute; left: 0; right: 0; top: 0; display: flex; justify-content: space-between; align-items: center; font-family: Roboto, "Segoe UI", sans-serif; color: #121815; }
+.titlebar { position: absolute; left: 0; right: 0; top: 0; display: flex; align-items: center; color: #eef2ef; font-family: "Segoe UI", sans-serif; background: #121815; }
+`;
+
+function page({ w, h, body, theme }) {
+  const vars = Object.entries(theme).map(([k, v]) => `--${k}:${v}`).join(";");
+  return `<!doctype html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>:root{--w:${w}px;--h:${h}px;${vars}}${css}</style></head><body>${body}
+<svg id="arrows"></svg>
+<script>
+// Each note's arrow, from the note to the point on the screen it names, drawn once laid out.
+document.fonts.ready.then(() => {
+  const svg = document.getElementById('arrows');
+  const ink = ${JSON.stringify(theme.ink)};
+  const screen = document.querySelector('.screen').getBoundingClientRect();
+  for (const n of document.querySelectorAll('.note')) {
+    const r = n.getBoundingClientRect();
+    const [fx, fy] = JSON.parse(n.dataset.to);
+    const tx = screen.left + fx * screen.width, ty = screen.top + fy * screen.height;
+    const right = n.dataset.side === 'r';
+    const sx = right ? r.left + r.width * 0.5 : r.left + r.width * 0.5;
+    const sy = ty < r.top ? r.top - 14 : r.bottom + 14;
+    const mx = (sx + tx) / 2 + (right ? 60 : -60), my = (sy + ty) / 2;
+    const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    p.setAttribute('d', 'M' + sx + ',' + sy + ' Q' + mx + ',' + my + ' ' + tx + ',' + ty);
+    p.setAttribute('fill', 'none'); p.setAttribute('stroke', ink); p.setAttribute('stroke-width', ${w > 2000 ? 5 : 6}); p.setAttribute('stroke-linecap', 'round');
+    svg.appendChild(p);
+    const a = Math.atan2(ty - my, tx - mx), L = ${w > 2000 ? 26 : 34};
+    for (const d of [0.8, -0.8]) {
+      const h = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      h.setAttribute('d', 'M' + tx + ',' + ty + ' L' + (tx + Math.cos(a + Math.PI * d) * L) + ',' + (ty + Math.sin(a + Math.PI * d) * L));
+      h.setAttribute('stroke', ink); h.setAttribute('stroke-width', ${w > 2000 ? 5 : 6}); h.setAttribute('stroke-linecap', 'round');
+      svg.appendChild(h);
+    }
+  }
+  document.body.dataset.ready = '1';
+});
+</script></body></html>`;
+}
+
+const notesHtml = (notes, { w, h, fs, zone }) =>
+  notes.map((n) => {
+    const x = n.side === "l" ? zone.l : zone.r;
+    return `<div class="note" data-side="${n.side}" data-to='${JSON.stringify(n.to)}' style="left:${x - zone.w / 2}px;width:${zone.w}px;top:${n.y * h}px;font-size:${fs}px">${n.text}</div>`;
+  }).join("");
+
+// A phone or a portrait tablet: headline above, the device in the middle, notes either side.
+function portraitPage(s, raw, { tablet, theme }) {
+  const w = 1620, h = 2880;
+  const sw = tablet ? 920 : 800;
+  // A phone's status bar above the app, coloured from the picture's own top edge.
+  const bar = tablet ? 0 : 60;
+  const sh = Math.round(sw * (tablet ? 1000 / 600 : 892 / 412)) + bar;
+  const bezel = tablet ? 44 : 30;
+  const left = (w - sw) / 2, top = 620;
+  const status = tablet ? "" : `<div class="status" style="height:${bar}px;padding:0 44px;font-size:30px;background:url('${raw}') top left / 100% 100000% no-repeat"><span>9:41</span><span>▴ ◼</span></div>`;
+  const body = `
+<div class="hill" style="width:2600px;height:1400px;left:-1300px;top:1300px"></div>
+<div class="hill dark" style="width:1800px;height:1600px;left:900px;top:1800px"></div>
+<div class="head" style="top:150px;font-size:150px">${s.head}</div>
+<div class="frame" style="left:${left - bezel}px;top:${top - bezel}px;width:${sw + 2 * bezel}px;height:${sh + 2 * bezel}px;border-radius:${tablet ? 70 : 110}px"></div>
+<div class="screen" style="left:${left}px;top:${top}px;width:${sw}px;height:${sh}px;border-radius:${tablet ? 30 : 80}px"><img src="${raw}" style="position:absolute;top:${bar}px;height:${sh - bar}px">${status}</div>
+${notesHtml(s.notes, { w, h, fs: tablet ? 52 : 60, zone: { l: left / 2, r: w - left / 2, w: left - 36 } })}`;
+  return { w, h, html: page({ w, h, body, theme }) };
+}
+
+// A landscape tablet or the desktop: headline above, the device or window, notes either side.
+function landscapePage(s, raw, { desktop: isDesktop, theme }) {
+  const w = 2880, h = 1620;
+  const welcome = !!s.window;
+  const ratio = welcome ? 660 / 940 : isDesktop ? 900 / 1440 : 800 / 1280;
+  const sw = welcome ? 1620 : 2000, sh = Math.round(sw * ratio);
+  const left = (w - sw) / 2, top = welcome ? 330 : 300;
+  let frame;
+  if (isDesktop) {
+    // A window: its own title bar is the app's (or, for Make it yours, the system's simple one).
+    frame = `<div class="frame" style="left:${left - 3}px;top:${top - 3}px;width:${sw + 6}px;height:${sh + 6}px;border-radius:18px;background:#0b0f0c"></div>`;
+  } else {
+    frame = `<div class="frame" style="left:${left - 40}px;top:${top - 40}px;width:${sw + 80}px;height:${sh + 80}px;border-radius:60px"></div>`;
+  }
+  const body = `
+<div class="hill" style="width:2400px;height:1300px;left:-1100px;top:900px"></div>
+<div class="hill dark" style="width:2200px;height:1500px;left:1900px;top:1000px"></div>
+<div class="head" style="top:70px;font-size:130px">${s.head}</div>
+${frame}
+<div class="screen" style="left:${left}px;top:${top}px;width:${sw}px;height:${sh}px;border-radius:${isDesktop ? 14 : 24}px"><img src="${raw}"></div>
+${notesHtml(s.notes, { w, h, fs: 54, zone: { l: left / 2, r: w - left / 2, w: left - 40 } })}`;
+  return { w, h, html: page({ w, h, body, theme }) };
+}
+
+function featureGraphic() {
+  const w = 1024, h = 500;
+  const body = `
+<div class="hill" style="width:900px;height:700px;left:-300px;top:260px"></div>
+<div class="hill" style="width:800px;height:800px;left:620px;top:200px;background:var(--hill2)"></div>
+<img src="${icon}" style="position:absolute;left:64px;top:118px;width:136px;height:136px;border-radius:31px;box-shadow:0 18px 40px rgba(0,0,0,.3)">
+<!-- Sized to end well clear of the tilted phone (its left edge is near x 700). -->
+<div style="position:absolute;left:226px;top:122px;color:var(--ink);font-size:72px;white-space:nowrap">uwuCurrency</div>
+<div style="position:absolute;left:230px;top:214px;color:#eaffea;font-size:34px;white-space:nowrap">Currency, converted</div>
+<div style="position:absolute;left:72px;top:330px;width:440px;color:var(--ink);font-family:'Patrick Hand',cursive;font-size:34px;line-height:1.15">Live rates, graphs and your history, on your phone and your computer</div>
+<div class="frame" style="left:676px;top:58px;width:300px;height:620px;border-radius:44px;transform:rotate(8deg)"></div>
+<div class="screen" style="left:690px;top:72px;width:272px;height:590px;border-radius:34px;transform:rotate(8deg)"><img src="${raw("phone-01-convert")}"></div>`;
+  return { w, h, html: page({ w, h, body, theme: featureTheme }).replace('<svg id="arrows"></svg>', "").replace("<div class=\"screen\"", "<div class=\"screen\"") };
+}
+
+async function render(browser, { w, h, html }, out) {
+  const ctx = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: 1 });
+  const p = await ctx.newPage();
+  // From a file, so the page may read the pictures and fonts beside it.
+  const tmp = join(here, ".page.html");
+  writeFileSync(tmp, html);
+  await p.goto(pathToFileURL(tmp).href, { waitUntil: "networkidle" });
+  await p.waitForFunction(() => document.body.dataset.ready === "1" || !document.querySelector(".note"), null, { timeout: 15000 }).catch(() => {});
+  await p.waitForTimeout(300);
+  mkdirSync(dirname(out), { recursive: true });
+  await p.screenshot({ path: out, type: "png" });
+  await ctx.close();
+  console.log(out.replace(docs, "docs"));
+}
+
+const browser = await chromium.launch();
+try {
+  for (const [i, s] of portrait.entries()) {
+    const theme = themes[i];
+    await render(browser, portraitPage(s, raw(`phone-${s.raw}`), { tablet: false, theme }), join(docs, "phone-assets", `${s.file}.png`));
+    await render(browser, portraitPage(s, raw(`tablet7-${s.raw}`), { tablet: true, theme }), join(docs, "tablet-assets/7-inch", `${s.file}.png`));
+    const l = landscape[i];
+    await render(browser, landscapePage(l, raw(`tablet10-${l.raw}`), { desktop: false, theme }), join(docs, "tablet-assets/10-inch", `${l.file}.png`));
+  }
+  for (const [i, s] of desktop.entries()) await render(browser, landscapePage(s, raw(`desktop-${s.raw}`), { desktop: true, theme: themes[i] }), join(docs, "desktop-assets", `${s.file}.png`));
+  await render(browser, featureGraphic(), join(docs, "feature-graphic.png"));
+} finally {
+  await browser.close();
+}

@@ -104,6 +104,12 @@ update files are built by GitHub Actions and go only on the release.
 5. Post `announcements/announcement-<version>.md` in the UwU Apps Telegram channel, and paste
    `announcements/play-release-notes-<version>.md` into Play Console.
 
+A **desktop-only** version (no change for Android) goes the same way with no APK: raise the
+version name in `pubspec.yaml` (not the build number), push, and publish the release with nothing
+attached, marked the latest. The desktop apps update from the latest release's `latest*.yml`, while
+Android's updater and `api/app-release.js` skip a release without an APK, so phones stay on the
+last version that had one. Its release notes say where that APK is.
+
 `announcements/` holds, for each version: `release-notes-<version>.md` (GitHub; the Android
 Updates page reads its first paragraph as the summary and each `###` group's `- **Title**: text`
 lines as cards, so keep to that shape), `announcement-<version>.md` (Telegram, plain text, short

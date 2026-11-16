@@ -2,6 +2,7 @@
 // draggable anywhere, before the main window on every launch of an installed copy. The icon
 // gently bobbing (still under reduced motion), a line of status and a bar under it, and Later
 // while an update downloads. Light or dark as the computer is, with its own colours.
+import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -86,12 +87,26 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   }
 }
 
+const _splashSize = Size(300, 360);
+
+/// No upper limit on the window's size, for the windows after the update window. window_manager
+/// takes no "none" (it ignores -1), so it's one no screen reaches.
+const unlimitedWindowSize = Size(100000, 100000);
+
 /// The window set up as the update window: small, frameless, in the middle.
 Future<void> splashWindow() async {
   await windowManager.setTitleBarStyle(TitleBarStyle.hidden, windowButtonVisibility: false);
-  await windowManager.setResizable(false);
-  await windowManager.setMinimumSize(const Size(300, 360));
-  await windowManager.setSize(const Size(300, 360));
+  if (Platform.isWindows) {
+    // Held at its size by its smallest and largest, not setResizable(false). With the title bar
+    // hidden, window_manager keeps 8 px at the left, right and bottom for the resize border;
+    // setResizable(false) takes the border away, and those 8 px were drawn black round the window.
+    await windowManager.setResizable(true);
+    await windowManager.setMaximumSize(_splashSize);
+  } else {
+    await windowManager.setResizable(false);
+  }
+  await windowManager.setMinimumSize(_splashSize);
+  await windowManager.setSize(_splashSize);
   await windowManager.center();
   await windowManager.show();
 }

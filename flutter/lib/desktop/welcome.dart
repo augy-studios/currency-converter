@@ -17,6 +17,7 @@ import '../theme/icons.dart';
 import '../theme/theme.dart';
 import 'desk.dart';
 import 'settings.dart';
+import 'splash.dart';
 
 class WelcomeChoices {
   bool startAtLogin = true;
@@ -322,6 +323,8 @@ Future<void> welcomeWindow() async {
   if (await windowManager.isMaximized()) await windowManager.unmaximize();
   await windowManager.setTitleBarStyle(TitleBarStyle.hidden, windowButtonVisibility: false);
   await windowManager.setResizable(true);
+  // The update window before it may have held the window at its own size (splash.dart).
+  await windowManager.setMaximumSize(unlimitedWindowSize);
   await windowManager.setMinimumSize(const Size(620, 560));
   await windowManager.setSize(const Size(940, 660));
   await windowManager.center();

@@ -28,6 +28,8 @@ uwuCurrency.
 - **Report a bug**: from the edge tray, with up to three pictures (including a screenshot of the
   whole page), to a Telegram bot ([BUG-REPORT-SETUP.md](BUG-REPORT-SETUP.md)). Each report gets an
   ID, like `20261116-7K3Q`.
+- **API Docs**: a button in the edge tray, on the site and in every app, opens the API's
+  documentation site (`docs-site/`, docs.api.currency.uwuapps.org) in the browser.
 - **Tours**: Show me around, the first time and from the tray; each step scrolls to what it shows.
 - **Themes**: seven colours, light, dark or time-based. The apps add Material You (Android) or the
   system's own glass (desktop: Fluent 2, macOS Tahoe, Deepin and COSMIC frosted glass).

@@ -37,7 +37,7 @@
         { el: '#swap', text: 'Swap turns the conversion round.' },
         { el: '#to', text: 'And the currency you want.' },
         { el: '.result', text: 'The answer, and the rate it used. Share sends it to a friend or saves it as a picture.' },
-        { el: '#trayButtons, #trayTab', text: 'Theme, History, Sync, Show me around and Report a bug live here. Press and hold one to see what it does; the arrow tucks them away.' },
+        { el: '#trayButtons, #trayTab', text: 'Theme, History, Sync, Show me around, API Docs and Report a bug live here. Press and hold one to see what it does; the arrow tucks them away.' },
       ],
     },
     graph: {

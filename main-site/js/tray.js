@@ -1,7 +1,7 @@
 'use strict';
 
 /* The edge tray (docs/edge-tray-spec.md): the site's actions (Theme, History, Sync, Show me
-   around, Report a bug) in a column at the top right, with a tab that slides it off the edge.
+   around, API Docs, Report a bug) in a column at the top right, with a tab that slides it off the edge.
    Open unless this browser last left it collapsed. */
 (function () {
   const TRAY_KEY = 'uwuconvert.trayOpen';
@@ -85,7 +85,7 @@
   }
 
   tray.addEventListener('pointerdown', (e) => {
-    const btn = e.target.closest('button');
+    const btn = e.target.closest('button, a');
     if (!btn || btn.closest('[inert]') || e.button > 0) return;
     held = false;
     start = { x: e.clientX, y: e.clientY };
@@ -113,7 +113,7 @@
   tray.addEventListener('pointercancel', release);
   tray.addEventListener('pointerleave', release);
 
-  // The click a hold ends with is swallowed before it reaches the button.
+  // The click a hold ends with is swallowed before it reaches the button (or opens the link).
   tray.addEventListener('click', (e) => {
     if (!held) return;
     held = false;
@@ -123,7 +123,7 @@
 
   // No long-press menu or text selection on the buttons.
   tray.addEventListener('contextmenu', (e) => {
-    if (e.target.closest('button')) e.preventDefault();
+    if (e.target.closest('button, a')) e.preventDefault();
   });
 
   window.Tray = { show, setOpen: (open) => setTray(open), isOpen };

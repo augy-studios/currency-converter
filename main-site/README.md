@@ -10,7 +10,7 @@ with no build step, and a few Vercel serverless functions. It's the specificatio
 index.html, style.css, script.js   the converter, the graph, History and About
 js/
   theme.js        seven colours; light, dark or time-based (dark from 18:00 to 09:00)
-  tray.js         the edge tray: Theme, History, Share, Show me around, Report a bug
+  tray.js         the edge tray: Theme, History, Share, Show me around, API Docs, Report a bug
   history.js      conversion history, kept in localStorage (uwuconvert.history)
   sync.js, p2p.js, qr.js   sharing history and the theme with another device: a code or QR code,
                   then WebRTC straight between the two (PeerJS's broker, STUN only)

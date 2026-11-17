@@ -1,8 +1,10 @@
 // The edge tray (docs/edge-tray-spec.md, main-site/js/tray.js): the app's actions in a column at
 // the top right, with a tab that slides it off the edge: Theme, History, Share with another
-// device, Updates (Android), Show me around and Report a bug. Open unless it was last left
+// device, Updates (Android), Show me around, API Docs (opens the API's documentation site in the
+// browser) and Report a bug. Open unless it was last left
 // collapsed. A long press on a button shows its label.
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../data/store.dart';
 import '../features/bug/bug_report.dart';
@@ -17,6 +19,9 @@ import '../widgets/common.dart';
 import 'env.dart';
 
 const _trayKey = 'uwuconvert.trayOpen';
+
+/// The API's documentation site (docs-site/).
+const apiDocsUrl = 'https://docs.api.currency.uwuapps.org/';
 
 class EdgeTray extends StatefulWidget {
   const EdgeTray({super.key});
@@ -121,6 +126,7 @@ class _EdgeTrayState extends State<EdgeTray> {
                         _button('tray-sync', 'sync', 'Share history with another device', () => openSync(context)),
                         if (Env.android) _button('tray-updates', 'download', 'Updates', openUpdates),
                         _button('tray-tour', 'help', 'Show me around', () => openTourPicker(context)),
+                        _button('tray-api-docs', 'book', 'API Docs', () => launchUrl(Uri.parse(apiDocsUrl), mode: LaunchMode.externalApplication)),
                         _button('tray-bug', 'bug', 'Report a bug', () => openBugReport(context)),
                       ],
                     ),

@@ -76,8 +76,8 @@ final tours = <String, TourDef>{
     TourStep(
       const ['tray-buttons', 'tray-tab'],
       Env.android
-          ? 'Theme, History, Sync, Updates, Show me around and Report a bug live here. Press and hold one to see what it does; the arrow tucks them away.'
-          : 'Theme, History, Sync, Show me around and Report a bug live here. Press and hold one to see what it does; the arrow tucks them away.',
+          ? 'Theme, History, Sync, Updates, Show me around, API Docs and Report a bug live here. Press and hold one to see what it does; the arrow tucks them away.'
+          : 'Theme, History, Sync, Show me around, API Docs and Report a bug live here. Press and hold one to see what it does; the arrow tucks them away.',
     ),
   ]),
   'graph': const TourDef('Historical rates', [

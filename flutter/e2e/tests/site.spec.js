@@ -232,3 +232,10 @@ test("the edge tray: tucked away and back, remembered", async ({ page }) => {
   await page.getByRole("button", { name: "History of your conversions" }).click();
   await expect(page.locator("#historyCard")).toBeInViewport();
 });
+
+test("the edge tray: API Docs opens the documentation site in a new tab", async ({ page }) => {
+  await open(page);
+  const link = page.locator("#trayButtons").getByRole("link", { name: "API Docs" });
+  await expect(link).toHaveAttribute("href", "https://docs.api.currency.uwuapps.org/");
+  await expect(link).toHaveAttribute("target", "_blank");
+});
